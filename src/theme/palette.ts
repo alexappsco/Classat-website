@@ -44,6 +44,7 @@ export const primary = {
 
 export const text = {
   main: '#212B36',
+  paragraph: '#595959',
 };
 
 export const secondary = {
