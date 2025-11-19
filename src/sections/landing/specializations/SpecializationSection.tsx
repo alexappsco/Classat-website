@@ -1,0 +1,101 @@
+import { Container, Grid, Box, IconButton } from '@mui/material';
+import SpecializationCard from './SpecializationCard'; // Assuming the component is imported
+import { useTheme } from '@mui/material/styles';
+
+const SPECIALIZATIONS = [
+  // ... (Data structure from above) ...
+  {
+    title: 'لغات',
+    subtitle: 'إنجليزي، فرنسي، ألماني',
+    count: '500+ كورس',
+    image: '/assets/landing-page/specializations/languages.png',
+  },
+  {
+    title: 'برمجة',
+    subtitle: 'تطوير ويب، تطبيقات ذكاء اصطناعي',
+    count: '1500+ كورس',
+    image: '/assets/landing-page/specializations/message-programming.png',
+  },
+  {
+    title: 'تصميم',
+    subtitle: 'جرافيك، موشن، UI/UX',
+    count: '800+ كورس',
+    image: '/assets/landing-page/specializations/path-square.png',
+  },
+  {
+    title: 'مناهج دراسية',
+    subtitle: 'رياضيات، علوم، لغات وأكثر',
+    count: '2000+ كورس',
+    image: '/assets/landing-page/specializations/book.png',
+  },
+];
+
+export default function SpecializationSection() {
+  const theme = useTheme();
+
+  // Custom color for the background (Must be defined in your palette)
+  const beigeBackground = '#FDF5E6'; // Example color, adjust to match your design
+
+  return (
+    <Box
+      sx={{
+        py: { xs: 8, md: 10 },
+        bgcolor: beigeBackground, // Background color for the section
+        position: 'relative', // Needed for absolute positioning of arrows
+        direction: 'rtl',
+      }}
+    >
+      <Container>
+        <Grid container spacing={{ xs: 3, md: 4 }} justifyContent="center">
+          {SPECIALIZATIONS.map((spec, index) => (
+            <Grid
+              item
+              xs={12}
+              sm={6} // Two cards per row on small tablets
+              md={3} // Four cards per row on desktop
+              key={index}
+            >
+              <SpecializationCard
+                title={spec.title}
+                subtitle={spec.subtitle}
+                count={spec.count}
+                image={spec.image}
+              />
+            </Grid>
+          ))}
+        </Grid>
+
+        {/* Navigation Arrows (Optional: For Carousel/Slider if implemented) */}
+        <IconButton
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            right: 0, // Position on the right side
+            transform: 'translateY(-50%)',
+            bgcolor: 'white',
+            boxShadow: theme.customShadows.z12,
+            mx: 1, // Horizontal margin
+            zIndex: 10,
+          }}
+        >
+          {'<'}
+        </IconButton>
+
+        <IconButton
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: 0, // Position on the left side
+            transform: 'translateY(-50%)',
+            bgcolor: 'white',
+            boxShadow: theme.customShadows.z12,
+            mx: 1,
+            zIndex: 10,
+          }}
+        >
+          {'>'}
+        </IconButton>
+      </Container>
+    </Box>
+  );
+}
