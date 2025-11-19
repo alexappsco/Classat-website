@@ -42,6 +42,10 @@ export const primary = {
   contrastText: '#FFFFFF',
 };
 
+export const text = {
+  main: '#212B36',
+};
+
 export const secondary = {
   lighter: '#FFF5CC',
   light: '#F0C932',
