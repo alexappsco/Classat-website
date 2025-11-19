@@ -35,7 +35,6 @@ export default function Header({ onOpenNav }: Props) {
   const isNavMini = settings.themeLayout === 'mini';
 
   const lgUp = useResponsive('up', 'lg');
-
   const offset = useOffSetTop(HEADER.H_DESKTOP);
 
   const offsetTop = offset && !isNavHorizontal;
