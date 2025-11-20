@@ -1,6 +1,9 @@
 import { Container, Grid, Box, IconButton } from '@mui/material';
 import SpecializationCard from './SpecializationCard'; // Assuming the component is imported
 import { useTheme } from '@mui/material/styles';
+import { secondary } from 'src/theme/palette';
+import Image from 'src/components/image';
+import { useResponsive } from 'src/hooks/use-responsive';
 
 const SPECIALIZATIONS = [
   // ... (Data structure from above) ...
@@ -32,21 +35,21 @@ const SPECIALIZATIONS = [
 
 export default function SpecializationSection() {
   const theme = useTheme();
-
+  const smDown = useResponsive('down', 'sm');
   // Custom color for the background (Must be defined in your palette)
-  const beigeBackground = '#FDF5E6'; // Example color, adjust to match your design
+  const beigeBackground = '#FFAB0040'; // Example color, adjust to match your design
 
   return (
     <Box
       sx={{
-        py: { xs: 8, md: 10 },
+        py: { xs: 4, md: 6 },
         bgcolor: beigeBackground, // Background color for the section
         position: 'relative', // Needed for absolute positioning of arrows
         direction: 'rtl',
       }}
     >
       <Container>
-        <Grid container spacing={{ xs: 3, md: 4 }} justifyContent="center">
+        <Grid container spacing={{ xs: 3, md: 4 }} justifyContent="center" px={5}>
           {SPECIALIZATIONS.map((spec, index) => (
             <Grid
               item
@@ -66,35 +69,47 @@ export default function SpecializationSection() {
         </Grid>
 
         {/* Navigation Arrows (Optional: For Carousel/Slider if implemented) */}
-        <IconButton
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            right: 0, // Position on the right side
-            transform: 'translateY(-50%)',
-            bgcolor: 'white',
-            boxShadow: theme.customShadows.z12,
-            mx: 1, // Horizontal margin
-            zIndex: 10,
-          }}
-        >
-          {'<'}
-        </IconButton>
+        {!smDown && (
+          <IconButton
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              right: 0, // Position on the right side
+              transform: 'translateY(-50%)',
+              bgcolor: 'white',
+              boxShadow: theme.customShadows.z12,
+              mx: 1, // Horizontal margin
+              zIndex: 10,
+            }}
+          >
+            <Image
+              src={'/assets/landing-page/specializations/left-arrow.png'}
+              alt={'left-icon'}
+              width={30}
+            />
+          </IconButton>
+        )}
 
-        <IconButton
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: 0, // Position on the left side
-            transform: 'translateY(-50%)',
-            bgcolor: 'white',
-            boxShadow: theme.customShadows.z12,
-            mx: 1,
-            zIndex: 10,
-          }}
-        >
-          {'>'}
-        </IconButton>
+        {!smDown && (
+          <IconButton
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: 0, // Position on the left side
+              transform: 'translateY(-50%)',
+              bgcolor: 'white',
+              boxShadow: theme.customShadows.z12,
+              mx: 1,
+              zIndex: 10,
+            }}
+          >
+            <Image
+              src={'/assets/landing-page/specializations/right-arrow.png'}
+              alt={'left-icon'}
+              width={30}
+            />
+          </IconButton>
+        )}
       </Container>
     </Box>
   );
