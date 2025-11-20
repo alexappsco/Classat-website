@@ -43,8 +43,13 @@ export const primary = {
 };
 
 export const text = {
+  primary: '#0E0E0F',
   main: '#212B36',
   paragraph: '#595959',
+};
+
+export const shadow = {
+  main: '0 0 4px 0 #00000040',
 };
 
 export const secondary = {
