@@ -7,6 +7,7 @@ import SectionHeader from './section-header/SectionHeader';
 import SpecializationSection from './specializations/SpecializationSection';
 import HowItWorkCard from './how-it-works/HowItWorkCard';
 import HowItWorksSection from './how-it-works/HowItWorkSection';
+import LiveSessionsSection from './live-sessions/LiveSessionSection';
 
 export const LandingPage = () => {
   return (
@@ -19,6 +20,8 @@ export const LandingPage = () => {
         description="اختر الطريقة التي تناسبك من بين خيارات التعلم المتنوعة"
       />
       <LearningMethods />
+      {/* Live sessions */}
+      <LiveSessionsSection />
       {/* disciplines section >> التخصصات */}
       <SectionHeader
         title="استكشف التخصصات"
