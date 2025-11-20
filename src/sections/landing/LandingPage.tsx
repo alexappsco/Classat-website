@@ -5,6 +5,8 @@ import HeroSection from './Hero';
 import LearningMethods from './learning-methods/LearningMethods';
 import SectionHeader from './section-header/SectionHeader';
 import SpecializationSection from './specializations/SpecializationSection';
+import HowItWorkCard from './how-it-works/HowItWorkCard';
+import HowItWorksSection from './how-it-works/HowItWorkSection';
 
 export const LandingPage = () => {
   return (
@@ -23,6 +25,9 @@ export const LandingPage = () => {
         description="اختر من بين مجموعة واسعة من المجالات التعليمية"
       />
       <SpecializationSection />
+      {/* How it work */}
+      <SectionHeader title="كيف يعمل كلاسات؟" description="ثلاث خطوات بسيطة لبدء رحلتك التعليمية" />
+      <HowItWorksSection />
     </>
   );
 };

@@ -32,7 +32,7 @@ export default function SectionHeader({
       maxWidth="md" // Restrict max width to center the title better
       sx={{
         textAlign: 'center',
-        py: { xs: 4, md: 8 }, // Responsive top/bottom padding
+        py: { xs: 4, md: 6 }, // Responsive top/bottom padding
         direction: 'rtl',
       }}
     >
