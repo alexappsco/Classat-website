@@ -51,7 +51,7 @@ export default function LiveSessionsSection() {
   const mainColor = primary.main;
   const smDown = useResponsive('down', 'sm');
   return (
-    <Box sx={{ py: { xs: 8, md: 10 }, direction: 'ltr' }}>
+    <Box sx={{ py: { xs: 8, md: 10 }, px: { xs: 4, md: 6 }, direction: 'ltr' }}>
       <Container>
         {/* 1. Header and Action Button Row */}
         <Grid container alignItems="center" justifyContent="space-between" sx={{ mb: 4 }}>
@@ -97,7 +97,7 @@ export default function LiveSessionsSection() {
         </Grid>
 
         {/* 2. Live Sessions Grid */}
-        <Grid container spacing={{ xs: 1, md: 2 }} justifyContent={'center'}>
+        <Grid container spacing={4} justifyContent={'center'}>
           {LIVE_SESSIONS.map((session, index) => (
             <Grid
               item
