@@ -28,6 +28,7 @@ export default function SpecializationCard({
     <Card
       sx={{
         textAlign: 'center',
+        padding: '20px 0',
         height: 1, // Full height for alignment in the Grid
         boxShadow: '0 0 4px 0 #00000040',
         borderRadius: 2,
@@ -39,7 +40,7 @@ export default function SpecializationCard({
         },
       }}
     >
-      <Stack spacing={2} alignItems="center" sx={{ height: 1 }}>
+      <Stack spacing={1} alignItems="center" sx={{ height: 1 }}>
         {/* Icon/Image Placeholder */}
         <Box
           component="img"
@@ -65,9 +66,11 @@ export default function SpecializationCard({
           variant="body2"
           sx={{
             color: text.paragraph,
+            fontWeight: '400',
             // Using flexGrow: 1 to push the course count to the bottom
             flexGrow: 1,
             mt: 1,
+            fontSize: theme.typography.pxToRem(20),
           }}
         >
           {subtitle}
@@ -80,7 +83,7 @@ export default function SpecializationCard({
             color: courseCountColor,
             fontWeight: 700,
             // Set the specific font size based on the design (e.g., 14px or 16px)
-            fontSize: theme.typography.pxToRem(14),
+            fontSize: theme.typography.pxToRem(20),
           }}
         >
           {count}
