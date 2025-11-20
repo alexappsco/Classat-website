@@ -8,6 +8,7 @@ import SpecializationSection from './specializations/SpecializationSection';
 import HowItWorkCard from './how-it-works/HowItWorkCard';
 import HowItWorksSection from './how-it-works/HowItWorkSection';
 import LiveSessionsSection from './live-sessions/LiveSessionSection';
+import InstructorsSection from './top-instructor/TopInstructorsSection';
 
 export const LandingPage = () => {
   return (
@@ -31,6 +32,9 @@ export const LandingPage = () => {
       {/* How it work */}
       <SectionHeader title="كيف يعمل كلاسات؟" description="ثلاث خطوات بسيطة لبدء رحلتك التعليمية" />
       <HowItWorksSection />
+      {/* Top instructors */}
+      <SectionHeader title="المدرسين الاعلي تقييما" description="" />
+      <InstructorsSection />
     </>
   );
 };

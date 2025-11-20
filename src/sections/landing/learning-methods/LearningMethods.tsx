@@ -21,7 +21,7 @@ const FEATURES = [
 
 export default function LearningMethods() {
   return (
-    <Container sx={{ py: { xs: 4, md: 6 }, direction: 'rtl' }}>
+    <Container sx={{ py: { xs: 4, md: 6 }, px: { xs: 6, md: 8 }, direction: 'rtl' }}>
       <Grid container spacing={{ xs: 3, md: 5 }}>
         {FEATURES.map((feature, index) => (
           <Grid
