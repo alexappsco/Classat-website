@@ -22,7 +22,7 @@ export const LandingPage = () => {
         description="اختر الطريقة التي تناسبك من بين خيارات التعلم المتنوعة"
       />
       <LearningMethods />
-      {/* Live sessions */}
+
       <LiveSessionsSection />
       {/* disciplines section >> التخصصات */}
       <SectionHeader
