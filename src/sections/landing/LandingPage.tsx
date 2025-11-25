@@ -22,7 +22,6 @@ export const LandingPage = () => {
         description="اختر الطريقة التي تناسبك من بين خيارات التعلم المتنوعة"
       />
       <LearningMethods />
-      {/* Live sessions */}
       <LiveSessionsSection />
       {/* disciplines section >> التخصصات */}
       <SectionHeader
@@ -30,7 +29,6 @@ export const LandingPage = () => {
         description="اختر من بين مجموعة واسعة من المجالات التعليمية"
       />
       <SpecializationSection />
-      {/* How it work */}
       <SectionHeader title="كيف يعمل كلاسات؟" description="ثلاث خطوات بسيطة لبدء رحلتك التعليمية" />
       <HowItWorksSection />
       {/* Top instructors */}
