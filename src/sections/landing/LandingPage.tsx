@@ -30,7 +30,6 @@ export const LandingPage = () => {
         description="اختر من بين مجموعة واسعة من المجالات التعليمية"
       />
       <SpecializationSection />
-      {/* How it work */}
       <SectionHeader title="كيف يعمل كلاسات؟" description="ثلاث خطوات بسيطة لبدء رحلتك التعليمية" />
       <HowItWorksSection />
       {/* Top instructors */}
