@@ -9,6 +9,7 @@ import HowItWorkCard from './how-it-works/HowItWorkCard';
 import HowItWorksSection from './how-it-works/HowItWorkSection';
 import LiveSessionsSection from './live-sessions/LiveSessionSection';
 import InstructorsSection from './top-instructor/TopInstructorsSection';
+import SuggestedCoursesSection from './suggested-courses/SuggestedCoursesSection';
 
 export const LandingPage = () => {
   return (
@@ -35,6 +36,9 @@ export const LandingPage = () => {
       {/* Top instructors */}
       <SectionHeader title="المدرسين الاعلي تقييما" description="" />
       <InstructorsSection />
+      {/* Suggested Courses */}
+      <SectionHeader title="كورساتنا المقترحة" description="" />
+      <SuggestedCoursesSection />
     </>
   );
 };
