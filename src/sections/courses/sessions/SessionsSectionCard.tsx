@@ -9,9 +9,9 @@ import Clock from 'public/assets/courses/icons/clock.svg'
 import { Box, Card, Stack, Typography } from '@mui/material';
 
 import { SESSIONS } from '../data/sessions';
-type RecommendedSessionCardProps = (typeof SESSIONS.RECOMMENDED_SESSIONS)[0];
+type SessionsSectionCardProps = (typeof SESSIONS.RECOMMENDED_SESSIONS)[0];
 
-export default function RecommendedSessionCard({
+export default function SessionsSectionCard({
   image,
   category,
   title,
@@ -21,7 +21,7 @@ export default function RecommendedSessionCard({
   price,
   lessons,
   lessonstime,
-}: RecommendedSessionCardProps) {
+}: SessionsSectionCardProps) {
   const theme = useTheme();
   const blueColor = '#0D47A1';
   const blueBg = '#E3F2FD';
@@ -63,7 +63,7 @@ export default function RecommendedSessionCard({
         />
       </Box>
 
-      {/* Content */}
+      
       <Stack spacing={1.5} sx={{ py: 2, flexGrow: 1 }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography
@@ -80,7 +80,7 @@ export default function RecommendedSessionCard({
             {category}
           </Typography>
 
-          {/* Rate */}
+         
           <Typography
             variant="caption"
             sx={{
@@ -109,13 +109,13 @@ export default function RecommendedSessionCard({
           alignItems="center"
           sx={{ py: 1, color: theme.palette.text.secondary }}
         >
-          {/* عدد الدروس */}
+          
           <Stack direction="row" spacing={0.5} alignItems="center">
             <Book width={16} height={16} />
             <Typography variant="body2">{lessons}</Typography>
           </Stack>
 
-          {/* مدة الدروس */}
+          
           <Stack direction="row" spacing={0.5} alignItems="center">
             <Clock width={16} height={16} />
             <Typography variant="body2">{lessonstime}</Typography>
@@ -123,7 +123,7 @@ export default function RecommendedSessionCard({
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          {/* اسم المدرس مع الصورة */}
+         
           <Stack direction="row" alignItems="center" gap={1}>
             <Image src="/assets/landing-page/live-sessions/instructors/instructor.png" />
             <Typography variant="body2" sx={{ color: text.primary, fontWeight: 500 }}>
@@ -131,9 +131,9 @@ export default function RecommendedSessionCard({
             </Typography>
           </Stack>
 
-          {/* الأسعار */}
+          
           <Stack direction="row" alignItems="center" gap={1}>
-            {/* السعر القديم */}
+            
             {oldPrice && (
               <Typography
                 variant="body2"
@@ -147,7 +147,7 @@ export default function RecommendedSessionCard({
               </Typography>
             )}
 
-            {/* السعر الحالي */}
+           
             <Typography
               variant="body2"
               sx={{

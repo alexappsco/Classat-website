@@ -5,7 +5,7 @@ import { useResponsive } from 'src/hooks/use-responsive';
 import { Box, Grid, Stack, Button, Container, Typography } from '@mui/material';
 
 import { SESSIONS } from '../data/sessions';
-import RecommendedSessionCard from './RecommendedCard';
+import RecommendedSessionCard from './SessionsSectionCard';
 
 type Session = (typeof SESSIONS.RECOMMENDED_SESSIONS)[0];
 

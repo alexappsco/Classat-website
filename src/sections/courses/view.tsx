@@ -1,23 +1,22 @@
 'use client';
 
 import * as React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 
 import Hero from './Hero';
 import Categories from './categories';
 import MiniSessions from './MiniSessions';
 import { SESSIONS } from './data/sessions';
-import SessionsSection from './recommended/RecommendedSection';
+import CustomPagination from './CustomPagination';
+import SessionsSection from './sessions/SessionsSection';
 import LiveSessionsSection from './live-sessions/LiveSessionSection';
 
 export default function Courses() {
   return (
-     <>
-      
+    <>
       <Box sx={{ position: 'relative' }}>
         <Hero />
 
-        
         <Box
           sx={{
             position: 'absolute',
@@ -33,7 +32,6 @@ export default function Courses() {
         </Box>
       </Box>
 
-      
       <Box sx={{ pt: 16 }}>
         <MiniSessions title="استئناف التعلم" sessions={SESSIONS.sessionsData} />
 
@@ -42,10 +40,7 @@ export default function Courses() {
         <SessionsSection title="الأعلى تقييماً" sessions={SESSIONS.TOP_RATED_SESSIONS} />
 
         <LiveSessionsSection />
-
-        <Typography variant="h5" sx={{ fontWeight: 700, mt: 4 }}>
-          pagination
-        </Typography>
+        <CustomPagination />
       </Box>
     </>
   );

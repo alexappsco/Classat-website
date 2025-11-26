@@ -52,7 +52,7 @@ export default function MiniSessionsWithHeader({
           </Button>
         </Grid>
 
-        {/* Sessions Grid */}
+        
         <Grid container spacing={2}>
           {sessions.map((session, index) => (
             <Grid
@@ -73,7 +73,7 @@ export default function MiniSessionsWithHeader({
                   alignItems: "center",
                 }}
               >
-                {/* صورة الكورس */}
+                
                 <Box
                   component="img"
                   src={session.image}
@@ -86,14 +86,14 @@ export default function MiniSessionsWithHeader({
                   }}
                 />
 
-                {/* المحتوى */}
+               
                 <Stack spacing={0.5} flexGrow={1}>
-                  {/* العنوان */}
+                  
                   <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                     {session.title}
                   </Typography>
 
-                  {/* افاتار + الاسم */}
+               
                   <Stack direction="row" spacing={1} alignItems="center">
                     <Avatar
                       src={session.instructorAvatar}
@@ -104,12 +104,12 @@ export default function MiniSessionsWithHeader({
                     </Typography>
                   </Stack>
 
-                  {/* التفاصيل */}
+                  
                   <Typography variant="caption" sx={{ color: "text.secondary" }}>
                     {session.details}
                   </Typography>
 
-                  {/* Progress Bar */}
+                  
                   <LinearProgress
                     variant="determinate"
                     value={session.progress}
