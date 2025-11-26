@@ -18,7 +18,7 @@ import SearchNotFound from 'src/components/search-not-found';
 import { useEventListener } from 'src/hooks/use-event-listener';
 
 import ResultItem from './result-item';
-import { useNavData } from '../../dashboard/config-navigation';
+import { useNavData } from '../../mainpage/config-navigation';
 import { applyFilter, groupedData, getAllItems } from './utils';
 
 // ----------------------------------------------------------------------

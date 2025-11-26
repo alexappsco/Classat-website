@@ -20,7 +20,6 @@ export default async function RootLayout({
 }) {
   const { locale } = await params;
 
-
   // Ensure that the incoming `locale` is valid
   if (!routing.locales.includes(locale as any)) {
     notFound();
@@ -62,7 +61,7 @@ export default async function RootLayout({
   );
 }
 
-export async function generateMetadata({params}: { params: Promise<{ locale: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Metadata' });
 

@@ -1,7 +1,7 @@
 'use client';
 
 // import { AuthGuard } from 'src/auth/guard/jwt';
-import DashboardLayout from 'src/layouts/dashboard';
+import DashboardLayout from 'src/layouts/mainpage';
 
 // ----------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
 'use client';
-import Header from 'src/layouts/dashboard/header';
+import Header from 'src/layouts/mainpage/header';
 import { primary } from 'src/theme/palette';
 import HeroSection from './Hero';
 import LearningMethods from './learning-methods/LearningMethods';
