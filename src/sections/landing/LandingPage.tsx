@@ -11,6 +11,7 @@ import LiveSessionsSection from './live-sessions/LiveSessionSection';
 import InstructorsSection from './top-instructor/TopInstructorsSection';
 import SuggestedCoursesSection from './suggested-courses/SuggestedCoursesSection';
 import { Box } from '@mui/material';
+import TestimonialsSection from './testimonials/TestimonialsSection';
 
 export const LandingPage = () => {
   return (
@@ -40,7 +41,7 @@ export const LandingPage = () => {
           backgroundImage: 'url(/assets/landing-page/section-bg.png)',
           backgroundSize: 'cover',
           backgroundRepeat: 'no-repeat',
-          padding: '100px 0',
+          padding: '100px 0 180px',
         }}
       >
         <SectionHeader title="المدرسين الاعلي تقييما" description="" />
@@ -49,6 +50,12 @@ export const LandingPage = () => {
         <SectionHeader title="كورساتنا المقترحة" description="" />
         <SuggestedCoursesSection />
       </Box>
+      {/* testimonials */}
+      <SectionHeader
+        title="ماذا يقول طلابنا ؟"
+        description="آراء حقيقية من طلاب نجحوا في تحقيق أهدافهم"
+      />
+      <TestimonialsSection />
     </>
   );
 };
