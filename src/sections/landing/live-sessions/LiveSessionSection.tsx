@@ -8,7 +8,7 @@ import { useResponsive } from 'src/hooks/use-responsive';
 
 const LIVE_SESSIONS = [
   {
-    image: '/assets/landing-page/live-sessions/courses/live1.png',
+    image: '/assets/landing-page/live-sessions/courses/live1.jpg',
     isLive: true,
     category: 'UI UX Desgin', // Note: Corrected typo from image (Design)
     title: 'أساسيات تصميم المواقع والتطبيقات',
@@ -26,7 +26,7 @@ const LIVE_SESSIONS = [
     attendees: '15 طالب',
   },
   {
-    image: '/assets/landing-page/live-sessions/courses/live3.png',
+    image: '/assets/landing-page/live-sessions/courses/live3.jpg',
     isLive: true,
     category: 'UI UX Desgin',
     title: 'أساسيات تصميم المواقع والتطبيقات',
