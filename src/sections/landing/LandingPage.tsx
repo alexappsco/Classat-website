@@ -12,6 +12,7 @@ import InstructorsSection from './top-instructor/TopInstructorsSection';
 import SuggestedCoursesSection from './suggested-courses/SuggestedCoursesSection';
 import { Box } from '@mui/material';
 import TestimonialsSection from './testimonials/TestimonialsSection';
+import JoinUsSection from './join-us/JoinUsSection';
 
 export const LandingPage = () => {
   return (
@@ -56,6 +57,8 @@ export const LandingPage = () => {
         description="آراء حقيقية من طلاب نجحوا في تحقيق أهدافهم"
       />
       <TestimonialsSection />
+      {/* join us section */}
+      <JoinUsSection />
     </>
   );
 };
