@@ -45,7 +45,7 @@ const LIVE_SESSIONS = [
   },
 ];
 
-export default function LiveSessionsSection() {
+export default function LiveSessionsSection({title}:{title: string}) {
   const primaryTextColor = text.primary;
   const paragraphTextColor = text.paragraph;
   const mainColor = primary.main;
@@ -58,14 +58,8 @@ export default function LiveSessionsSection() {
           {/* Section Title (Right side in RTL) */}
           <Grid item xs={12} sm={8} md={9}>
             <Stack spacing={0.5}>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: primaryTextColor }}>
-                البثوث المباشرة الآن علي المنصة
-              </Typography>
-              <Typography
-                variant="body1"
-                sx={{ color: paragraphTextColor, fontSize: 20, fontWeight: 400 }}
-              >
-                انضم الآن إلى إحدى الجلسات المباشرة
+              <Typography variant="h4" sx={{ fontWeight: 700, color: primaryTextColor }}>
+                {title}
               </Typography>
             </Stack>
           </Grid>

@@ -1,6 +1,5 @@
-import Favorites from 'src/sections/favorites/view';
-
+import Live from 'src/sections/live/view';
 
 export default async function Page() {
-  return <Favorites />;
+  return <Live />;
 }
