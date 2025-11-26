@@ -2,20 +2,17 @@
 
 import * as React from 'react';
 import { Typography } from '@mui/material';
-
+import { SESSIONS } from './data/sessions';
+import SessionsSection from './sessions/SessionsSection';
+import SearchBar from './SearchBar'
+import CustomPagination from './CustomPagination';
 
 export default function Favorites() {
   return (
      <>
-        <Typography variant="h5" sx={{ fontWeight: 700, mt: 4 }}>
-          search
-        </Typography>
-        <Typography variant="h5" sx={{ fontWeight: 700, mt: 4 }}>
-          favorites
-        </Typography>
-        <Typography variant="h5" sx={{ fontWeight: 700, mt: 4 }}>
-          pagination
-        </Typography>
+        <SearchBar />
+        <SessionsSection sessions={SESSIONS.TOP_RATED_SESSIONS} />
+        <CustomPagination />
 
     </>
   );
