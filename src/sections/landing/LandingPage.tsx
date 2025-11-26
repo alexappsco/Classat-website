@@ -10,6 +10,7 @@ import HowItWorksSection from './how-it-works/HowItWorkSection';
 import LiveSessionsSection from './live-sessions/LiveSessionSection';
 import InstructorsSection from './top-instructor/TopInstructorsSection';
 import SuggestedCoursesSection from './suggested-courses/SuggestedCoursesSection';
+import { Box } from '@mui/material';
 
 export const LandingPage = () => {
   return (
@@ -34,11 +35,20 @@ export const LandingPage = () => {
       <SectionHeader title="كيف يعمل كلاسات؟" description="ثلاث خطوات بسيطة لبدء رحلتك التعليمية" />
       <HowItWorksSection />
       {/* Top instructors */}
-      <SectionHeader title="المدرسين الاعلي تقييما" description="" />
-      <InstructorsSection />
-      {/* Suggested Courses */}
-      <SectionHeader title="كورساتنا المقترحة" description="" />
-      <SuggestedCoursesSection />
+      <Box
+        sx={{
+          backgroundImage: 'url(/assets/landing-page/section-bg.png)',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          padding: '100px 0',
+        }}
+      >
+        <SectionHeader title="المدرسين الاعلي تقييما" description="" />
+        <InstructorsSection />
+        {/* Suggested Courses */}
+        <SectionHeader title="كورساتنا المقترحة" description="" />
+        <SuggestedCoursesSection />
+      </Box>
     </>
   );
 };
