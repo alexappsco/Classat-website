@@ -10,11 +10,14 @@ import HowItWorksSection from './how-it-works/HowItWorkSection';
 import LiveSessionsSection from './live-sessions/LiveSessionSection';
 import InstructorsSection from './top-instructor/TopInstructorsSection';
 import SuggestedCoursesSection from './suggested-courses/SuggestedCoursesSection';
+import { Box } from '@mui/material';
+import TestimonialsSection from './testimonials/TestimonialsSection';
+import JoinUsSection from './join-us/JoinUsSection';
 
 export const LandingPage = () => {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <HeroSection />
       {/* learning methods section */}
       <SectionHeader
@@ -32,11 +35,28 @@ export const LandingPage = () => {
       <SectionHeader title="كيف يعمل كلاسات؟" description="ثلاث خطوات بسيطة لبدء رحلتك التعليمية" />
       <HowItWorksSection />
       {/* Top instructors */}
-      <SectionHeader title="المدرسين الاعلي تقييما" description="" />
-      <InstructorsSection />
-      {/* Suggested Courses */}
-      <SectionHeader title="كورساتنا المقترحة" description="" />
-      <SuggestedCoursesSection />
+      <Box
+        sx={{
+          backgroundImage: 'url(/assets/landing-page/section-bg.png)',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          padding: '100px 0 180px',
+        }}
+      >
+        <SectionHeader title="المدرسين الاعلي تقييما" description="" />
+        <InstructorsSection />
+        {/* Suggested Courses */}
+        <SectionHeader title="كورساتنا المقترحة" description="" />
+        <SuggestedCoursesSection />
+      </Box>
+      {/* testimonials */}
+      <SectionHeader
+        title="ماذا يقول طلابنا ؟"
+        description="آراء حقيقية من طلاب نجحوا في تحقيق أهدافهم"
+      />
+      <TestimonialsSection />
+      {/* join us section */}
+      <JoinUsSection />
     </>
   );
 };

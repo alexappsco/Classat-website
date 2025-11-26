@@ -3,7 +3,7 @@ import { useTheme, alpha } from '@mui/material/styles';
 import { useResponsive } from 'src/hooks/use-responsive';
 import Image from 'src/components/image';
 import { primary, secondary, text, warning } from 'src/theme/palette';
-
+import Link from 'next/link';
 const STATS = [
   { value: '1000+', label: 'كورس متاح', color: secondary.light },
   { value: '5000+', label: 'طالب نشط', color: primary.main },
@@ -93,22 +93,24 @@ export default function HeroSection() {
           المناهج الدراسية
         </Button>
 
-        <Button
-          variant="outlined"
-          size="large"
-          sx={{
-            minWidth: 160,
-            borderColor: alpha(primaryMain, 0.5),
-            color: primaryMain,
-            borderRadius: 25,
-            '&:hover': {
-              borderColor: primaryMain,
-              backgroundColor: alpha(primaryMain, 0.04),
-            },
-          }}
-        >
-          الدورات التدريبية
-        </Button>
+        <Link href="/ar/courses/" passHref>
+  <Button
+    variant="outlined"
+    size="large"
+    sx={{
+      minWidth: 160,
+      borderColor: alpha(primaryMain, 0.5),
+      color: primaryMain,
+      borderRadius: 25,
+      '&:hover': {
+        borderColor: primaryMain,
+        backgroundColor: alpha(primaryMain, 0.04),
+      },
+    }}
+  >
+    الدورات التدريبية
+  </Button>
+</Link>
       </Stack>
       <Stack
         direction="row-reverse"

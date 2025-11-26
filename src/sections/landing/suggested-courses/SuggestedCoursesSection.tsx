@@ -9,8 +9,7 @@ import SuggestedCoursesCard from './SuggestedCoursesCard';
 
 const SUGGESTED_COURSES = [
   {
-    image: '/assets/landing-page/live-sessions/courses/live1.png',
-
+    image: '/assets/landing-page/live-sessions/courses/live1.jpg',
     category: 'UI UX Desgin',
     title: 'أساسيات تصميم المواقع والتطبيقات',
     instructor: 'أ. خالد محمد',
@@ -22,7 +21,6 @@ const SUGGESTED_COURSES = [
   },
   {
     image: '/assets/landing-page/live-sessions/courses/live2.png',
-
     category: 'UI UX Desgin',
     title: 'أساسيات تصميم المواقع والتطبيقات',
     instructor: 'أ. خالد محمد',
@@ -33,8 +31,7 @@ const SUGGESTED_COURSES = [
     ratingCount: '5.8K+',
   },
   {
-    image: '/assets/landing-page/live-sessions/courses/live3.png',
-
+    image: '/assets/landing-page/live-sessions/courses/live3.jpg',
     category: 'UI UX Desgin',
     title: 'أساسيات تصميم المواقع والتطبيقات',
     instructor: 'أ. خالد محمد',
@@ -46,7 +43,6 @@ const SUGGESTED_COURSES = [
   },
   {
     image: '/assets/landing-page/live-sessions/courses/live4.png',
-
     category: 'UI UX Desgin',
     title: 'أساسيات تصميم المواقع والتطبيقات',
     instructor: 'أ. خالد محمد',
@@ -74,13 +70,25 @@ export default function SuggestedCoursesSection() {
               item
               xs={12} // Full width on mobile
               sm={6} // Two cards per row on small screens
-              md={3} // Four cards per row on desktop
+              md={4} // Four cards per row on desktop
+              lg={3}
               key={index}
             >
               <SuggestedCoursesCard {...course} />
             </Grid>
           ))}
         </Grid>
+        <Box sx={{ textAlign: 'center', mt: 6 }}>
+          <Button
+            variant="contained"
+            size="large"
+            color="info" // Light blue color
+            sx={{ minWidth: 200, py: 1.5, borderRadius: 2 }}
+            // startIcon={'<'} // Arrow pointing left in RTL
+          >
+            عرض كل الكورسات
+          </Button>
+        </Box>
       </Container>
     </Box>
   );

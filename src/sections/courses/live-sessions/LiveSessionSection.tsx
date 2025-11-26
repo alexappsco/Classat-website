@@ -1,14 +1,14 @@
-import { Container, Grid, Box, Typography, Button, Stack } from '@mui/material';
-import LiveSessionCard from './LiveSessionCard'; // Assuming the card is imported
-import theme from 'src/theme';
-import { useTheme } from '@emotion/react';
-import { primary, text } from 'src/theme/palette';
+"use client";
+import { text, primary } from 'src/theme/palette';
 import { useResponsive } from 'src/hooks/use-responsive';
-// import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { Box, Grid, Stack, Button, Container, Typography } from '@mui/material';
+
+import LiveSessionCard from './LiveSessionCard'; // Assuming the card is imported
+
 
 const LIVE_SESSIONS = [
   {
-    image: '/assets/landing-page/live-sessions/courses/live1.jpg',
+    image: '/assets/landing-page/live-sessions/courses/live1.png',
     isLive: true,
     category: 'UI UX Desgin', // Note: Corrected typo from image (Design)
     title: 'أساسيات تصميم المواقع والتطبيقات',
@@ -26,7 +26,7 @@ const LIVE_SESSIONS = [
     attendees: '15 طالب',
   },
   {
-    image: '/assets/landing-page/live-sessions/courses/live3.jpg',
+    image: '/assets/landing-page/live-sessions/courses/live3.png',
     isLive: true,
     category: 'UI UX Desgin',
     title: 'أساسيات تصميم المواقع والتطبيقات',
@@ -58,7 +58,7 @@ export default function LiveSessionsSection() {
           {/* Section Title (Right side in RTL) */}
           <Grid item xs={12} sm={8} md={9}>
             <Stack spacing={0.5}>
-              <Typography variant="h2" sx={{ fontWeight: 700, color: primaryTextColor }}>
+              <Typography variant="h3" sx={{ fontWeight: 700, color: primaryTextColor }}>
                 البثوث المباشرة الآن علي المنصة
               </Typography>
               <Typography
