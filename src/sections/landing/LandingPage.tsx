@@ -17,7 +17,7 @@ import JoinUsSection from './join-us/JoinUsSection';
 export const LandingPage = () => {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <HeroSection />
       {/* learning methods section */}
       <SectionHeader

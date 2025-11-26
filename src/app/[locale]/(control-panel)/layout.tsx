@@ -9,7 +9,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-function Layout({ children }: Props) {
+export default function Layout({ children }: Props) {
   return <DashboardLayout>{children}</DashboardLayout>;
   // <AuthGuard>
   // </AuthGuard>

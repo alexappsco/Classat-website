@@ -32,44 +32,45 @@ export default function DashboardLayout({ children }: Props) {
 
   const renderNavVertical = <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />;
 
-  if (isHorizontal) {
-    return (
-      <>
-        <Header onOpenNav={nav.onTrue} />
+  // if (isHorizontal) {
+  //   return (
+  //     <>
+  //       <Header />
 
-        {lgUp ? renderHorizontal : renderNavVertical}
+  //       {/* {lgUp ? renderHorizontal : renderNavVertical} */}
 
-        <Main>{children}</Main>
-      </>
-    );
-  }
+  //       {children}
+  //       {/* <Main></Main> */}
+  //     </>
+  //   );
+  // }
 
-  if (isMini) {
-    return (
-      <>
-        <Header onOpenNav={nav.onTrue} />
+  // if (isMini) {
+  //   return (
+  //     <>
+  //       <Header onOpenNav={nav.onTrue} />
 
-        <Box
-          sx={{
-            minHeight: '100vh',
-            display: 'flex',
-            flexDirection: { xs: 'column', lg: 'row' },
-            alignItems: 'stretch',
-          }}
-        >
-          {lgUp ? renderNavMini : renderNavVertical}
+  //       <Box
+  //         sx={{
+  //           minHeight: '100vh',
+  //           display: 'flex',
+  //           flexDirection: { xs: 'column', lg: 'row' },
+  //           alignItems: 'stretch',
+  //         }}
+  //       >
+  //         {lgUp ? renderNavMini : renderNavVertical}
 
-          <Main>{children}</Main>
-        </Box>
-      </>
-    );
-  }
+  //         <Main>{children}</Main>
+  //       </Box>
+  //     </>
+  //   );
+  // }
 
   return (
     <>
-      <Header onOpenNav={nav.onTrue} />
-
-      <Box
+      <Header />
+      {children}
+      {/* <Box
         sx={{
           minHeight: '100vh',
           display: 'flex',
@@ -77,10 +78,10 @@ export default function DashboardLayout({ children }: Props) {
           alignItems: 'stretch',
         }}
       >
-        {renderNavVertical}
+        // {renderNavVertical} 
 
-        <Main>{children}</Main>
-      </Box>
+        <Main></Main>
+      </Box> */}
     </>
   );
 }
