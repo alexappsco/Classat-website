@@ -1,16 +1,16 @@
 "use client";
 
 import React from "react";
+import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
   Button,
-  InputBase,
-  MenuItem,
   Select,
-  SelectChangeEvent,
+  MenuItem,
+  InputBase,
   Container,
+  SelectChangeEvent,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 
 const SearchBar = () => {
   const [category, setCategory] = React.useState("Programming");

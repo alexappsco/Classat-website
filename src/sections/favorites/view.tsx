@@ -1,11 +1,11 @@
 'use client';
 
 import * as React from 'react';
-import { Typography } from '@mui/material';
-import { SESSIONS } from './data/sessions';
-import SessionsSection from './sessions/SessionsSection';
+
 import SearchBar from './SearchBar'
+import { SESSIONS } from './data/sessions';
 import CustomPagination from './CustomPagination';
+import SessionsSection from './sessions/SessionsSection';
 
 export default function Favorites() {
   return (

@@ -1,8 +1,8 @@
 "use client";
 
 import { text } from 'src/theme/palette';
+import { Box, Grid, Container } from '@mui/material';
 import { useResponsive } from 'src/hooks/use-responsive';
-import { Box, Grid, Stack, Button, Container, Typography } from '@mui/material';
 
 import { SESSIONS } from '../data/sessions';
 import RecommendedSessionCard from './SessionsSectionCard';
@@ -10,7 +10,7 @@ import RecommendedSessionCard from './SessionsSectionCard';
 type Session = (typeof SESSIONS.RECOMMENDED_SESSIONS)[0];
 
 interface SessionsSectionProps {
-  title: string;
+  title?: string;
   buttonText?: string;
   sessions: Session[];
 }
