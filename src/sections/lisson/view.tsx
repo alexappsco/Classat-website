@@ -21,6 +21,7 @@ import StatisticsStudentsCard from './teacherCard/nextSecion';
 // import SectionHeader from '../landing/section-header/SectionHeader';
 // import InstructorsSection from '../landing/top-instructor/TopInstructorsSection';
 import InstructorsSections from './TopInstructorsSection';
+import InstructorsSection from './sections/top-instructor/TopInstructorsSection';
 
 export default function Courses() {
   const studentsData = [
@@ -148,7 +149,7 @@ export default function Courses() {
             <Button
               color="info"
               sx={{ lineHeight: 1 }}
-              onClick={() => router.push('/dashboard/socialServices')}
+              // onClick={() => router.push('/lisson/live')}
             >
               الكل
               <span>
@@ -158,6 +159,7 @@ export default function Courses() {
           </Box>
           <StatisticsStudentsCard cards={studentsData} />
         </Box>
+
         <LiveSessionsSection />
         {/* 
         <Box
@@ -196,14 +198,14 @@ export default function Courses() {
             mx: { md: '0', xs: '0', lg: '2%', sx: '0', xl: '8%' },
           }}
         >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', my: 4 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
               المعلميين الأعلى تقييمًا
             </Typography>
             <Button
               color="info"
               sx={{ lineHeight: 1 }}
-              onClick={() => router.push('/dashboard/live_broadcasts')}
+              onClick={() => router.push('/lisson/topTeacher')}
             >
               الكل
               <span>
@@ -212,7 +214,8 @@ export default function Courses() {
             </Button>
           </Box>
 
-          <InstructorsSections />
+          <InstructorsSection />
+          {/* <InstructorsSections /> */}
         </Box>
         {/* <MiniSessions title="استئناف التعلم" sessions={SESSIONS.sessionsData} />
 
