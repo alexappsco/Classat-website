@@ -1,7 +1,7 @@
 import { Box, Card, Typography, Stack } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Image from 'src/components/image';
-import { warning } from 'src/theme/palette';
+import { primary, secondary, warning, text, shadow } from 'src/theme/palette';
 
 type LiveSessionCardProps = {
   image: string;
@@ -27,15 +27,16 @@ export default function LiveSessionCard({
   ratingCount,
 }: LiveSessionCardProps) {
   const theme = useTheme();
-
+  const orangeColor = secondary.main;
+  const liteOrangeColor = secondary.lighter;
+  const textPrimaryColor = text.primary;
+  const textParagraphColor = text.paragraph;
   return (
     <Card
       sx={{
         p: 2,
         borderRadius: 3,
-        backgroundColor: '#FFF7EB',
-        boxShadow: '0px 4px 20px rgba(0,0,0,0.05)',
-        width: 280,
+        boxShadow: shadow.main,
       }}
     >
       {/* Image */}
@@ -62,37 +63,47 @@ export default function LiveSessionCard({
         />
       </Box>
 
-      <Stack spacing={1} sx={{ mt: 2 }}>
-        {/* Rating */}
-        <Stack direction="row" alignItems="center" spacing={0.5}>
-          <Typography sx={{ color: '#848484', fontSize: 14 }}>{rating.toFixed(1)}</Typography>
-          <Typography sx={{ color: 'orange', fontSize: 14 }}>★</Typography>
-          <Typography sx={{ color: '#848484', fontSize: 14 }}>({ratingCount})</Typography>
-        </Stack>
-
-        {/* Category Chip */}
-        <Typography
-          sx={{
-            fontSize: 13,
-            fontWeight: 600,
-            backgroundColor: '#FFEEC4',
-            color: '#D29500',
-            width: 'fit-content',
-            px: 1.5,
-            py: 0.7,
-            borderRadius: '20px',
-          }}
+      <Stack spacing={2} sx={{ mt: 2 }}>
+        <Stack
+          spacing={1}
+          sx={{ mt: 2 }}
+          direction={'row-reverse'}
+          justifyContent={'space-between'}
         >
-          {category}
-        </Typography>
+          {/* Rating */}
+          <Stack direction="row-reverse" alignItems="center" spacing={0.5}>
+            <Typography sx={{ color: textParagraphColor, fontSize: 14 }}>
+              {rating.toFixed(1)}
+            </Typography>
+            <Typography sx={{ color: 'orange', fontSize: 14 }}>★</Typography>
+            <Typography sx={{ color: textParagraphColor, fontSize: 14, direction: 'rtl' }}>
+              ({ratingCount})
+            </Typography>
+          </Stack>
 
+          {/* Category Chip */}
+          <Typography
+            sx={{
+              fontSize: 13,
+              fontWeight: 600,
+              backgroundColor: liteOrangeColor,
+              color: orangeColor,
+              width: 'fit-content',
+              px: 1.5,
+              py: 0.7,
+              borderRadius: '20px',
+            }}
+          >
+            {category}
+          </Typography>
+        </Stack>
         {/* Title */}
         <Typography sx={{ fontWeight: 700, fontSize: 16 }}>{title}</Typography>
 
         {/* Meta: time + lessons */}
-        <Stack direction="row" spacing={2}>
-          <Typography sx={{ fontSize: 13, color: '#7D7D7D' }}>{time}</Typography>
-          <Typography sx={{ fontSize: 13, color: '#7D7D7D' }}>{attendees}</Typography>
+        <Stack direction="row-reverse" spacing={2} justifyContent={'space-around'}>
+          <Typography sx={{ color: textParagraphColor, direction: 'rtl' }}>{time}</Typography>
+          <Typography sx={{ color: textParagraphColor, direction: 'rtl' }}>{attendees}</Typography>
         </Stack>
 
         {/* Instructor + Price */}
@@ -100,7 +111,7 @@ export default function LiveSessionCard({
           <Stack direction="row" alignItems="center" spacing={1}>
             <Image
               src="/assets/landing-page/live-sessions/instructors/instructor.png"
-              sx={{ width: 34, height: 34, borderRadius: '50%' }}
+              sx={{ width: 40, height: 40, borderRadius: '50%' }}
             />
             <Typography sx={{ fontSize: 14, fontWeight: 600 }}>{instructor}</Typography>
           </Stack>
@@ -109,7 +120,7 @@ export default function LiveSessionCard({
             sx={{
               fontSize: 16,
               fontWeight: 700,
-              color: '#F4A100',
+              color: orangeColor,
             }}
           >
             {price}

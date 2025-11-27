@@ -60,6 +60,8 @@
   "Nav": {
     "main": "Main",
     "logout": "Logout",
+    "upcoming_sessions": "Upcoming sessions",
+    "live_broadcasts": "Live Broadcasts",
 
     "categories": "Categories",
     "subcategories": "Subcategories",

@@ -134,7 +134,7 @@ export default function InstructorCard({
     // </Card>
     <Card
       sx={{
-        py: 2,
+        pb: 2,
         borderRadius: 2,
         boxShadow: theme.customShadows.z12,
         height: 1,
@@ -162,7 +162,7 @@ export default function InstructorCard({
           sx={{
             position: 'absolute',
             top: 16,
-            left: 16,
+            left: 10,
             bgcolor: secondaryColor,
             color: theme.palette.common.white,
             fontWeight: 500,

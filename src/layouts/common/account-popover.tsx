@@ -188,7 +188,7 @@ export default function AccountPopover() {
   };
   const OPTIONS = [
     {
-      label: t('curriculum'),
+      label: 'curriculum',
       linkTo: '/',
     },
     {
@@ -243,7 +243,7 @@ export default function AccountPopover() {
         <Stack sx={{ p: 1 }}>
           {OPTIONS.map((option) => (
             <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>
-              {t(option.label)}
+              {option.label}
             </MenuItem>
           ))}
         </Stack>

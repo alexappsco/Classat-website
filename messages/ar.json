@@ -55,6 +55,8 @@
     }
   },
   "Nav": {
+    "upcoming_sessions": "الجلسات القادمة",
+    "live_broadcasts": "الدروس المباشرة",
     "main": "الرئيسية",
     "categories": "الأقسام",
     "subcategories": "الأقسام الفرعية",
