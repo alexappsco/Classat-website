@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { bgBlur } from 'src/theme/css';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -22,7 +22,7 @@ import AccountPopover from '../common/account-popover';
 export default function Header() {
   const router = useRouter();
   const theme = useTheme();
-const pathname = usePathname();
+  const pathname = usePathname();
   const flag = false;
 
   const settings = useSettingsContext();
@@ -38,38 +38,32 @@ const pathname = usePathname();
   const offsetTop = offset && !isNavHorizontal;
 
   // remove last slash mark -> / from url
-const cleanPath = pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
+  const cleanPath = pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
 
-// landing paths
-const landingPaths = ['/', '/ar'];
-const isLanding = landingPaths.includes(cleanPath);
-
+  // landing paths
+  const landingPaths = ['/', '/ar'];
+  const isLanding = landingPaths.includes(cleanPath);
 
   const renderContent = (
     <Box width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
-      <LogoText {...{ lgUp }} />
+      <Button onClick={() => router.push('/ar/')} sx={{ display: { xs: 'none', md: 'flex' } }}>
+        <LogoText {...{ lgUp }} />
+      </Button>
       {isLanding ? (
-  <AuthButtons changeSignIn={setIsSignIn} />
-) : (
-  <Box display="flex" alignItems="center" gap={1.5} pt={0.5}>
+        <AuthButtons changeSignIn={setIsSignIn} />
+      ) : (
+        <Box display="flex" alignItems="center" gap={1.5} pt={0.5}>
+          <IconButton onClick={() => router.push('/ar/courses/favorites/')}>
+            <FavoriteIcon />
+          </IconButton>
 
-    <IconButton
-    onClick={() => router.push('/ar/courses/favorites/')}
-    >
-      <FavoriteIcon />
-    </IconButton>
+          <IconButton onClick={() => router.push('/ar/cart/')}>
+            <ShoppingCartIcon fontSize="small" />
+          </IconButton>
 
-
-  <IconButton
-  onClick={() => router.push('/ar/cart/')}
-  >
-    <ShoppingCartIcon fontSize="small" />
-  </IconButton>
-
-    <AccountPopover />
-  </Box>
-)}
-
+          <AccountPopover />
+        </Box>
+      )}
 
       {/* <Box sx={{ maxWidth: '150px' }}>
       </Box> */}
