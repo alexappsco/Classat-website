@@ -13,7 +13,6 @@ export default function Favorites() {
         <SearchBar />
         <SessionsSection sessions={SESSIONS.TOP_RATED_SESSIONS} />
         <CustomPagination />
-
     </>
   );
 }

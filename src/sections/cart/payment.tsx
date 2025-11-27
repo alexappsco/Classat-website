@@ -13,6 +13,7 @@ import {
   TextField,
   IconButton,
   CardContent,
+  Container,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SuccessPurchaseDialog from './successPurchaseDialog'
@@ -54,6 +55,12 @@ export default function Payment() {
   };
 
   return (
+<Container
+      sx={{
+        py: { xs: 8, md: 12 },
+        direction: 'rtl',
+      }}
+    >
     <Box sx={{ p: 3 }} dir="rtl">
       <Grid container spacing={4} sx={{ maxWidth: 1200, mx: 'auto' }}>
        
@@ -297,5 +304,6 @@ export default function Payment() {
         onClose={() => setOpenSuccess(false)}
       />
     </Box>
+    </Container>
   );
 }
