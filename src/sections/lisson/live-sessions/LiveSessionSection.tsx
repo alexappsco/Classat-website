@@ -59,19 +59,19 @@ export default function LiveSessionsSection() {
         {/* 1. Header and Action Button Row */}
         <Grid container alignItems="center" justifyContent="space-between" sx={{ mb: 4 }}>
           {/* Section Title (Right side in RTL) */}
-          <Grid item xs={12} sm={8} md={9}>
-            <Stack spacing={0.5}>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: primaryTextColor }}>
-                البثوث المباشرة الآن علي المنصة
-              </Typography>
-              <Typography
+          {/* <Grid item xs={12} sm={8} md={9}> */}
+          <Stack spacing={0.5}>
+            <Typography variant="h4" sx={{ fontWeight: 700, color: primaryTextColor }}>
+              البثوث المباشرة
+            </Typography>
+            {/* <Typography
                 variant="body1"
                 sx={{ color: paragraphTextColor, fontSize: 20, fontWeight: 400 }}
               >
                 انضم الآن إلى إحدى الجلسات المباشرة
-              </Typography>
-            </Stack>
-          </Grid>
+              </Typography> */}
+          </Stack>
+          {/* </Grid> */}
 
           {/* Action Button (Left side in RTL) */}
           <Button color="info" sx={{ lineHeight: 1 }} onClick={() => router.push('/lisson/live')}>

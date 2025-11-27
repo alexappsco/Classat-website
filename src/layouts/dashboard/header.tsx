@@ -46,7 +46,7 @@ export default function Header() {
 
   const renderContent = (
     <Box width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
-      <Button onClick={() => router.push('/ar/')} sx={{ display: { xs: 'none', md: 'flex' } }}>
+      <Button onClick={() => router.push('/ar/')} sx={{ display: 'flex' }}>
         <LogoText {...{ lgUp }} />
       </Button>
       {isLanding ? (
