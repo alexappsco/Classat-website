@@ -19,13 +19,13 @@ export default function Categories() {
   return (
     <Box sx={{
         py: { xs: 1, md: 1.4 },
-        px: { xs: 1, md: 2 },
+        px: { xs: 1, md: 0 },
         // mx: { xs: 5, md: 3},
         // border: '1px solid #ccc',
         boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
         borderRadius: '23px',
         backgroundColor: '#fff',
-        maxWidth: 1300,
+        maxWidth: 1330,
         // mx: 'auto',
         textAlign: 'center',
       }}>
@@ -42,8 +42,8 @@ export default function Categories() {
               display: 'flex',
               overflowX: 'auto',
               justifyContent: 'center',
-              gap: 2,
-              // px: 1,
+              gap: 1,
+              px: 0,
               '&::-webkit-scrollbar': {
                 height: '8px',
               },
@@ -62,7 +62,7 @@ export default function Categories() {
                 sx={{
                   borderRadius: '25px',
                   textAlign: 'center',
-                  px: 2,
+                  px: 4,
                   py: 0.5,
                   fontWeight: 500,
                   cursor: 'pointer',

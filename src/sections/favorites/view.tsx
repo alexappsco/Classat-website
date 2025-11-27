@@ -1,21 +1,18 @@
 'use client';
 
 import * as React from 'react';
-import { Typography } from '@mui/material';
 
+import SearchBar from './SearchBar'
+import { SESSIONS } from './data/sessions';
+import CustomPagination from './CustomPagination';
+import SessionsSection from './sessions/SessionsSection';
 
 export default function Favorites() {
   return (
      <>
-        <Typography variant="h5" sx={{ fontWeight: 700, mt: 4 }}>
-          search
-        </Typography>
-        <Typography variant="h5" sx={{ fontWeight: 700, mt: 4 }}>
-          favorites
-        </Typography>
-        <Typography variant="h5" sx={{ fontWeight: 700, mt: 4 }}>
-          pagination
-        </Typography>
+        <SearchBar />
+        <SessionsSection sessions={SESSIONS.TOP_RATED_SESSIONS} />
+        <CustomPagination />
 
     </>
   );

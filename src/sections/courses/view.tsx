@@ -25,7 +25,7 @@ export default function Courses() {
             transform: 'translateX(-50%)',
             zIndex: 10,
             width: '90%',
-            maxWidth: 1300,
+            maxWidth: 1330,
           }}
         >
           <Categories />
