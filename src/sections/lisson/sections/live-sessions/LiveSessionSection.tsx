@@ -2,16 +2,14 @@
 import { text, primary } from 'src/theme/palette';
 import { useResponsive } from 'src/hooks/use-responsive';
 import { Box, Grid, Stack, Button, Container, Typography } from '@mui/material';
-import { useRouter } from 'next/dist/client/components/navigation';
 
 import LiveSessionCard from './LiveSessionCard'; // Assuming the card is imported
-import { LeftIcon } from 'src/components/carousel/arrow-icons';
 
 const LIVE_SESSIONS = [
   {
-    image: '/assets/landing-page/live-sessions/courses/live2.png',
+    image: '/assets/landing-page/live-sessions/courses/live1.jpg',
     isLive: true,
-    category: 'UI UX Desgin', // Note: Corrected typo from image (Design)
+    category: 'UI UX Desgin',
     title: 'أساسيات تصميم المواقع والتطبيقات',
     instructor: 'أ. خالد محمد',
     time: 'بدأ منذ 5 دقائق',
@@ -27,7 +25,7 @@ const LIVE_SESSIONS = [
     attendees: '15 طالب',
   },
   {
-    image: '/assets/landing-page/live-sessions/courses/live4.png',
+    image: '/assets/landing-page/live-sessions/courses/live3.jpg',
     isLive: true,
     category: 'UI UX Desgin',
     title: 'أساسيات تصميم المواقع والتطبيقات',
@@ -46,40 +44,40 @@ const LIVE_SESSIONS = [
   },
 ];
 
-export default function LiveSessionsSection() {
+export default function LiveSessionsSection({ title }: { title: string }) {
   const primaryTextColor = text.primary;
   const paragraphTextColor = text.paragraph;
   const mainColor = primary.main;
   const smDown = useResponsive('down', 'sm');
-  const router = useRouter();
-
   return (
     <Box sx={{ py: { xs: 8, md: 10 }, px: { xs: 4, md: 6 }, direction: 'ltr' }}>
       <Container>
         {/* 1. Header and Action Button Row */}
         <Grid container alignItems="center" justifyContent="space-between" sx={{ mb: 4 }}>
           {/* Section Title (Right side in RTL) */}
-          {/* <Grid item xs={12} sm={8} md={9}> */}
-          <Stack spacing={0.5}>
-            <Typography variant="h4" sx={{ fontWeight: 700, color: primaryTextColor }}>
-              البثوث المباشرة
-            </Typography>
-            {/* <Typography
-                variant="body1"
-                sx={{ color: paragraphTextColor, fontSize: 20, fontWeight: 400 }}
-              >
-                انضم الآن إلى إحدى الجلسات المباشرة
-              </Typography> */}
-          </Stack>
-          {/* </Grid> */}
+          <Grid item xs={12} sm={8} md={9}>
+            <Stack spacing={0.5}>
+              <Typography variant="h4" sx={{ fontWeight: 700, color: primaryTextColor }}>
+                {title}
+              </Typography>
+            </Stack>
+          </Grid>
 
           {/* Action Button (Left side in RTL) */}
-          <Button color="info" sx={{ lineHeight: 1 }} onClick={() => router.push('/lisson/live')}>
-            الكل
-            <span>
-              <LeftIcon />
-            </span>
-          </Button>
+          {/* <Button
+            variant="contained"
+            size="medium"
+            sx={{
+              minWidth: 150,
+              p: 2,
+              alignSelf: 'flex-start',
+              backgroundColor: mainColor,
+              mt: smDown ? 2 : 0,
+            }}
+            endIcon={'>'}
+          >
+            اكتشف المزيد
+          </Button> */}
           {/* <Grid
             item
             xs={12}
