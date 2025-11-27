@@ -188,12 +188,16 @@ export default function AccountPopover() {
   };
   const OPTIONS = [
     {
-      label: 'curriculum',
+      label: t('Nav.main'),
       linkTo: '/',
     },
     {
-      label: 'update_profile',
-      linkTo: '/dashboard/update-profile',
+      label: t('Nav.lisson'),
+      linkTo: '/lisson',
+    },
+    {
+      label: t('Nav.courses'),
+      linkTo: '/courses',
     },
   ];
   return (
@@ -215,7 +219,8 @@ export default function AccountPopover() {
         }}
       >
         <Avatar
-          src={user?.avatar}
+          // src={user?.avatar}
+          src={'/favicon/studend.jpg'}
           alt={user?.name}
           sx={{
             width: 36,
