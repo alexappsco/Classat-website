@@ -26,7 +26,7 @@ export default function Live() {
             zIndex: 10,
             width: '40%',
             maxWidth: 700,
-            minWidth: 300,
+            minWidth: { xs: 300, sm: 360, md: 400 },
           }}
         >
           <Categories selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
