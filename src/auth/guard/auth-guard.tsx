@@ -1,9 +1,17 @@
+import { useState, useEffect, useCallback } from 'react';
+
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
-import { useState, useEffect, useCallback } from 'react';
+
 import { SplashScreen } from 'src/components/loading-screen';
 
-import { useAuthStore } from '../auth-store';
+import { useAuthContext } from '../hooks';
+
+// ----------------------------------------------------------------------
+
+const loginPaths: Record<string, string> = {
+  jwt: paths.auth.login,
+};
 
 // ----------------------------------------------------------------------
 
@@ -12,7 +20,7 @@ type Props = {
 };
 
 export default function AuthGuard({ children }: Props) {
-  const { loading } = useAuthStore();
+  const { loading } = useAuthContext();
 
   return <>{loading ? <SplashScreen /> : <Container>{children}</Container>}</>;
 }
@@ -22,27 +30,31 @@ export default function AuthGuard({ children }: Props) {
 function Container({ children }: Props) {
   const router = useRouter();
 
-  const { authenticated } = useAuthStore();
+  const { authenticated, method } = useAuthContext();
 
   const [checked, setChecked] = useState(false);
+
   const check = useCallback(() => {
     if (!authenticated) {
       const searchParams = new URLSearchParams({
         returnTo: window.location.pathname,
       }).toString();
 
-      const href = `${paths.auth.login}?${searchParams}`;
+      const loginPath = loginPaths[method];
+
+      const href = `${loginPath}?${searchParams}`;
 
       router.replace(href);
+      setChecked(false);
     } else {
       setChecked(true);
     }
-  }, [authenticated, router]);
+  }, [authenticated, method, router]);
 
   useEffect(() => {
     check();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authenticated]);
+  }, [check]);
 
   if (!checked) {
     return null;

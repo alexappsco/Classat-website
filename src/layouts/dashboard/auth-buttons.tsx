@@ -4,7 +4,7 @@ import Image from 'src/components/image';
 import { useResponsive } from 'src/hooks/use-responsive';
 import { primary } from 'src/theme/palette';
 
-export const AuthButtons = () => {
+export const AuthButtons = ({ changeSignIn }: any) => {
   const smDown = useResponsive('down', 'sm');
   const mainWidth = smDown ? {} : { xs: 100, sm: 130 };
   return (
@@ -21,6 +21,9 @@ export const AuthButtons = () => {
           boxShadow: 'none',
           pb: '10px',
           minWidth: mainWidth,
+        }}
+        onClick={() => {
+          changeSignIn(true);
         }}
       >
         {smDown ? <Image src="/assets/header/login-icon.svg" /> : 'تسجيل دخول'}

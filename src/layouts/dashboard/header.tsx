@@ -1,30 +1,32 @@
+import { useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { Box } from '@mui/material';
 import { bgBlur } from 'src/theme/css';
-import Logo from 'src/components/logo';
-import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import SvgColor from 'src/components/svg-color';
+import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
-import { darken, useTheme } from '@mui/material/styles';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useOffSetTop } from 'src/hooks/use-off-set-top';
 import { useResponsive } from 'src/hooks/use-responsive';
 import { useSettingsContext } from 'src/components/settings';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { NAV, HEADER } from '../config-layout';
-import AccountPopover from '../common/account-popover';
-import LanguagePopover from '../common/language-popover';
-import { Box } from '@mui/material';
-import Image from 'src/components/image';
-import { AuthButtons } from './auth-buttons';
-import { LogoText } from './logo-text';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
+import { useRouter } from 'next/dist/client/components/navigation';
 
+import { LogoText } from './logo-text';
+import { HEADER } from '../config-layout';
+import { AuthButtons } from './auth-buttons';
+import AccountPopover from '../common/account-popover';
 // ----------------------------------------------------------------------
 
 export default function Header() {
+  const router = useRouter();
   const theme = useTheme();
+const pathname = usePathname();
+  const flag = false;
 
   const settings = useSettingsContext();
+  const [isSignIn, setIsSignIn] = useState(false);
 
   const isNavHorizontal = settings.themeLayout === 'horizontal';
 
@@ -35,10 +37,39 @@ export default function Header() {
 
   const offsetTop = offset && !isNavHorizontal;
 
+  // remove last slash mark -> / from url
+const cleanPath = pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
+
+// landing paths
+const landingPaths = ['/', '/ar'];
+const isLanding = landingPaths.includes(cleanPath);
+
+
   const renderContent = (
     <Box width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
       <LogoText {...{ lgUp }} />
-      <AuthButtons />
+      {isLanding ? (
+  <AuthButtons changeSignIn={setIsSignIn} />
+) : (
+  <Box display="flex" alignItems="center" gap={1.5} pt={0.5}>
+
+    <IconButton
+    onClick={() => router.push('/ar/courses/favorites/')}
+    >
+      <FavoriteIcon />
+    </IconButton>
+
+
+  <IconButton
+  onClick={() => router.push('/ar/cart/')}
+  >
+    <ShoppingCartIcon fontSize="small" />
+  </IconButton>
+
+    <AccountPopover />
+  </Box>
+)}
+
 
       {/* <Box sx={{ maxWidth: '150px' }}>
       </Box> */}

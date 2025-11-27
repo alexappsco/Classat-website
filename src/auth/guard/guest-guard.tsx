@@ -1,9 +1,11 @@
-import { paths } from 'src/routes/paths';
 import { useEffect, useCallback } from 'react';
-import { SplashScreen } from 'src/components/loading-screen';
+
+import { paths } from 'src/routes/paths';
 import { useRouter, useSearchParams } from 'src/routes/hooks';
 
-import { useAuthStore } from '../auth-store';
+import { SplashScreen } from 'src/components/loading-screen';
+
+import { useAuthContext } from '../hooks';
 
 // ----------------------------------------------------------------------
 
@@ -12,7 +14,7 @@ type Props = {
 };
 
 export default function GuestGuard({ children }: Props) {
-  const { loading } = useAuthStore();
+  const { loading } = useAuthContext();
 
   return <>{loading ? <SplashScreen /> : <Container>{children}</Container>}</>;
 }
@@ -24,9 +26,9 @@ function Container({ children }: Props) {
 
   const searchParams = useSearchParams();
 
-  const returnTo = searchParams.get('returnTo') || paths.controlPanel.main;
+  const returnTo = searchParams.get('returnTo') || paths.dashboard.root;
 
-  const { authenticated } = useAuthStore();
+  const { authenticated } = useAuthContext();
 
   const check = useCallback(() => {
     if (authenticated) {
