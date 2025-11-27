@@ -251,7 +251,7 @@ export default function JwtRegisterView() {
           <Typography variant="caption" mx={0.2}>
             {t('Already have an account?')}
 
-            <Link href="/auth/jwt/login" style={{ fontSize: '12px' }}>
+            <Link href="/auth/login" style={{ fontSize: '12px' }}>
               {t('Sign in')}
             </Link>
           </Typography>

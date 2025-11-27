@@ -78,39 +78,40 @@ export default function HeroSection() {
         spacing={2}
         justifyContent={{ xs: 'center', md: 'flex-start' }}
       >
-        <Button
-          variant="contained"
-          size="large"
-          sx={{
-            minWidth: 160,
-            backgroundColor: primaryMain,
-            borderRadius: 25,
-            '&:hover': {
-              backgroundColor: primaryDark,
-            },
-          }}
-        >
-          المناهج الدراسية
-        </Button>
-
+        <Link href="/ar/lisson/" passHref>
+          <Button
+            variant="contained"
+            size="large"
+            sx={{
+              minWidth: 160,
+              backgroundColor: primaryMain,
+              borderRadius: 25,
+              '&:hover': {
+                backgroundColor: primaryDark,
+              },
+            }}
+          >
+            المناهج الدراسية
+          </Button>
+        </Link>
         <Link href="/ar/courses/" passHref>
-  <Button
-    variant="outlined"
-    size="large"
-    sx={{
-      minWidth: 160,
-      borderColor: alpha(primaryMain, 0.5),
-      color: primaryMain,
-      borderRadius: 25,
-      '&:hover': {
-        borderColor: primaryMain,
-        backgroundColor: alpha(primaryMain, 0.04),
-      },
-    }}
-  >
-    الدورات التدريبية
-  </Button>
-</Link>
+          <Button
+            variant="outlined"
+            size="large"
+            sx={{
+              minWidth: 160,
+              borderColor: alpha(primaryMain, 0.5),
+              color: primaryMain,
+              borderRadius: 25,
+              '&:hover': {
+                borderColor: primaryMain,
+                backgroundColor: alpha(primaryMain, 0.04),
+              },
+            }}
+          >
+            الدورات التدريبية
+          </Button>
+        </Link>
       </Stack>
       <Stack
         direction="row-reverse"

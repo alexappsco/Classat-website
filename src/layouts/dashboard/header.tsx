@@ -18,13 +18,18 @@ import { Box } from '@mui/material';
 import Image from 'src/components/image';
 import { AuthButtons } from './auth-buttons';
 import { LogoText } from './logo-text';
-
+import { useState } from 'react';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 // ----------------------------------------------------------------------
 
 export default function Header() {
   const theme = useTheme();
 
+  const flag = false;
+
   const settings = useSettingsContext();
+  const [isSignIn, setIsSignIn] = useState(false);
 
   const isNavHorizontal = settings.themeLayout === 'horizontal';
 
@@ -38,7 +43,21 @@ export default function Header() {
   const renderContent = (
     <Box width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
       <LogoText {...{ lgUp }} />
-      <AuthButtons />
+      {!isSignIn ? (
+        <AuthButtons changeSignIn={setIsSignIn} />
+      ) : (
+        <Box display="flex" alignItems="center" gap={1.5} pt={0.5}>
+          <IconButton>
+            <FavoriteIcon />
+          </IconButton>
+
+          <IconButton>
+            <ShoppingCartIcon fontSize="small" />
+          </IconButton>
+
+          <AccountPopover />
+        </Box>
+      )}
 
       {/* <Box sx={{ maxWidth: '150px' }}>
       </Box> */}
