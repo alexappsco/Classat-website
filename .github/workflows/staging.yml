@@ -50,6 +50,7 @@ jobs:
             eval "$(ssh-agent -s)"
             cd /home/classatadmin/site
             git reset --hard HEAD
+            git fetch
             git checkout staging
             git pull
             # Install or update NVM
