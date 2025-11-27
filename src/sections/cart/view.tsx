@@ -12,8 +12,8 @@ import {
   Typography,
   IconButton,
   CardContent,
+  Container,
 } from '@mui/material';
-import Payment from './payment';
 import Link from 'next/link';
 
 
@@ -54,6 +54,12 @@ export default function ShoppingCart() {
   };
 
   return (
+    <Container
+      sx={{
+        py: { xs: 8, md: 12 },
+        direction: 'rtl',
+      }}
+    >
     <Box sx={{ p: 3 }} dir="rtl">
       <Grid container spacing={3} sx={{ maxWidth: 1200, mx: 'auto' }}>
         
@@ -188,7 +194,7 @@ export default function ShoppingCart() {
                   ${calculateTotal()}
                 </Typography>
               </Box>
-              <Link href="/ar/cart/payment/" passHref>
+              <Link href="/ar/cart/payment/">
               <Button
                 fullWidth
                 variant="contained"
@@ -218,7 +224,8 @@ export default function ShoppingCart() {
           </Card>
         </Grid>
       </Grid>
-      <Payment />
+      
     </Box>
+    </Container>
   );
 }

@@ -4,8 +4,8 @@ import { useResponsive } from 'src/hooks/use-responsive';
 import { Box, Grid, Stack, Button, Container, Typography } from '@mui/material';
 
 import LiveSessionCard from './LiveSessionCard'; // Assuming the card is imported
-
-
+import { LeftIcon } from 'src/components/carousel/arrow-icons';
+import { useRouter } from 'next/dist/client/components/navigation';
 const LIVE_SESSIONS = [
   {
     image: '/assets/landing-page/live-sessions/courses/live1.jpg',
@@ -46,6 +46,7 @@ const LIVE_SESSIONS = [
 ];
 
 export default function LiveSessionsSection() {
+  const router = useRouter();
   const primaryTextColor = text.primary;
   const paragraphTextColor = text.paragraph;
   const mainColor = primary.main;
@@ -72,19 +73,15 @@ export default function LiveSessionsSection() {
 
           {/* Action Button (Left side in RTL) */}
           <Button
-            variant="contained"
-            size="medium"
-            sx={{
-              minWidth: 150,
-              p: 2,
-              alignSelf: 'flex-start',
-              backgroundColor: mainColor,
-              mt: smDown ? 2 : 0,
-            }}
-            endIcon={'>'}
-          >
-            اكتشف المزيد
-          </Button>
+              color="info"
+              sx={{ lineHeight: 1 }}
+              onClick={() => router.push('/ar/courses/live/')}
+            >
+              الكل
+              <span>
+                <LeftIcon />
+              </span>
+            </Button>
           {/* <Grid
             item
             xs={12}

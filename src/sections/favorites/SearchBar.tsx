@@ -21,7 +21,12 @@ const SearchBar = () => {
 
   return (
     <Box sx={{ py: { xs: 8, md: 10 }, px: { xs: 4, md: 6 }, direction: 'ltr' }}>
-      <Container>
+      <Container
+      sx={{
+        py: { xs: 8, md: 12 },
+        direction: 'rtl',
+      }}
+    >
     <Box
       display="flex"
       alignItems="center"
