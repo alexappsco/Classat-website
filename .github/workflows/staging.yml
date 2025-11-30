@@ -1,0 +1,80 @@
+name: Deploy to Ubuntu Server Staging action
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '24'
+
+      - name: Install dependencies
+        run: |
+          npm install -f
+
+      - name: Build Next.js app
+        run: |
+          npm run build
+
+      - name: Deploy and Run Post-Build Commands on Server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
+          # Setup SSH directory and keys
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+          # Add host to known hosts
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+          # Connect to server and run deployment commands
+          ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << 'EOF'
+            set -e
+            echo "Starting deployment process..."
+
+            # Source bashrc and setup SSH agent
+            source ~/.bashrc
+            eval "$(ssh-agent -s)"
+            cd /home/classatadmin/site
+            git reset --hard HEAD
+            git fetch
+            git checkout staging
+            git pull
+            # Install or update NVM
+            if ! command -v nvm &> /dev/null; then
+              echo "Installing NVM..."
+              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+              export NVM_DIR="$HOME/.nvm"
+              [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            fi
+
+            # Setup Node.js environment
+            echo "Setting up Node.js environment..."
+            nvm use 24
+
+            # Install dependencies and build
+            echo "Installing dependencies..."
+            npm install -f
+
+            echo "Building application..."
+            npm run build
+
+            # Restart PM2 service
+            echo "Restarting PM2 service..."
+            pm2 restart site
+
+            echo "Deployment completed successfully!"
+          EOF

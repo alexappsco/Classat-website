@@ -3,6 +3,7 @@
 import { Box, Typography, Button, IconButton, Container, Stack } from '@mui/material';
 import Image from 'src/components/image';
 import { useResponsive } from 'src/hooks/use-responsive';
+// import { LogoText } from 'src/layouts/dashboard/logo-text';
 import { LogoText } from 'src/layouts/dashboard/logo-text';
 // import CloseIcon from '@mui/icons-material/Close';
 
