@@ -1,4 +1,3 @@
-
 "use client"
 import { useState } from "react";
 import {
@@ -20,8 +19,9 @@ export default function CourseCurriculum() {
     s3: false,
     s4: false,
   });
-// Toggle section expand/collapse
-  const toggle = (key: string) => {
+
+  // Toggle section expand/collapse  ✅ FIXED
+  const toggle = (key: keyof typeof openSections) => {
     setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
@@ -149,7 +149,7 @@ export default function CourseCurriculum() {
           >
             {/* Section header - clickable to expand/collapse */}
             <Box
-              onClick={() => toggle(section.id)}
+              onClick={() => toggle(section.id as keyof typeof openSections)}
               sx={{
                 width: "100%",
                 background: "#F7F8F9",
@@ -173,12 +173,15 @@ export default function CourseCurriculum() {
               >
                 {section.title}
               </Typography>
+
               {/* Expand/collapse icon */}
               <Icon
                 icon="mdi:chevron-down"
                 width={22}
                 style={{
-                  transform: openSections[section.id] ? "rotate(0deg)" : "rotate(180deg)",
+                  transform: openSections[section.id as keyof typeof openSections]
+                    ? "rotate(0deg)"
+                    : "rotate(180deg)",
                   transition: "0.25s",
                   color: "#637381",
                 }}
@@ -186,7 +189,12 @@ export default function CourseCurriculum() {
             </Box>
 
             {/* lesson - Collapse */}
-            <Collapse in={openSections[section.id]} timeout={300} unmountOnExit sx={{ width: "100%" ,}}>
+            <Collapse
+              in={openSections[section.id as keyof typeof openSections]}
+              timeout={300}
+              unmountOnExit
+              sx={{ width: "100%" }}
+            >
               <Box sx={{ width: "100%" }}>
                 {section.lessons.map((lesson, lessonIndex) => (
                   <Stack
@@ -219,8 +227,11 @@ export default function CourseCurriculum() {
                         {lesson.title}
                       </Typography>
                     </Stack>
+
                     {/* Lesson duration */}
-                    <Typography sx={{ color: "#637381", fontSize: "14px", fontWeight: "400", lineHeight:"22px" }}>
+                    <Typography
+                      sx={{ color: "#637381", fontSize: "14px", fontWeight: "400", lineHeight: "22px" }}
+                    >
                       {lesson.duration}
                     </Typography>
                   </Stack>
