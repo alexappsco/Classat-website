@@ -172,11 +172,18 @@ export default function AccountPopover() {
 
   const popover = usePopover();
 
+  // const handleLogout = async () => {
+  //   try {
+  //     await logout();
+  //     popover.onClose();
+  //     router.replace(paths.auth.login);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
   const handleLogout = async () => {
     try {
-      await logout();
-      popover.onClose();
-      router.replace(paths.auth.login);
+      router.replace('/');
     } catch (error) {
       console.error(error);
     }
