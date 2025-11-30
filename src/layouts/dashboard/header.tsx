@@ -41,12 +41,12 @@ export default function Header() {
   const cleanPath = pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
 
   // landing paths
-  const landingPaths = ['/', '/ar'];
+  const landingPaths = ['/', '/ar', '/en'];
   const isLanding = landingPaths.includes(cleanPath);
 
   const renderContent = (
     <Box width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
-      <Button onClick={() => router.push('/ar/')} sx={{ display: 'flex' }}>
+      <Button onClick={() => router.push('/ar/lisson')} sx={{ display: 'flex' }}>
         <LogoText {...{ lgUp }} />
       </Button>
       {isLanding ? (

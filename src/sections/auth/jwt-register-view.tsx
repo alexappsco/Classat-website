@@ -3,81 +3,80 @@
 import * as Yup from 'yup';
 import { useSnackbar } from 'notistack';
 import { useForm } from 'react-hook-form';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import {
+  Box,
+  Stack,
+  IconButton,
+  Typography,
+  Container,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+} from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import { Box, Card, Paper, Container, TextField } from '@mui/material';
-
-import { useRouter } from 'src/routes/hooks';
-
-import { useBoolean } from 'src/hooks/use-boolean';
-
+import CloseIcon from '@mui/icons-material/Close';
 import { useTranslations } from 'next-intl';
-
-import Logo from 'src/components/logo';
 import { useSettingsContext } from 'src/components/settings';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
-
 import OtpConfirmDialog from './otp-confirm-dialog';
+import Image from 'next/image';
+import SelectedMethod from '../selected-method/selectedMethod';
+import { primary } from 'src/theme/palette';
+
 // ----------------------------------------------------------------------
 
-export default function JwtRegisterView() {
+export default function JwtRegisterDialog({ open, onClose }: any) {
   const settings = useSettingsContext();
   const t = useTranslations();
-  const [confirm, setConfirm] = useState<null | {}>(null);
-  const [phone, setPhone] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-
-  const countries = [
-    { code: 'AE', name: 'الإمارات' },
-    { code: 'SA', name: 'السعودية' },
-    { code: 'EG', name: 'مصر' },
-    { code: 'KW', name: 'الكويت' },
-    { code: 'QA', name: 'قطر' },
-  ];
-
   const { enqueueSnackbar } = useSnackbar();
 
-  const password = useBoolean();
-  const confirmPassword = useBoolean();
+  // مرحلة فتح النوافذ
+  const [showSelectedMethod, setShowSelectedMethod] = useState(false);
+  const [showRegisterDialog, setShowRegisterDialog] = useState(false);
 
+  // فتح السلكتد ميثود أول ما الـ open يصبح true
+  useEffect(() => {
+    if (open) {
+      setShowSelectedMethod(true); // افتح الصفحة الأولى
+      setShowRegisterDialog(false); // اقفل صفحة التسجيل
+    } else {
+      setShowSelectedMethod(false);
+      setShowRegisterDialog(false);
+    }
+  }, [open]);
+
+  // عند تأكيد اختيار المنهج
+  const handleMethodConfirm = (data: any) => {
+    setShowSelectedMethod(false); // اقفل SelectedMethod
+    setShowRegisterDialog(true); // افتح صفحة التسجيل
+  };
+
+  const handleCloseAll = () => {
+    setShowSelectedMethod(false);
+    setShowRegisterDialog(false);
+    onClose?.();
+  };
+
+  // ======================== VALIDATION =========================
   const RegisterSchema = Yup.object().shape({
-    fullName: Yup.string().required(t('First name required')),
-    email: Yup.string()
-      .required(t('Email is required'))
-      .email(t('Email must be a valid email address')),
-    phone: Yup.string()
-      .required(t('Phone is required'))
-      .min(9, t('Phone number must be 9 digits'))
-      .max(9, t('Phone number must be 9 digits')),
-    phone_Parent: Yup.string()
-      .required(t('Phone is required'))
-      .min(9, t('Phone number must be 9 digits'))
-      .max(9, t('Phone number must be 9 digits')),
-    country: Yup.string().required('Country is required'),
-
-    // domin: Yup.string()
-    //   .required(t('Domain is required'))
-    //   .matches(/^[a-zA-Z0-9_]+$/, t('Domain can only contain letters, numbers, and underscores')),
+    fullName: Yup.string().required('First name required'),
+    email: Yup.string().required('Email is required').email('Email must be valid'),
+    phone: Yup.string().required('Phone required').min(9).max(9),
+    phone_Parent: Yup.string().required('Phone required').min(9).max(9),
+    country: Yup.string().required('Country required'),
   });
+
   const defaultValues = useMemo(
     () => ({
       fullName: '',
       email: '',
-      password: '',
-      confirm_password: '',
-      key: '+971',
       phone: '',
       phone_Parent: '',
       country: '',
-
-      // domin: '',
     }),
     []
   );
@@ -92,171 +91,135 @@ export default function JwtRegisterView() {
     formState: { isSubmitting },
   } = methods;
 
-  // const onSubmit = handleSubmit(async (data) => {
-  //   const user = {
-  //     name: data.fullName,
-  //     email: data.email,
-  //     password: data.password,
-  //     phoneNumber: `+966${data.phone}`,
-  //     // projectName: data.domin,
-  //   };
-  //   try {
-  //   const res = await Register(user);
-  //   if (res) {
-  //     setPhone(user?.phoneNumber);
-  //     setConfirm({});
-  //   }
-  //   else {
-  //     enqueueSnackbar(typeof res === 'object' && 'error' in res ? res.error : 'Unknown error', {
-  //       variant: 'error',
-  //     });
-  //   }
-  //   } catch (erro) {
-  //     enqueueSnackbar(`${erro}`, { variant: 'error' });
-  //   }
-  // });
+  const [confirm, setConfirm] = useState<null | {}>(null);
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
 
   const onSubmit = handleSubmit(async (data) => {
-    setPhone(`+966${data.phone}`);
-    setEmail(`${data.email}`);
-
+    setPhone('+971' + data.phone);
+    setEmail(data.email);
     setConfirm({});
-    enqueueSnackbar('Temporary: OTP dialog opened', { variant: 'success' });
+    enqueueSnackbar('OTP opened!', { variant: 'success' });
   });
-  const renderHead = (
-    <Stack sx={{ my: 1, position: 'relative' }}>
-      <Typography variant="h4" textAlign="center">
-        {t('Create a new account')}
-      </Typography>
-      <Typography variant="subtitle2" textAlign="center" color="text.disabled">
-        {t('Create your new account, please enter your details')}
-      </Typography>
-    </Stack>
-  );
 
-  const renderForm = (
-    <Stack spacing={2.5} sx={{ mb: 1 }}>
-      <RHFTextField name="fullName" label={t('Label.full_name')} />
-      <Stack
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'row',
-          gap: 0.2,
-          position: 'relative',
-        }}
-      >
-        <TextField name="key" type="text" value="+971" disabled />
-
-        <RHFTextField
-          sx={{ width: '100%' }}
-          inputProps={{
-            maxLength: 9,
-            inputMode: 'numeric',
-            pattern: '[0-9]*',
-          }}
-          name="phone"
-          label={t('Label.phone')}
-          type="text"
-        />
-      </Stack>
-      <Stack
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'row',
-          gap: 0.2,
-          position: 'relative',
-        }}
-      >
-        <TextField name="key" type="text" value="+971" disabled />
-
-        <RHFTextField
-          sx={{ width: '100%' }}
-          inputProps={{
-            maxLength: 9,
-            inputMode: 'numeric',
-            pattern: '[0-9]*',
-          }}
-          name="phone_Parent"
-          label={t('Label.phone_Parent')}
-          type="text"
-        />
-      </Stack>
-      <RHFTextField name="email" label={t('Label.email')} />
-
-      <RHFTextField select name="country" label="الدولة" SelectProps={{ native: true }}>
-        <option value="" />
-        {countries.map((c) => (
-          <option key={c.code} value={c.code}>
-            {c.name}
-          </option>
-        ))}
-      </RHFTextField>
-
-      <LoadingButton
-        fullWidth
-        color="primary"
-        size="large"
-        type="submit"
-        variant="contained"
-        loading={isSubmitting}
-      >
-        {t('Create account')}
-      </LoadingButton>
-    </Stack>
-  );
+  // ======================== RETURN UI =========================
 
   return (
-    <Card sx={{ borderRadius: '0 100px 0 100px', p: 1 }}>
-      <Stack sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Logo width={130} height={55.1} />
-      </Stack>
-      <Container>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            flexDirection: 'column',
-            minWidth: '100%',
-            minHeight: '50dvh',
-          }}
-        >
-          {renderHead}
+    <>
+      {/* نافذة اختيار المنهج */}
+      <SelectedMethod
+        open={showSelectedMethod}
+        onClose={handleCloseAll}
+        onConfirm={(data) => {
+          console.log('اختار الطالب:', data);
+          setShowSelectedMethod(false);
+          setShowRegisterDialog(true); // فتح نافذة التسجيل بعد التأكيد
+        }}
+      />
 
-          <FormProvider methods={methods} onSubmit={onSubmit}>
-            {renderForm}
-          </FormProvider>
-          {confirm && (
-            <OtpConfirmDialog
-              open={!!confirm}
-              onClose={() => setConfirm(null)}
-              phone={phone}
-              email={email}
-              type="register"
-            />
-          )}
-        </Box>
-      </Container>
-      <Paper>
-        <Stack
-          direction="row"
-          width="100%"
-          bgcolor={settings?.themeMode === 'light' ? '#FAFAFB' : '#141414db'}
-          minHeight="48px"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <Typography variant="caption" mx={0.2}>
-            {t('Already have an account?')}
+      {/* نافذة تسجيل الحساب */}
+      <Dialog maxWidth="sm" fullWidth open={showRegisterDialog} onClose={handleCloseAll}>
+        <DialogTitle sx={{ display: 'flex', justifyContent: 'flex-end', p: 1 }}>
+          <IconButton onClick={handleCloseAll}>
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
 
-            <Link href="/auth/login" style={{ fontSize: '12px' }}>
-              {t('Sign in')}
-            </Link>
-          </Typography>
-        </Stack>
-      </Paper>
-    </Card>
+        <DialogContent>
+          <Stack justifyContent="center" alignItems="center" sx={{ mb: 1 }}>
+            <Image src="/favicon/Frame.png" alt="logo" width={160} height={35} />
+          </Stack>
+
+          <Container>
+            <Box sx={{ minHeight: '40dvh' }}>
+              <Typography variant="h6" textAlign="center" fontWeight={700} sx={{ mb: 2 }}>
+                {t('Description.mas_sign_in')}
+              </Typography>
+
+              <FormProvider methods={methods} onSubmit={onSubmit}>
+                {/* FORM */}
+                <Stack spacing={2.5}>
+                  <RHFTextField
+                    name="fullName"
+                    label={t('Label.full_name')}
+                    sx={{ bgcolor: '#FAFAFA', borderRadius: '10px' }}
+                  />
+
+                  {/* PHONE */}
+                  <Stack>
+                    <Typography>{t('Label.phone')}</Typography>
+                    <Stack direction="row" gap={1}>
+                      <RHFTextField
+                        name="phone"
+                        inputProps={{ maxLength: 9, inputMode: 'numeric' }}
+                        sx={{ flex: 1, bgcolor: '#FAFAFA', borderRadius: '10px' }}
+                      />
+                      <TextField value="+971" disabled sx={{ width: 95 }} />
+                    </Stack>
+                  </Stack>
+
+                  {/* Parent PHONE */}
+                  <Stack>
+                    <Typography>{t('Label.phone_Parent')}</Typography>
+                    <Stack direction="row" gap={1}>
+                      <RHFTextField
+                        name="phone_Parent"
+                        inputProps={{ maxLength: 9, inputMode: 'numeric' }}
+                        sx={{ flex: 1, bgcolor: '#FAFAFA', borderRadius: '10px' }}
+                      />
+                      <TextField value="+971" disabled sx={{ width: 95 }} />
+                    </Stack>
+                  </Stack>
+
+                  <RHFTextField
+                    name="email"
+                    label={t('Label.email')}
+                    sx={{ bgcolor: '#FAFAFA', borderRadius: '10px' }}
+                  />
+
+                  <RHFTextField
+                    select
+                    name="country"
+                    label={t('Label.country')}
+                    SelectProps={{ native: true }}
+                  >
+                    <option value="" />
+                    <option value="AE">الإمارات</option>
+                    <option value="SA">السعودية</option>
+                    <option value="EG">مصر</option>
+                  </RHFTextField>
+
+                  <LoadingButton
+                    fullWidth
+                    size="large"
+                    variant="contained"
+                    loading={isSubmitting}
+                    type="submit"
+                    sx={{
+                      mb: 2,
+                      backgroundColor: primary.main,
+                      ':hover': { backgroundColor: primary.lighter },
+                    }}
+                  >
+                    {t('Label.create_an_account')}
+                  </LoadingButton>
+                </Stack>
+              </FormProvider>
+            </Box>
+          </Container>
+        </DialogContent>
+      </Dialog>
+
+      {/* OTP */}
+      {confirm && (
+        <OtpConfirmDialog
+          open={!!confirm}
+          onClose={() => setConfirm(null)}
+          phone={phone}
+          email={email}
+          type="register"
+        />
+      )}
+    </>
   );
 }
