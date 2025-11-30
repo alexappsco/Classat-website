@@ -59,7 +59,7 @@ export default function LoginView() {
           }}
         >
           {renderHead}
-          <LoginBYEmailView />
+          <LoginBYEmailView  />
           <Typography variant="caption" mx={0.2} sx={{ textAlign: 'center', mt: 2 }}>
             {t('Label.Donot_account')}
 

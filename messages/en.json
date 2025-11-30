@@ -140,6 +140,7 @@
       "min_selection": "Min Selection",
       "max_selection": "Max Selection",
       "email": "Email Address",
+      "country": "country",
       "phone": "Phone Number",
       "password": "Password",
       "confirm_password": "Confirm Password",
@@ -775,6 +776,7 @@
     "verify_email_line2": "Please enter the code in the field below to verify your email.",
     "no_code": "Didn't receive a code?",
     "reset_password": "Please enter your new password below.",
-    "mas_sign_in": "Join us and start your learning journey — we promise safe and fun uses!"
+    "mas_sign_in": "Join us and start your learning journey — we promise safe and fun uses!",
+    "Already_have_account": "Already have an account?"
   }
 }

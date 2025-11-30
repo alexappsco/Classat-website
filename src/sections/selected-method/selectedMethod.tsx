@@ -18,6 +18,7 @@ import {
   CardContent,
   Stack,
   Radio,
+  LinearProgress,
 } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { primary } from 'src/theme/palette';
@@ -25,8 +26,9 @@ import { primary } from 'src/theme/palette';
 interface Props {
   open: boolean;
   onClose: () => void;
+  onConfirm: (data: { country: string; type: string; stage: string; class: string }) => void; // تم إضافة هذا
 }
-export default function SelectedMethod({ open, onClose }: Props) {
+export default function SelectedMethod({ open, onClose, onConfirm }: Props) {
   const [opened, setOpened] = useState(true);
   const [step, setStep] = useState(0);
 
@@ -48,14 +50,14 @@ export default function SelectedMethod({ open, onClose }: Props) {
     { name: 'كويتي', flag: 'https://flagcdn.com/w40/kw.png' },
   ];
   const handleSubmit = () => {
-    console.log({
+    onConfirm({
       country: selectedCountry,
       type: selectedType,
       stage: selectedStage,
       class: selectedClass,
     });
 
-    onClose(); // إغلاق القائمة بعد الإرسال
+    // onClose(); // إغلاق القائمة بعد الإرسال
   };
   console.log();
   return (
@@ -90,6 +92,15 @@ export default function SelectedMethod({ open, onClose }: Props) {
           {/* )} */}
 
           {/* Stepper */}
+          <LinearProgress
+            variant="determinate"
+            value={(step / (steps.length - 0)) * 100}
+            sx={{
+              height: 6,
+              borderRadius: 5,
+              mb: 2,
+            }}
+          />
           <Stepper activeStep={step} alternativeLabel sx={{ mb: 3 }}>
             {steps.map((label) => (
               <Step key={label}>
@@ -101,11 +112,11 @@ export default function SelectedMethod({ open, onClose }: Props) {
           {/* ======== الخطوة 1: اختيار الدولة ======== */}
           {step === 0 && (
             <Box>
-              <Typography variant="h5" mb={2}>
+              <Typography variant="h5" mb={3}>
                 اختر المنهج الذي تدرسه
               </Typography>
 
-              <Grid container spacing={2}>
+              <Grid container spacing={2} sx={{}}>
                 {countries.map((c) => (
                   <Grid xs={6} key={c.name}>
                     <Card
@@ -120,6 +131,9 @@ export default function SelectedMethod({ open, onClose }: Props) {
                           border: '2px solid #1976d2',
                           transform: 'scale(1.03)',
                         },
+                        width: 175,
+                        height: 100,
+                        m: 1,
                       }}
                     >
                       <CardActionArea>
