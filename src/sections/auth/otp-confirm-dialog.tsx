@@ -104,7 +104,7 @@ export default function OtpConfirmDialog({ open, onClose, phone, email }: Props)
           color="primary"
           size="large"
           sx={{ width: '100%', borderRadius: 2, mb: 3 }}
-          onClick={() => router.push('/auth/jwt/login')}
+          onClick={() => router.push('/lisson')}
         >
           {t('Button.check_code')}
         </Button>
