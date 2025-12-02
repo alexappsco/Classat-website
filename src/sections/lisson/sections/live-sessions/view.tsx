@@ -3,11 +3,11 @@
 import * as React from 'react';
 import { Box } from '@mui/material';
 
-import Hero from '../Hero';
 import Categories from '../categories';
 import FiltersBar from '../FiltersBar';
 import LiveSessionsSection from '../live-sessions/LiveSessionSection';
 import InstructorsSection from '../top-instructor/TopInstructorsSection';
+import Hero from '../Hero';
 
 export default function LiveSesions() {
   // const [selectedCategory, setSelectedCategory] = React.useState('مباشرة الآن');

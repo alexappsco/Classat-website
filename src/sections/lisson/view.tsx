@@ -26,40 +26,47 @@ import InstructorsSection from './sections/top-instructor/TopInstructorsSection'
 export default function Courses() {
   const studentsData = [
     {
-      img: '/favicon/mana.png',
+      img: '/favicon/teacher1.png',
       name: 'أحمد علي',
       studentClass: 'الصف الخامس الابتدائي',
       language: 'اللغة الإنجليزية',
       country: ' المنهج المصري',
       date: '13/11/2025',
       time: '3:00 م',
+      href:'/lisson/details-mathod'
     },
     {
-      img: '/favicon/mana.png',
+      img: '/favicon/teacher1.png',
       name: 'لينا محمد',
       studentClass: 'الصف الرابع الابتدائي',
       language: 'اللغة العربية',
       country: ' المنهج الإماراتي',
       date: '12/11/2025',
       time: '2:00 م',
+      href:'/lisson/details-mathod'
+
     },
     {
-      img: '/favicon/mana.png',
+      img: '/favicon/teacher1.png',
       name: 'أحمد علي',
       studentClass: 'الصف الخامس الابتدائي',
       language: 'اللغة الإنجليزية',
       country: ' المنهج المصري',
       date: '13/11/2025',
       time: '3:00 م',
+      href:'/lisson/details-mathod'
+
     },
     {
-      img: '/favicon/mana.png',
+      img: '/favicon/teacher1.png',
       name: 'أحمد علي',
       studentClass: 'الصف الخامس الابتدائي',
       language: 'اللغة الإنجليزية',
       country: ' المنهج المصري',
       date: '13/11/2025',
       time: '3:00 م',
+      href:'/lisson/details-mathod'
+
     },
   ];
   const fakeLiveBroadcasts = [

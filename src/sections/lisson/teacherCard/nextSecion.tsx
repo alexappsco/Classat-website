@@ -39,6 +39,7 @@ const StatisticsStudentsCard = ({ cards }: IProps) => {
           md={3}
           mt={1}
           // sx={{ padding: 1}}
+          
         >
           <StudentCard
             img={card.img}
