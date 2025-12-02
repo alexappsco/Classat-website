@@ -8,6 +8,7 @@ import Header from './header';
 import NavMini from './nav-mini';
 import NavVertical from './nav-vertical';
 import NavHorizontal from './nav-horizontal';
+import Footer from './footer';
 
 // ----------------------------------------------------------------------
 
@@ -70,18 +71,7 @@ export default function DashboardLayout({ children }: Props) {
     <>
       <Header />
       {children}
-      {/* <Box
-        sx={{
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: { xs: 'column', lg: 'row' },
-          alignItems: 'stretch',
-        }}
-      >
-        // {renderNavVertical} 
-
-        <Main></Main>
-      </Box> */}
+      <Footer />
     </>
   );
 }
