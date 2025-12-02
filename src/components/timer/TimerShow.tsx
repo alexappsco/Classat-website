@@ -4,7 +4,7 @@ import TimerHeader from './TimerHeader';
 import TimerDisplay from './TimerDisplay';
 
 interface TimerCardProps {
-  subtitle: string;
+  subtitle?: string;
   title?: string;
 }
 

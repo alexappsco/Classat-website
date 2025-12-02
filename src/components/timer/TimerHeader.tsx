@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 
 interface TimerHeaderProps {
   title: string;
-  subtitle: string;
+  subtitle?: string;
 }
 
 export default function TimerHeader({ title, subtitle }: TimerHeaderProps) {

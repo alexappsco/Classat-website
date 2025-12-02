@@ -1,6 +1,7 @@
 'use client';
 
 import { Box, Container, Typography } from '@mui/material';
+import TimerCard from 'src/components/timer/TimerShow';
 
 export default function Hero() {
   return (
@@ -14,13 +15,15 @@ export default function Hero() {
     backgroundPosition: "center center",
   }}
 >
+
+
   <Box
     sx={{
       position: "absolute",
       inset: 0,
       bgcolor: "rgba(27, 27, 27, 0.7)",
     }}
-  />
+    />
 
   <Container
     sx={{
@@ -45,7 +48,6 @@ export default function Hero() {
 >
   اتعلم .. طبق .. تفوق!
 </Typography>
-
 
     <Typography
   variant="h6"

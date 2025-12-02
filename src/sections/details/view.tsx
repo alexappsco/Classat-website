@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -18,7 +17,11 @@ import {
 } from '@mui/material';
 import { Icon } from '@iconify/react';
 import { warning } from 'src/theme/palette';
-
+import AboutSection from './aboutSection';
+import EducationalLessons from './courses';
+import LiveSectionDetails from './LiveSectionDetails';
+import { PackagesSection } from './PackagesSection';
+import LiveSectionTimeDetails from './LiveSectionTimeDetails';
 
 const instructor = {
   name: 'أ. عبد الله احمد',
@@ -27,8 +30,7 @@ const instructor = {
   skills: 'Python - React - Java - HTML - CSS',
   price: 45,
   duration: '60 دقيقة / الساعة',
-  bioImage:
-    'https://images.pexels.com/photos/1181395/pexels-photo-1181395.jpeg?auto=compress',
+  bioImage: 'https://images.pexels.com/photos/1181395/pexels-photo-1181395.jpeg?auto=compress',
   bio: `مرّ البرنامج على مدار سنوات بمحاضرين متخصصين في تطوير الويب (Web Development)، يقدم خبرة كبيرة 
   بالأفكار و المحتوى في كيفية تطوير مواقع الويب باستخدام أحدث التقنيات.  
 
@@ -86,7 +88,9 @@ export default function InstructorProfileUI() {
               <Icon icon="ic:round-star" color="#ffb400" width={22} />
               <Typography fontWeight={600}>4.5</Typography>
             </Stack>
-              <Typography fontWeight={600} sx={{color:warning.main}}>{instructor.duration}</Typography>
+            <Typography fontWeight={600} sx={{ color: warning.main }}>
+              {instructor.duration}
+            </Typography>
             {/* <Chip
               label={`${instructor.price} درهم / الساعة`}
               color="primary"
@@ -94,7 +98,6 @@ export default function InstructorProfileUI() {
             /> */}
           </Stack>
         </Stack>
-        
 
         {/* ---------- Tabs ---------- */}
         <Tabs
@@ -102,26 +105,25 @@ export default function InstructorProfileUI() {
           onChange={(e, newValue) => setTab(newValue)}
           variant="scrollable"
           scrollButtons="auto"
-          // aria-label="icon tabs example"   
+          // aria-label="icon tabs example"
           // textColor='primary'
-          
+
           // indicatorColor="primary"
-          
+
           sx={{
             mt: 4,
             // borderBottom: '1px solid #eee',
-            backgroundColor:'#919EAB14',
-            borderRadius:'10px',
+            backgroundColor: '#919EAB14',
+            borderRadius: '10px',
             '& .MuiTab-root': { fontWeight: 600 },
-            alignItems:'center',
-            justifyContent:'space-between',
-padding:'10px',
-margin:'10px',
-marginLeft:'20px',
-marginRight:'20px',
-marginTop:'20px',
-marginBottom:'20px',
-
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '10px',
+            margin: '10px',
+            marginLeft: '20px',
+            marginRight: '20px',
+            marginTop: '20px',
+            marginBottom: '20px',
           }}
         >
           <Tab
@@ -129,101 +131,47 @@ marginBottom:'20px',
             value="about"
             icon={<Icon icon="mdi:account" width={20} />}
             iconPosition="start"
-            sx={{width:{xs:'50%',md:'17%'}}}
+            sx={{ width: { xs: '50%', md: '17%' } }}
           />
-          <Tab label="الدروس التعليمية" value="courses" sx={{width:{xs:'50%',md:'17%'}}} icon={<img src='/favicon/Group.svg' />} />
-          <Tab label="الباقات" value="packages"  sx={{width:{xs:'50%',md:'17%'}}} icon={<img src='/favicon/Vector.svg' />}/>
-          <Tab label="احجز جلسة خاصة" value="session" sx={{width:{xs:'50%',md:'17%'}}}  icon={<img src='/favicon/live.svg' />}        />
-          <Tab label="البث المباشر" value="live"         sx={{width:{xs:'50%',md:'17%'}}}   icon={<img src='/favicon/Mask group.svg' />}       />
+          <Tab
+            label="الدروس التعليمية"
+            value="courses"
+            sx={{ width: { xs: '65%', md: '17%' } }}
+            icon={<img src="/favicon/Group.svg" alt="" />}
+          />
+          <Tab
+            label="الباقات"
+            value="packages"
+            sx={{ width: { xs: '50%', md: '17%' } }}
+            icon={<img src="/favicon/Vector.svg" alt="" />}
+          />
+           <Tab
+            label="البث المباشر"
+            value="live"
+            sx={{ width: { xs: '50%', md: '17%' } }}
+            icon={<img src="/favicon/live.svg" alt="" />}
+
+          />
+          <Tab
+            label="احجز جلسة خاصة"
+            value="session"
+            sx={{ width: { xs: '65%', md: '17%' } }}
+            icon={<img src="/favicon/Mask group.svg" alt="" />}
+
+          />
+
         </Tabs>
 
         {/* ---------- المحتوى ---------- */}
         <Box sx={{ mt: 4 }}>
           {tab === 'about' && <AboutSection />}
-          {tab === 'courses' && <ComingSoon title="الدروس التعليمية" />}
-          {tab === 'packages' && <ComingSoon title="الباقات" />}
-          {tab === 'session' && <ComingSoon title="جلسة خاصة" />}
-          {tab === 'live' && <ComingSoon title="البث المباشر" />}
+          {tab === 'courses' && <EducationalLessons />}
+          {tab === 'packages' && <PackagesSection  />}
+          {tab === 'live' && <LiveSectionDetails title="البث المباشر" />}
+          {tab === 'session' && <LiveSectionTimeDetails title="جلسة خاصة" />}
         </Box>
       </Card>
-    </Container>
-  );
-}
-
-function AboutSection() {
-  const t = instructor;
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
-  return (
-    <Stack spacing={4}>
-      <Stack direction={{ xs: 'column', md: 'row' }} spacing={3}>
-        {/* محتوى النص */}
-        <Stack spacing={3} flex={1}>
-          {/* نبذة */}
-          <Box>
-            <Typography variant="h6" fontWeight={700} sx={{ mb: 1 }}>
-              نبذة عن المدرس
-            </Typography>
-
-            <Typography color="text.secondary" lineHeight={1.9}>
-              {t.bio}
-            </Typography>
-          </Box>
-
-          <Divider />
-
-          {/* المؤهلات */}
-          <Box>
-            <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
-              {/* <Icon icon="mdi:certificate" color="#1976d2" width={22} /> */}
-              <img src='/favicon/head.svg'/>
-              <Typography variant="h6" fontWeight={700}>
-                المؤهلات العلمية
-              </Typography>
-            </Stack>
-
-            <Stack spacing={1.5}>
-              {t.qualifications.map((q, i) => (
-                <Stack direction="row" spacing={1} key={i}>
-                  <Icon icon="mdi:check-circle" color="#00b074" width={20} />
-                  <Typography color="text.secondary">{q}</Typography>
-                </Stack>
-              ))}
-            </Stack>
-          </Box>
-        </Stack>
-
-        {/* صورة جانبية */}
-        {!isMobile && (
-          <img
-            src="/favicon/class.png"
-            alt="about"
-            style={{
-              width: 570,
-              height: 'auto',
-              borderRadius: 12,
-              objectFit: 'cover',
-            }}
-          />
-        )}
-
-        {/* صورة للموبايل (فوق النص) */}
-        {isMobile && (
-          <img
-            src="/favicon/class.png"
-            alt="about"
-            style={{
-              width: '100%',
-              height: 220,
-              borderRadius: 12,
-              objectFit: 'cover',
-              marginTop: 8,
-            }}
-          />
-        )}
-      </Stack>
-    </Stack>
+    </Container> 
   );
 }
 
