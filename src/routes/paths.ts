@@ -105,6 +105,9 @@ export const paths = {
     contactUs: {
       list: '/contact-us',
     },
+    technicalSupport: {
+      list: '/technical-support',
+    },
     reports: {
       list: '/reports',
     },

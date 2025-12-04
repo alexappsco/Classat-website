@@ -9,9 +9,10 @@ import { text, shadow, warning } from 'src/theme/palette';
 import Clock from 'public/assets/courses/icons/clock.svg'
 import { Box, Card, Stack, Typography } from '@mui/material';
 import RedHeart from 'public/assets/courses/icons/heart.svg';
-import WhiteHeart from 'public/assets/courses/icons/Whiteheart.svg';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 import { SESSIONS } from '../data/sessions';
+
 type SessionsSectionCardProps = (typeof SESSIONS.RECOMMENDED_SESSIONS)[0];
 
 export default function SessionsSectionCard({
@@ -81,9 +82,7 @@ const handleHeartClick = () => {
             },
           }}
         >
-          {liked ? <RedHeart /> : <WhiteHeart />}
-
-
+          {liked ? <RedHeart /> : <FavoriteBorderIcon />}
         </Box>
 
         <Box

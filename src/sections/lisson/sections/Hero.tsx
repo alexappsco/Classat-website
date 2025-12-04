@@ -1,7 +1,6 @@
 'use client';
 
 import { Box, Container, Typography } from '@mui/material';
-import TimerCard from 'src/components/timer/TimerShow';
 
 export default function Hero() {
   return (
@@ -15,8 +14,6 @@ export default function Hero() {
     backgroundPosition: "center center",
   }}
 >
-
-
   <Box
     sx={{
       position: "absolute",
@@ -24,7 +21,6 @@ export default function Hero() {
       bgcolor: "rgba(27, 27, 27, 0.7)",
     }}
   />
-    <TimerCard subtitle='بث "تطوير تطبيقات الويب باستخدام React" يبدأ قريبًا' />
 
   <Container
     sx={{
@@ -35,8 +31,8 @@ export default function Hero() {
       justifyContent: "center",
       alignItems: "center",
     }}
-    >
-    {/* <Typography
+  >
+    <Typography
   variant="h3"
   sx={{
     color: "#fff",
@@ -48,7 +44,7 @@ export default function Hero() {
   }}
 >
   اتعلم .. طبق .. تفوق!
-</Typography> */}
+</Typography>
 
 
     <Typography
@@ -68,7 +64,6 @@ export default function Hero() {
 </Typography>
 
   </Container>
-  {/* </TimerCard> */}
 </Box>
 
   );

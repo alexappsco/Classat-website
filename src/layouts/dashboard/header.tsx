@@ -7,18 +7,18 @@ import Toolbar from '@mui/material/Toolbar';
 import { usePathname } from 'next/navigation';
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useOffSetTop } from 'src/hooks/use-off-set-top';
 import { useResponsive } from 'src/hooks/use-responsive';
 import { useSettingsContext } from 'src/components/settings';
-import RedHeart from 'public/assets/courses/icons/heart.svg';
 import { useRouter } from 'next/dist/client/components/navigation';
-import WhiteHeart from 'public/assets/courses/icons/Whiteheart.svg';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 import { LogoText } from './logo-text';
 import { HEADER } from '../config-layout';
 import { AuthButtons } from './auth-buttons';
 import AccountPopover from '../common/account-popover';
+
 // ----------------------------------------------------------------------
 
 export default function Header() {
@@ -59,8 +59,8 @@ export default function Header() {
         <Box display="flex" alignItems="center" gap={1.5} pt={0.5}>
           <Link href="/ar/courses/favorites/">
             <IconButton>
-              {cleanPath === '/ar/courses/favorites' ? <RedHeart /> : <WhiteHeart />}
-            </IconButton>
+  <FavoriteIcon sx={{ color: cleanPath === '/ar/courses/favorites' ? 'red' : 'inherit' }} />
+</IconButton>
           </Link>
 
           <Link href="/ar/cart/">
