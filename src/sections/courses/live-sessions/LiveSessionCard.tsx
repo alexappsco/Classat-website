@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Image from 'src/components/image';
 import { useTheme } from '@mui/material/styles';
 import { text, shadow, primary, warning } from 'src/theme/palette';
@@ -176,6 +177,7 @@ export default function LiveSessionCard({
       </Stack>
 
       {/* 3. Join Button */}
+      <Link href="/ar/courses/instructor/">
       <Button
         variant="contained"
         size="medium"
@@ -192,6 +194,7 @@ export default function LiveSessionCard({
       >
         انضم الآن
       </Button>
+      </Link>
     </Card>
   );
 }

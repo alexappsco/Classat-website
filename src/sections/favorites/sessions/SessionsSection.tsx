@@ -1,6 +1,6 @@
 "use client";
 
-import { text } from 'src/theme/palette';
+import { useState } from 'react';
 import { Box, Grid, Container } from '@mui/material';
 import { useResponsive } from 'src/hooks/use-responsive';
 
@@ -20,20 +20,31 @@ export default function SessionsSection({
   buttonText = "اكتشف المزيد",
   sessions,
 }: SessionsSectionProps) {
-  const primaryTextColor = text.primary;
+
   const smDown = useResponsive('down', 'sm');
 
+  
+  const [list, setList] = useState(sessions);
+
+  const handleRemove = (index: number) => {
+    setList((prev) => prev.filter((_, i) => i !== index));
+  };
+
   return (
-    <Box sx={{ py: { xs: 8, md: 10 }, px: { xs: 4, md: 6 }, direction: 'ltr' }}>
+    <Box sx={{ py: { xs: 8, md: 0 }, px: { xs: 4, md: 6 }, direction: 'ltr' }}>
       <Container>
-        {/* Sessions Grid */}
+
         <Grid container spacing={4} justifyContent="center">
-          {sessions.map((session, index) => (
+          {list.map((session, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
-              <RecommendedSessionCard {...session} />
+              <RecommendedSessionCard
+                {...session}
+                onRemove={() => handleRemove(index)}
+              />
             </Grid>
           ))}
         </Grid>
+
       </Container>
     </Box>
   );

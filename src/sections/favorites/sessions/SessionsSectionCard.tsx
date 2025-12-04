@@ -1,16 +1,19 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'src/components/image';
 import { useTheme } from '@mui/material/styles';
-import Book from 'public/assets/courses/icons/book.svg'
-import Star from 'public/assets/courses/icons/star.svg'
-import Heart from 'public/assets/courses/icons/heart.svg'
+import Book from 'public/assets/courses/icons/book.svg';
+import Star from 'public/assets/courses/icons/star.svg';
 import { text, shadow, warning } from 'src/theme/palette';
-import Clock from 'public/assets/courses/icons/clock.svg'
+import Clock from 'public/assets/courses/icons/clock.svg';
+import RedHeart from 'public/assets/courses/icons/heart.svg';
 import { Box, Card, Stack, Typography } from '@mui/material';
 
 import { SESSIONS } from '../data/sessions';
-type SessionsSectionCardProps = (typeof SESSIONS.RECOMMENDED_SESSIONS)[0];
+type SessionsSectionCardProps = {
+  onRemove: () => void;
+} & (typeof SESSIONS.RECOMMENDED_SESSIONS)[0];
 
 export default function SessionsSectionCard({
   image,
@@ -22,12 +25,21 @@ export default function SessionsSectionCard({
   price,
   lessons,
   lessonstime,
+  onRemove,
 }: SessionsSectionCardProps) {
   const theme = useTheme();
   const blueColor = '#0D47A1';
   const blueBg = '#E3F2FD';
   const orangeColor = warning.main;
   const orangeBg = '#FFF6E4';
+
+  const [liked, setLiked] = useState(true);
+
+  const handleHeartClick = () => {
+    setLiked(false);
+    onRemove();
+  };
+
   return (
     <Card
       sx={{
@@ -48,26 +60,30 @@ export default function SessionsSectionCard({
           borderRadius: '8px',
         }}
       >
-
-<Box
-  sx={{
-    position: 'absolute',
-    top: 12,
-    right: 12,
-    width: 36,
-    height: 36,
-    borderRadius: '50%',
-    backgroundColor: 'white',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-    cursor: 'pointer',
-    zIndex: 10,
-  }}
->
-  <Heart />
-</Box>
+        <Box
+          onClick={handleHeartClick}
+          sx={{
+            position: 'absolute',
+            top: 12,
+            right: 12,
+            width: 36,
+            height: 36,
+            borderRadius: '50%',
+            backgroundColor: 'white',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+            cursor: 'pointer',
+            zIndex: 10,
+            transition: 'transform 0.2s ease',
+            '&:hover': {
+              transform: 'scale(1.15)',
+            },
+          }}
+        >
+          <RedHeart />
+        </Box>
 
         <Box
           component="img"
@@ -81,10 +97,8 @@ export default function SessionsSectionCard({
             objectFit: 'cover',
             borderRadius: '8px',
           }}
-          minWidth={'287px'}
         />
       </Box>
-
 
       <Stack spacing={1.5} sx={{ py: 2, flexGrow: 1 }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -102,7 +116,6 @@ export default function SessionsSectionCard({
             {category}
           </Typography>
 
-
           <Typography
             variant="caption"
             sx={{
@@ -113,7 +126,7 @@ export default function SessionsSectionCard({
               gap: '4px',
             }}
           >
-            <Star width={16} height={16}/> {rate}
+            <Star width={16} height={16} /> {rate}
           </Typography>
         </Stack>
 
@@ -131,12 +144,10 @@ export default function SessionsSectionCard({
           alignItems="center"
           sx={{ py: 1, color: theme.palette.text.secondary }}
         >
-
           <Stack direction="row" spacing={0.5} alignItems="center">
             <Book width={16} height={16} />
             <Typography variant="body2">{lessons}</Typography>
           </Stack>
-
 
           <Stack direction="row" spacing={0.5} alignItems="center">
             <Clock width={16} height={16} />
@@ -145,7 +156,6 @@ export default function SessionsSectionCard({
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-
           <Stack direction="row" alignItems="center" gap={1}>
             <Image src="/assets/landing-page/live-sessions/instructors/instructor.png" />
             <Typography variant="body2" sx={{ color: text.primary, fontWeight: 500 }}>
@@ -153,9 +163,7 @@ export default function SessionsSectionCard({
             </Typography>
           </Stack>
 
-
           <Stack direction="row" alignItems="center" gap={1}>
-
             {oldPrice && (
               <Typography
                 variant="body2"
@@ -168,7 +176,6 @@ export default function SessionsSectionCard({
                 {oldPrice}
               </Typography>
             )}
-
 
             <Typography
               variant="body2"
