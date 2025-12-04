@@ -5,6 +5,8 @@ import { useResponsive } from 'src/hooks/use-responsive';
 import { Box, Card, Grid, Stack, Avatar, Button, Container, Typography, LinearProgress } from "@mui/material";
 
 import { SESSIONS } from './data/sessions';
+import Link from 'next/link';
+import { LeftIcon } from 'src/components/carousel/arrow-icons';
 
 
 type MiniSession = (typeof SESSIONS.sessionsData)[0];
@@ -13,12 +15,16 @@ interface MiniSessionsWithHeaderProps {
   title: string;
   buttonText?: string;
   sessions: MiniSession[];
+  hideButton? :Boolean
+
 }
 
 export default function MiniSessionsWithHeader({
   title,
   buttonText = "اكتشف المزيد",
   sessions,
+  hideButton = false,
+
 }: MiniSessionsWithHeaderProps) {
   const primaryTextColor = text.primary;
   const smDown = useResponsive('down', 'sm');
@@ -37,19 +43,16 @@ export default function MiniSessionsWithHeader({
             </Stack>
           </Grid>
 
-          <Button
-            variant="contained"
-            size="medium"
-            sx={{
-              minWidth: 150,
-              p: 2,
-              alignSelf: 'flex-start',
-              mt: smDown ? 2 : 0,
-            }}
-            endIcon={'>'}
-          >
-            {buttonText}
-          </Button>
+          {!hideButton && (
+            <Link href="/ar/mycourses/">
+              <Button color="info" sx={{ lineHeight: 1 }}>
+                الكل
+                <span>
+                  <LeftIcon />
+                </span>
+              </Button>
+            </Link>
+          )}
         </Grid>
 
         
