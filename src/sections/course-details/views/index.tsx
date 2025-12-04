@@ -1,21 +1,22 @@
 
 import { Grid, Container } from '@mui/material';
+
 import CourseHero from './course-hero';
 import CourseInfo from './course-info';
-import CourseActions from './course-btn-actions';
 import CourseMedia from './course-media';
-import CourseCurriculum from './course-curriculum';
 import CourseSidebar from './course-sidebar';
-import CourseInstructor from './course-instructor';
 import CourseReviews from './course-reviews';
 import RelatedCourses from "./related-courses";
+import CourseActions from './course-btn-actions';
+import CourseCurriculum from './course-curriculum';
+import CourseInstructor from './course-instructor';
 
 export default function CourseDetailsView() {
   return (
     <>
       <Container
         sx={{
-          py: 4,
+          py: 15,
           maxWidth: '1200px !important',
           px: { xs: 2, md: 4 }
         }}

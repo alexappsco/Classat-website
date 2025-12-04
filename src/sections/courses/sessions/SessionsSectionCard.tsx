@@ -10,12 +10,14 @@ import Clock from 'public/assets/courses/icons/clock.svg'
 import { Box, Card, Stack, Typography } from '@mui/material';
 import RedHeart from 'public/assets/courses/icons/heart.svg';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useRouter } from 'next/navigation';
 
 import { SESSIONS } from '../data/sessions';
 
 type SessionsSectionCardProps = (typeof SESSIONS.RECOMMENDED_SESSIONS)[0];
 
 export default function SessionsSectionCard({
+  id,
   image,
   category,
   title,
@@ -31,7 +33,7 @@ export default function SessionsSectionCard({
   const blueBg = '#E3F2FD';
   const orangeColor = warning.main;
   const orangeBg = '#FFF6E4';
-
+  const router = useRouter();
 
 const [liked, setLiked] = useState(false);
 
@@ -39,9 +41,12 @@ const handleHeartClick = () => {
   setLiked(!liked); // toggle
 };
 
-
+const handleCardClick = () => {
+  router.push(`/ar/courses/course/${id}`);
+};
   return (
     <Card
+    onClick={handleCardClick}
       sx={{
         borderRadius: 2,
         boxShadow: shadow.main,
@@ -49,6 +54,7 @@ const handleHeartClick = () => {
         display: 'flex',
         flexDirection: 'column',
         p: '20px 16px 16px',
+        cursor: "pointer"
       }}
     >
       {/* Image */}
@@ -61,7 +67,10 @@ const handleHeartClick = () => {
         }}
       >
          <Box
-          onClick={handleHeartClick}
+          onClick={(e) => {
+    e.stopPropagation();
+    handleHeartClick();
+  }}
           sx={{
             position: 'absolute',
             top: 12,

@@ -2,7 +2,9 @@
 import { text, primary } from 'src/theme/palette';
 import { useResponsive } from 'src/hooks/use-responsive';
 import { Box, Card, Stack, Button, Select, MenuItem, Container, Typography } from '@mui/material';
-
+import BookingConfirmationDialog from './bookingConfirmationDialog'
+import SuccessBookingDialog from './successBookingDialog'
+import { useState } from 'react';
 const AVAILABLE_SLOTS = [
   {
     dayLabel: 'اليوم',
@@ -41,6 +43,10 @@ export default function LiveSectionTimeDetails({title}:{title: string}) {
   const paragraphTextColor = text.paragraph;
   const mainColor = primary.main;
   const smDown = useResponsive('down', 'sm');
+
+  const [openBookingConfirmation, setOpenBookingConfirmation] = useState(false);
+  const [openSuccessDialog, setOpenSuccessDialog] = useState(false);
+
   return (
     <Box>
       <Container>
@@ -166,6 +172,10 @@ export default function LiveSectionTimeDetails({title}:{title: string}) {
                       key={idx}
                       variant="contained"
                       fullWidth
+                      onClick={() => {
+    // onClose();
+    setOpenBookingConfirmation(true);
+  }}
                       sx={{
                         borderRadius: '999px',
                         backgroundColor: '#28A8DD',
@@ -182,6 +192,20 @@ export default function LiveSectionTimeDetails({title}:{title: string}) {
           </Stack>
         </Box>
       </Container>
+      <BookingConfirmationDialog
+  open={openBookingConfirmation}
+  onClose={() => setOpenBookingConfirmation(false)}
+  onSuccess={() => {
+    setOpenBookingConfirmation(false);
+    setOpenSuccessDialog(true);
+  }}
+/>
+
+<SuccessBookingDialog
+  open={openSuccessDialog}
+  onClose={() => setOpenSuccessDialog(false)}
+/>
+
     </Box>
   );
 }

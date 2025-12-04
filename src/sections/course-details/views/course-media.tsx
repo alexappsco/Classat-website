@@ -1,5 +1,6 @@
-import { Box } from '@mui/material';
 import Image from 'next/image';
+import { Box } from '@mui/material';
+
 import test from "../../../../public/assets/illustrations/illustration_dashboard.png";
 
 export default function CourseMedia() {
