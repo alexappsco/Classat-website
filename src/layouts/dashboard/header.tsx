@@ -1,17 +1,19 @@
+import Link from 'next/link';
 import { useState } from 'react';
-import { usePathname } from 'next/navigation';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import { bgBlur } from 'src/theme/css';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import { usePathname } from 'next/navigation';
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useOffSetTop } from 'src/hooks/use-off-set-top';
 import { useResponsive } from 'src/hooks/use-responsive';
 import { useSettingsContext } from 'src/components/settings';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
+import RedHeart from 'public/assets/courses/icons/heart.svg';
 import { useRouter } from 'next/dist/client/components/navigation';
+import WhiteHeart from 'public/assets/courses/icons/Whiteheart.svg';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 import { LogoText } from './logo-text';
 import { HEADER } from '../config-layout';
@@ -46,20 +48,26 @@ export default function Header() {
 
   const renderContent = (
     <Box width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
-      <Button onClick={() => router.push('/ar/lisson')} sx={{ display: 'flex' }}>
-        <LogoText {...{ lgUp }} />
-      </Button>
+      <Link href="/ar/lisson" style={{ textDecoration: 'none' }}>
+        <Box sx={{ display: 'flex', cursor: 'pointer' }}>
+          <LogoText {...{ lgUp }} />
+        </Box>
+      </Link>
       {isLanding ? (
         <AuthButtons changeSignIn={setIsSignIn} />
       ) : (
         <Box display="flex" alignItems="center" gap={1.5} pt={0.5}>
-          <IconButton onClick={() => router.push('/ar/courses/favorites/')}>
-            <FavoriteIcon />
-          </IconButton>
+          <Link href="/ar/courses/favorites/">
+            <IconButton>
+              {cleanPath === '/ar/courses/favorites' ? <RedHeart /> : <WhiteHeart />}
+            </IconButton>
+          </Link>
 
-          <IconButton onClick={() => router.push('/ar/cart/')}>
-            <ShoppingCartIcon fontSize="small" />
-          </IconButton>
+          <Link href="/ar/cart/">
+            <IconButton>
+              <ShoppingCartIcon fontSize="small" />
+            </IconButton>
+          </Link>
 
           <AccountPopover />
         </Box>
