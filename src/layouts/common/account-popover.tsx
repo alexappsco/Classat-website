@@ -158,6 +158,7 @@ import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { useTranslations } from 'next-intl';
 import { getCurrentUser } from 'src/utils/getCurrentUser';
 import { paths } from 'src/routes/paths';
+import { Button } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -194,37 +195,64 @@ export default function AccountPopover() {
     router.push(path);
   };
   const OPTIONS = [
-    {
-      label: t('Nav.main'),
-      linkTo: paths.controlPanel.main,
-    },
+    // {
+    //   label: t('Nav.main'),
+    //   linkTo: '/lisson',
+    //   icon:'/favicon/das/!.svg'
+
+    // },
     {
       label: t('Nav.lisson'),
       linkTo: '/lisson',
+      icon:'/favicon/das/book.svg'
     },
     {
       label: t('Nav.courses'),
       linkTo: '/courses',
+      icon:'/favicon/das/Vector.svg'
+
     },
     {
       label: t('Nav.upcoming_sessions'),
       linkTo: '/upcoming-sessions',
+      icon:'/favicon/das/setting.svg'
+
+    },
+    {
+      label: t('Nav.mycourses'),
+      linkTo: '/mycourses',
+      icon:'/favicon/das/book.svg'
+
     },
     {
       label: t('Pages.ContactUs.title'),
       linkTo: paths.controlPanel.contactUs.list,
+      icon:'/favicon/das/call.svg'
+
     },
     {
       label: t('Pages.Support.title'),
       linkTo: paths.controlPanel.technicalSupport.list,
+      icon:'/favicon/das/call.svg'
+
     },
     {
       label: t('Pages.terms.title'),
       linkTo: '/terms',
+      icon:'/favicon/das/!.svg'
+
     },
     {
       label: t('Nav.privacy-policy'),
       linkTo: '/policy',
+      icon:'/favicon/das/!.svg'
+
+    },
+    {
+      label: t('Nav.setting'),
+      linkTo: '/settings',
+      icon:'/favicon/das/setting.svg'
+
     },
   ];
   return (
@@ -260,22 +288,41 @@ export default function AccountPopover() {
       </IconButton>
 
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 200, p: 0 }}>
-        <Box sx={{ p: 2, pb: 1.5 }}>
-          <Typography variant="subtitle2" noWrap>
-            {user?.name}
+        
+        <Button sx={{ p: 1,display:'flex' }} onClick={() => handleClickItem('/profile')} >
+
+        <Avatar
+          // src={user?.avatar}
+          src={'/favicon/studend.jpg'}
+          alt={user?.name}
+          sx={{
+            width: 36,
+            height: 36,
+            mr:1,
+            border: (theme: any) => `solid 2px ${theme.palette.background.default}`,
+          }}
+        >
+          {user?.name?.charAt(0).toUpperCase()}
+        </Avatar>
+      <Box sx={{justifyItems:'start'}}>
+          <Typography variant="subtitle2" noWrap >
+            {/* {user?.name} */}
+            عبدالله محمد
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {user?.email}
+            {/* {user?.email} */}
+            abdullah@gmail.com
           </Typography>
-        </Box>
-
+        </Box>  
+        </Button>
+<Divider/>
         {/* <Divider sx={{ borderStyle: 'dashed' }} /> */}
 
-        <Stack sx={{ p: 1 }}>
+        <Stack >
           {OPTIONS.map((option) => (
             <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>
-              {option.label}
+              <span style={{marginLeft:'5px'}}><img src={option.icon} alt=''/></span>{option.label}
             </MenuItem>
           ))}
         </Stack>

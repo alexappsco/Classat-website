@@ -35,6 +35,12 @@
     "ContactUs": {
       "title": "تواصل معنا | ثمار كلاسات"
     },
+    "UpcomingSessions": {
+      "title": "الجلسات القادمة  | ثمار كلاسات"
+    },
+    "mycourses": {
+      "title":"كورساتي"
+    },
     "Support": {
       "title": "الدعم الفني | ثمار كلاسات"
     },
@@ -73,6 +79,7 @@
     "banners": " بانارات",
     "return-orders": " الطلبات المرتجعة",
     "units": "الوحدات",
+    "mycourses": "كورساتي",
     "Marketing": {
       "title": "العروض والتسويق",
       "offers": "العروض",

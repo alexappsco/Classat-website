@@ -61,6 +61,12 @@
     },
     "Terms": {
       "title": "Terms & Conditions | Classat"
+    },
+    "UpcomingSessions": {
+      "title": " UpcomingSessions  |  Classat"
+    },
+    "mycourses": {
+      "title": " UpcomingSessions  |  Classat"
     }
   },
   "Nav": {
@@ -76,6 +82,7 @@
     "products": "Products",
     "orders": "Orders",
     "units": "Units",
+    "mycourses":"my Courses",
     "return-orders": "Returned Orders",
     "Marketing": {
       "title": "Offers and Marketings",
