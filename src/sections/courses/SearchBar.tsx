@@ -23,7 +23,7 @@ const SearchBar = () => {
     <Box sx={{ pt: { xs: 8, md: 10 }, px: { xs: 4, md: 6 }, direction: 'ltr' }}>
       <Container
       sx={{
-        py: { xs: 8, md: 6 },
+        pt: { xs: 8, md: 4 },
         direction: 'rtl',
       }}
     >
@@ -53,7 +53,7 @@ const SearchBar = () => {
             minWidth: "40px",
           }}
         >
-          <SearchIcon sx={{ fontSize: 24, color: "#FDBE34" }} />
+          <SearchIcon sx={{ fontSize: 24, color: "#54B0D7" }} />
         </Button>
 
         <InputBase
@@ -76,9 +76,26 @@ const SearchBar = () => {
           boxShadow: "0 0 5px rgba(0,0,0,0.15)",
         }}
       >
-        <MenuItem value="Programming">Programming</MenuItem>
-        <MenuItem value="Design">Design</MenuItem>
-        <MenuItem value="Marketing">Marketing</MenuItem>
+        <MenuItem value="Programming">السعر</MenuItem>
+      </Select>
+      <Select
+        value={category}
+        onChange={handleChange}
+        variant="outlined"
+        sx={{
+          borderRadius: "50px",
+          height: 48,
+          minWidth: 160,
+          px: 2,
+          "& fieldset": { border: "none" },
+          bgcolor: "#fff",
+          boxShadow: "0 0 5px rgba(0,0,0,0.15)",
+        }}
+      >
+        <MenuItem value="Programming">جنسية المحاضر</MenuItem>
+        <MenuItem value="Design">اماراتي</MenuItem>
+        <MenuItem value="Design">مصري</MenuItem>
+        <MenuItem value="Marketing">سعودي</MenuItem>
       </Select>
     </Box>
     </Container>

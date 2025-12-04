@@ -31,12 +31,12 @@ export default function Categories() {
       }}>
       <Container>
         <Stack spacing={2}>
-          
+
           <Typography variant="h4" sx={{ fontWeight: 600, color: primaryTextColor, textAlign: 'start' }}>
             الفئات
           </Typography>
 
-          
+
           <Box
             sx={{
               display: 'flex',
@@ -63,7 +63,6 @@ export default function Categories() {
                   borderRadius: '25px',
                   textAlign: 'center',
                   px: 4,
-                  py: 0.5,
                   fontWeight: 500,
                   cursor: 'pointer',
                   color: '#637381',

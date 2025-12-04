@@ -15,7 +15,7 @@ export default function Live() {
   return (
     <>
       <Box sx={{ position: 'relative' }}>
-        <Hero />
+        <Hero selectedCategory={selectedCategory} />
 
         <Box
           sx={{
