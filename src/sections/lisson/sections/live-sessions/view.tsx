@@ -8,6 +8,7 @@ import FiltersBar from '../FiltersBar';
 import LiveSessionsSection from '../live-sessions/LiveSessionSection';
 import InstructorsSection from '../top-instructor/TopInstructorsSection';
 import Hero from '../Hero';
+import TimerCard from 'src/components/timer/TimerShow';
 
 export default function LiveSesions() {
   // const [selectedCategory, setSelectedCategory] = React.useState('مباشرة الآن');
@@ -15,7 +16,9 @@ export default function LiveSesions() {
   return (
     <>
       <Box sx={{ position: 'relative' }}>
-        <Hero />
+        {/* <Hero /> */}
+        <TimerCard subtitle='بث "تطوير تطبيقات الويب باستخدام React" يبدأ قريبًا' />
+
         {/* 
         <Box
           sx={{

@@ -44,6 +44,9 @@
     "ContactUs": {
       "title": "Contact Us | Classat"
     },
+    "Support": {
+      "title": "Technical Support | Classat"
+    },
     "Clients": {
       "title": "Clients | Classat"
     },
@@ -55,6 +58,9 @@
     },
     "DeliveryFees": {
       "title": "Delivery Fees | Classat"
+    },
+    "Terms": {
+      "title": "Terms & Conditions | Classat"
     }
   },
   "Nav": {
@@ -604,7 +610,66 @@
       "title": "Privacy Policy",
       "privacy_policy": "Privacy Policy",
       "add_privacy_policy": "Add Privacy Policy",
-      "edit_privacy_policy": "Edit Privacy Policy"
+      "edit_privacy_policy": "Edit Privacy Policy",
+      "intro": "We value your privacy and how your personal information is used. This policy explains how we collect, use, and process data within the Classat application.",
+      "sections": {
+        "introduction": {
+          "title": "Introduction",
+          "body": "By using the Classat application, you agree to this Privacy Policy, which explains how we handle your data while you use the app or our educational services."
+        },
+        "collectedInfo": {
+          "title": "Information we collect",
+          "description": "We collect two types of information:",
+          "provided": {
+            "title": "Information you provide to us:",
+            "items": {
+              "1": "Full name.",
+              "2": "Phone number or email address (used for login via OTP verification).",
+              "3": "Educational level and study type.",
+              "4": "Other account information (optional)."
+            }
+          },
+          "automatic": {
+            "title": "Information collected automatically:",
+            "items": {
+              "1": "IP address and approximate device location.",
+              "2": "Device type and operating system.",
+              "3": "App usage data (such as the pages you visit and the time spent on each section)."
+            }
+          }
+        },
+        "usage": {
+          "title": "How we use the information",
+          "intro": "We use your data for the following purposes:",
+          "items": {
+            "1": "Operating the app and providing our services to the user.",
+            "2": "Sending notifications and alerts related to lessons and educational sessions.",
+            "3": "Improving the user experience and analyzing app usage.",
+            "4": "Personalizing educational content according to your interests and academic level.",
+            "5": "Responding to your inquiries and providing technical support."
+          }
+        },
+        "protection": {
+          "title": "Information security",
+          "body": "We use advanced security technologies to protect your data. Access to your information is restricted to a specialized team within Classat, and we will not sell or share your data with any third party without your explicit consent, unless required by law."
+        },
+        "sharing": {
+          "title": "Data sharing",
+          "body": "We may share certain aggregated data (not linked to your personal identity) with our partners for analytics and service improvement purposes, ensuring that no identifying information about you is disclosed."
+        },
+        "rights": {
+          "title": "Your rights",
+          "items": {
+            "1": "You have the right to request access to your personal data and to correct or update it.",
+            "2": "You can request deletion of your account and data from within the app or by contacting the support team.",
+            "3": "You have the right to unsubscribe from marketing messages at any time."
+          }
+        },
+        "updates": {
+          "title": "Updates to this Privacy Policy",
+          "body": "We may update this Privacy Policy from time to time to reflect changes in the app or legal requirements. You will be informed of any material changes through the app or via email when possible."
+        }
+      }
     },
     "ContactUs": {
       "title": "Contact Us",
@@ -615,6 +680,39 @@
       "this_client": " Client {var}",
       "client_address": "Address",
       "birth_date": "Birth Date"
+    },
+    "Support": {
+      "title": "Technical Support",
+      "subtitle": "Tell us what happened and we will help you right away.",
+      "cards": {
+        "login": {
+          "title": "Login issues",
+          "description": "Reset password or verification problems"
+        },
+        "billing": {
+          "title": "Billing & invoices",
+          "description": "Payments, invoices, and subscriptions"
+        },
+        "technical": {
+          "title": "Technical issues",
+          "description": "Errors inside the platform or mobile apps"
+        }
+      },
+      "form": {
+        "complaintTypeLabel": "Complaint type",
+        "complaintTypePlaceholder": "Select the complaint type",
+        "complaintOptions": {
+          "login": "Login issues",
+          "payments": "Payments & billing",
+          "technical": "Technical issues"
+        },
+        "topicLabel": "Subject",
+        "topicPlaceholder": "Subject",
+        "descriptionLabel": "Issue description",
+        "descriptionPlaceholder": "Explain the issue in detail",
+        "submit": "Send",
+        "helper": "Our team will contact you soon."
+      }
     },
     "WorkArea": {
       "work_area": "Work Area",
@@ -666,6 +764,10 @@
       "PermissionTitle": "Permission Required",
       "PermissionMessage": "You must have the correct permission to be able to view this section.",
       "PermissionActivate": "Settings permission must be activated"
+    },
+    "terms": {
+      "title":"Terms & Conditions"
+
     },
     "DeliveryFees": {
       "add_delivery_fee": "Add Delivery Fee",

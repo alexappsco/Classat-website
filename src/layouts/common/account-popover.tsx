@@ -196,7 +196,7 @@ export default function AccountPopover() {
   const OPTIONS = [
     {
       label: t('Nav.main'),
-      linkTo: '/',
+      linkTo: paths.controlPanel.main,
     },
     {
       label: t('Nav.lisson'),
@@ -205,6 +205,26 @@ export default function AccountPopover() {
     {
       label: t('Nav.courses'),
       linkTo: '/courses',
+    },
+    {
+      label: t('Nav.upcoming_sessions'),
+      linkTo: '/upcoming-sessions',
+    },
+    {
+      label: t('Pages.ContactUs.title'),
+      linkTo: paths.controlPanel.contactUs.list,
+    },
+    {
+      label: t('Pages.Support.title'),
+      linkTo: paths.controlPanel.technicalSupport.list,
+    },
+    {
+      label: t('Pages.terms.title'),
+      linkTo: '/terms',
+    },
+    {
+      label: t('Nav.privacy-policy'),
+      linkTo: '/policy',
     },
   ];
   return (
