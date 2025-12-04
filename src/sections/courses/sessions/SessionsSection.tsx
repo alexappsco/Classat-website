@@ -57,7 +57,7 @@ export default function SessionsSection({
         <Grid container spacing={4} justifyContent="center">
           {sessions.map((session, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
-              <RecommendedSessionCard {...session} />
+              <RecommendedSessionCard {...session} key={session.id} />
             </Grid>
           ))}
         </Grid>
