@@ -158,12 +158,9 @@ import CustomPopover, { usePopover } from 'src/components/custom-popover';
 import { useTranslations } from 'next-intl';
 import { getCurrentUser } from 'src/utils/getCurrentUser';
 import { paths } from 'src/routes/paths';
-<<<<<<< HEAD
 import { Button } from '@mui/material';
 
-=======
 import Link from 'next/link';
->>>>>>> 1c4e93a5a362196e52c85a54037eec18f2994d26
 // ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
@@ -323,7 +320,6 @@ export default function AccountPopover() {
 <Divider/>
         {/* <Divider sx={{ borderStyle: 'dashed' }} /> */}
 
-<<<<<<< HEAD
         <Stack >
           {OPTIONS.map((option) => (
             <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>
@@ -331,21 +327,6 @@ export default function AccountPopover() {
             </MenuItem>
           ))}
         </Stack>
-=======
-        <Stack sx={{ p: 1 }}>
-  {OPTIONS.map((option) => (
-    <MenuItem
-      key={option.label}
-      component={Link}
-      href={option.linkTo}
-      onClick={popover.onClose}
-    >
-      {option.label}
-    </MenuItem>
-  ))}
-</Stack>
-
->>>>>>> 1c4e93a5a362196e52c85a54037eec18f2994d26
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
