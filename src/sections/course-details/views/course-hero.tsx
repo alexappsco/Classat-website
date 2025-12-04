@@ -1,4 +1,5 @@
-import { Box, Stack, Typography, Button, Chip } from '@mui/material';
+import { Box, Chip, Stack, Typography } from '@mui/material';
+
 import CategoryBadge from './course-category';
 
 // Course type buttons configuration
