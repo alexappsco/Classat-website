@@ -17,7 +17,7 @@ const FiltersBar = () => {
   // ];
 
   return (
-    <Box sx={{ pt: { xs: 9, md: 13 }, px: { xs: 2, md: 6 }, direction: 'ltr' }}>
+    <Box sx={{ pt: { xs: 3, md: 4 }, px: { xs: 2, md: 6 }, direction: 'ltr' }}>
       <Container>
         {/* Filters Row */}
         <Box
