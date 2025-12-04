@@ -1,11 +1,13 @@
 "use client";
 import { text, primary } from 'src/theme/palette';
 import { useResponsive } from 'src/hooks/use-responsive';
-import { LeftIcon } from 'src/components/carousel/arrow-icons';
-import { useRouter } from 'next/dist/client/components/navigation';
-import { Box, Grid, Stack, Button, Container, Typography } from '@mui/material';
+import { Box, Grid, Select, MenuItem, Container } from '@mui/material';
 
-import LiveSessionCard from './LiveSessionCard'; // Assuming the card is imported
+import LiveSessionCard from '../../live/live-sessions/LiveSessionCard';
+
+// import LiveSessionCard from './LiveSessionCard'; // Assuming the card is imported
+
+
 const LIVE_SESSIONS = [
   {
     image: '/assets/landing-page/live-sessions/courses/live1.jpg',
@@ -45,56 +47,48 @@ const LIVE_SESSIONS = [
   },
 ];
 
-export default function LiveSessionsSection() {
-  const router = useRouter();
+export default function LiveSectionDetails({title}:{title: string}) {
   const primaryTextColor = text.primary;
   const paragraphTextColor = text.paragraph;
   const mainColor = primary.main;
   const smDown = useResponsive('down', 'sm');
   return (
-    <Box sx={{ py: { xs: 8, md: 10 }, px: { xs: 4, md: 6 }, direction: 'ltr' }}>
+    <Box>
       <Container>
-        {/* 1. Header and Action Button Row */}
-        <Grid container alignItems="center" justifyContent="space-between" sx={{ mb: 4 }}>
-          {/* Section Title (Right side in RTL) */}
-          <Grid item xs={12} sm={8} md={9}>
-            <Stack spacing={0.5}>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: primaryTextColor }}>
-                البثوث المباشرة الآن علي المنصة
-              </Typography>
-              <Typography
-                variant="body1"
-                sx={{ color: paragraphTextColor, fontSize: 20, fontWeight: 400 }}
-              >
-                انضم الآن إلى إحدى الجلسات المباشرة
-              </Typography>
-            </Stack>
-          </Grid>
-
-          {/* Action Button (Left side in RTL) */}
-          <Button
-              color="info"
-              sx={{ lineHeight: 1 }}
-              onClick={() => router.push('/ar/courses/live/')}
+      <Box
+          display="flex"
+          flexDirection={{ xs: 'column', md: 'row-reverse' }}
+          alignItems={{ xs: 'stretch', md: 'start' }}
+          gap={2}
+          justifyContent="start"
+          dir="rtl"
+          sx={{ width: '100%', my: 2 }}
+        >
+          {/* Dropdowns */}
+          {['ريأكت','فرونت اند','البرمجة','التاريخ'].map((item, idx) => (
+            <Select
+              key={idx}
+              defaultValue={item}
+              variant="outlined"
+              sx={{
+                borderRadius: '50px',
+                height: { xs: 40, md: 48 },
+                minWidth: { xs: 120, md: 140 + idx * 10 },
+                px: 1,
+                '& fieldset': { border: 'none' },
+                bgcolor: '#fff',
+                boxShadow: '0 0 5px rgba(0,0,0,0.15)',
+                fontSize: { xs: 14, md: 16 },
+              }}
             >
-              الكل
-              <span>
-                <LeftIcon />
-              </span>
-            </Button>
-          {/* <Grid
-            item
-            xs={12}
-            sm={4}
-            md={3}
-            sx={{ textAlign: { xs: 'right', sm: 'left' }, mt: { xs: 2, sm: 0 } }}
-            width={'fit-content'}
-          >
-          </Grid> */}
-        </Grid>
+              <MenuItem value={item}>{item}</MenuItem>
+            </Select>
+          ))}
 
-        {/* 2. Live Sessions Grid */}
-        <Grid container spacing={4} justifyContent={'center'}>
+          {/* Search Input */}
+
+        </Box>
+                <Grid container spacing={4} justifyContent={'center'}>
           {LIVE_SESSIONS.map((session, index) => (
             <Grid
               item
