@@ -1,375 +1,556 @@
-// 'use client';
-
-// import * as Yup from 'yup';
-// import { useState } from 'react';
-// import { useSnackbar } from 'notistack';
-// import { useForm } from 'react-hook-form';
-
-// import { Box, Link, Typography } from '@mui/material';
-// import Alert from '@mui/material/Alert';
-// import Stack from '@mui/material/Stack';
-// import LoadingButton from '@mui/lab/LoadingButton';
-// import InputAdornment from '@mui/material/InputAdornment';
-
-// import { useSearchParams } from 'src/routes/hooks';
-
-// import { useBoolean } from 'src/hooks/use-boolean';
-
-// import { useAuthContext } from 'src/auth/hooks';
-
-// import Iconify from 'src/components/iconify';
-// import FormProvider, { RHFTextField } from 'src/components/hook-form';
-// import { useTranslations } from 'next-intl';
-// // ----------------------------------------------------------------------
-
-// type FormValues = {
-//   email?: string;
-//   phone?: string;
-//   password: string;
-// };
-
-// export default function LoginBYEmailView() {
-//   const t = useTranslations();
-//   const { login } = useAuthContext();
-
-//   const [errorMsg, setErrorMsg] = useState('');
-//   const { enqueueSnackbar } = useSnackbar();
-
-//   const searchParams = useSearchParams();
-//   const returnTo = searchParams.get('returnTo');
-
-//   const password = useBoolean();
-
-//   const LoginSchema = Yup.object()
-//     .shape({
-//       email: Yup.string().email('Invalid email').nullable().notRequired(),
-//       phone: Yup.string().nullable().notRequired(),
-//       // password: Yup.string().required('Password is required'),
-//     })
-//     .test('email-or-phone', 'You must enter either email or phone', (value: any) => {
-//       // value is the whole object { email, phone, password }
-//       return !!(value && (value.email || value.phone));
-//     });
-
-//   const methods = useForm<FormValues>({
-//     // resolver: yupResolver(LoginSchema),
-//     defaultValues: {
-//       email: '',
-//       phone: '',
-//       // password: '',
-//     },
-//   });
-
-//   const {
-//     reset,
-//     handleSubmit,
-//     formState: { isSubmitting },
-//   } = methods;
-
-//   const onSubmit = handleSubmit(async (data) => {
-//     try {
-//       // choose identifier: email first if present, otherwise phone
-//       const identifier = data.email?.trim() ? data.email.trim() : data.phone?.trim();
-//       if (!identifier) {
-//         // should not happen because schema enforces one of them
-//         setErrorMsg('Please enter email or phone');
-//         return;
-//       }
-
-//       await login(identifier, data.password);
-//       // if login resolves, provider handles redirect; otherwise show error
-//     } catch (error: any) {
-//       console.error('Login error:', error);
-//       setErrorMsg(error?.message || 'Login failed');
-//     }
-//   });
-
-//   const renderForm = (
-//     <Stack spacing={2.5} sx={{ minWidth: '100%' }}>
-//       <Box>
-//         <Typography variant="body2" sx={{ mb: 1 }}>
-//           {t('Label.phone')}
-//         </Typography>
-//         <RHFTextField
-//           name="phone"
-//           InputProps={{
-//             startAdornment: (
-//               <InputAdornment position="start">
-//                 <Iconify icon={'ic:round-phone'} />
-//               </InputAdornment>
-//             ),
-//           }}
-//         />
-//       </Box>
-
-//       <Box mb={1}>
-//         <Typography variant="body2" sx={{ mb: 1 }}>
-//           {t('Label.email')}
-//         </Typography>
-//         <RHFTextField
-//           name="email"
-//           InputProps={{
-//             startAdornment: (
-//               <InputAdornment position="start">
-//                 <Iconify icon={'ic:round-email'} />
-//               </InputAdornment>
-//             ),
-//           }}
-//         />
-//       </Box>
-
-//       <LoadingButton
-//         fullWidth
-//         size="large"
-//         type="submit"
-//         variant="contained"
-//         loading={isSubmitting}
-//         color="primary"
-//       >
-//         {t('Button.sign_in')}
-//       </LoadingButton>
-//     </Stack>
-//   );
-
-//   return (
-//     <>
-//       {!!errorMsg && (
-//         <Alert severity="error" sx={{ mb: 3 }}>
-//           {errorMsg}
-//         </Alert>
-//       )}
-
-//       <FormProvider methods={methods} onSubmit={onSubmit}>
-//         {renderForm}
-//       </FormProvider>
-//     </>
-//   );
-// }
-
 'use client';
 
 import * as Yup from 'yup';
-import { useState } from 'react';
-import { useSnackbar } from 'notistack';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import {
-  Box,
-  Typography,
   Dialog,
   DialogContent,
   DialogTitle,
   Stack,
-  IconButton,
-  InputAdornment,
-  Container,
-  Link,
+  TextField,
   Button,
+  IconButton,
+  Typography,
+  Container,
+  Box,
+  InputAdornment,
+  ToggleButton,
+  ToggleButtonGroup,
 } from '@mui/material';
 
-import LoadingButton from '@mui/lab/LoadingButton';
-import Alert from '@mui/material/Alert';
-import CloseIcon from '@mui/icons-material/Close';
 
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { SendLoginOtp } from 'src/actions/auth';
+import { useJwtAuth } from 'src/auth/jwt-context';
 import { useTranslations } from 'next-intl';
-
-import Iconify from 'src/components/iconify';
-import FormProvider, { RHFTextField } from 'src/components/hook-form';
-import { useAuthContext } from 'src/auth/hooks';
+import Link from 'next/link';
+import Image from 'next/image';
 import JwtRegisterDialog from './jwt-register-view';
-import { primary } from 'src/theme/palette';
+import { getData } from 'src/utils/crud-fetch-api';
+import { endpoints } from 'src/utils/axios';
 
-// ---------------------------------------------------------------
+/* ---------------- TYPES ---------------- */
 
 type FormValues = {
-  email?: string;
-  phone?: string;
+  email: string;
+  phone: string;
 };
 
-// ---------------------------------------------------------------
+type LoginMeta = {
+  channel: 'Email' | 'Phone';
+  value: string;
+};
 
-export default function LoginBYEmailDialog({ open, onClose }: any) {
+/* ---------------- VALIDATION ---------------- */
+
+const schema = Yup.object({
+  email: Yup.string().email('Invalid email').default(''),
+  phone: Yup.string().default(''),
+}).test(
+  'email-or-phone',
+  'Enter email or phone (not both)',
+  (v) => !!(v?.email || v?.phone) && !(v?.email && v?.phone)
+);
+
+
+/* ---------------- COMPONENT ---------------- */
+
+interface Props {
+  open: boolean;
+  onClose: () => void;
+}
+
+
+//----------------------------------------------------------------------------
+
+
+import { styled } from '@mui/material/styles';
+// import { Stack } from '@mui/material';
+import { useRef, useCallback } from 'react';
+import { ICONS } from 'src/config-icons';
+import SelectedMethod from '../selected-method/selectedMethod';
+
+const OtpInput = styled('input')(({ theme }) => ({
+  width: '100%',
+  height: '56px',
+  textAlign: 'center',
+  fontSize: '24px',
+  fontWeight: 'bold',
+  direction: 'ltr',
+  borderRadius: theme.shape.borderRadius,
+  border: `1px solid ${theme.palette.grey[400]}`,
+  '&:focus': {
+    outline: 'none',
+    borderColor: theme.palette.primary.main,
+    boxShadow: `0 0 0 2px ${theme.palette.primary.light}`,
+  },
+  '&::-webkit-outer-spin-button, &::-webkit-inner-spin-button': {
+    WebkitAppearance: 'none',
+    margin: 0,
+  },
+  '&[type=number]': {
+    MozAppearance: 'textfield',
+  },
+}));
+
+function OtpVerificationInputs({
+  otp,
+  setOtp,
+  disabled,
+}: {
+  otp: string[];
+  setOtp: React.Dispatch<React.SetStateAction<string[]>>;
+  disabled: boolean;
+}) {
+  const inputRefs = useRef<HTMLInputElement[]>([]);
+
+  const handleChange = useCallback(
+    (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+      if (/[^0-9]/.test(value)) return;
+
+      const newOtp = [...otp];
+      newOtp[index] = value.slice(-1);
+      setOtp(newOtp);
+
+      if (value && index < 3 && inputRefs.current[index + 1]) {
+        inputRefs.current[index + 1].focus();
+      }
+    },
+    [otp, setOtp]
+  );
+
+  const handlePaste = useCallback(
+    (event: React.ClipboardEvent<HTMLInputElement>) => {
+      event.preventDefault();
+      const pasteData = event.clipboardData
+        .getData('text')
+        .replace(/\D/g, '')
+        .slice(0, 4);
+
+      const newOtp = [...otp];
+      for (let i = 0; i < 4; i++) {
+        newOtp[i] = pasteData[i] || '';
+      }
+      setOtp(newOtp);
+
+      const nextIndex = pasteData.length >= 4 ? 3 : pasteData.length;
+      inputRefs.current[nextIndex]?.focus();
+    },
+    [otp, setOtp]
+  );
+
+  const handleKeyDown = useCallback(
+    (index: number, event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (
+        (event.key === 'Backspace' || event.key === 'Delete') &&
+        !otp[index] &&
+        index > 0
+      ) {
+        inputRefs.current[index - 1]?.focus();
+      }
+    },
+    [otp]
+  );
+
+
+
+
+
+
+  return (
+    <Stack direction="row" spacing={1.5} sx={{ my: 1 }} dir="ltr">
+      {Array.from({ length: 4 }).map((_, index) => (
+        <OtpInput
+          key={index}
+          type="number"
+          inputMode="numeric"
+          value={otp[index] || ''}
+          onChange={(e) => handleChange(index, e)}
+          onKeyDown={(e) => handleKeyDown(index, e)}
+          onPaste={index === 0 ? handlePaste : undefined}
+          maxLength={1}
+          disabled={disabled}
+          ref={(el) => {
+            if (el) inputRefs.current[index] = el;
+          }}
+        />
+      ))}
+    </Stack>
+  );
+}
+
+
+
+
+//----------------------------------------------------------------------------
+
+
+
+
+export default function LoginDialog({ open, onClose }: Props) {
+  const { loginWithOtp } = useJwtAuth();
   const t = useTranslations();
-  const router = useRouter();
-  const { login } = useAuthContext();
-  const { enqueueSnackbar } = useSnackbar();
 
-  const [errorMsg, setErrorMsg] = useState('');
 
-  const LoginSchema = Yup.object()
-    .shape({
-      email: Yup.string().email('Invalid email').nullable().notRequired(),
-      phone: Yup.string().nullable().notRequired(),
-    })
-    .test('email-or-phone', 'You must enter either email or phone', (value: any) => {
-      return !!(value && (value.email || value.phone));
-    });
-
-  const methods = useForm<FormValues>({
-    // resolver: yupResolver(LoginSchema),
+  const { register, handleSubmit, reset, setValue, watch } = useForm<FormValues>({
+    resolver: yupResolver(schema),
     defaultValues: {
       email: '',
       phone: '',
     },
   });
 
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
-
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      const identifier = data.email?.trim() || data.phone?.trim();
-
-      if (!identifier) {
-        setErrorMsg('Please enter email or phone');
-        return;
-      }
-
-      // await login(identifier, '');
-
-      enqueueSnackbar('تم تسجيل الدخول بنجاح 🎉');
-
-      // ⭐ تحويل الصفحة بعد تسجيل الدخول
-      router.push('/lisson'); // ← عدلها لصفحتك المطلوبة
-
-      onClose();
-    } catch (error: any) {
-      console.error('Login error:', error);
-      setErrorMsg(error?.message || 'Login failed');
-    }
-  });
+  const [step, setStep] = useState<1 | 2>(1);
+  // const [otp, setOtp] = useState('');
+  const [loginMeta, setLoginMeta] = useState<LoginMeta | null>(null);
+  const [inputType, setInputType] = useState<'email' | 'phone'>('email');
 
   const [openRe, setOpenRe] = useState(false);
 
-  // ------------------------------ FORM UI
+  // Clear the other field when switching types
+  const handleSwitchType = (type: 'email' | 'phone') => {
+    setInputType(type);
+    if (type === 'email') {
+      setValue('phone', '');
+    } else {
+      setValue('email', '');
+    }
+  };
 
-  const renderForm = (
-    <Stack spacing={2.5} sx={{ minWidth: '100%' }}>
-      {/* Phone */}
-      <Box>
-        <Typography variant="body2" sx={{ mb: 1 }}>
-          {t('Label.phone')}
-        </Typography>
-        <RHFTextField
-          name="phone"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="end">
-                <Iconify icon={'ic:round-phone'} />
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Box>
 
-      {/* Email */}
-      <Box>
-        <Typography variant="body2" sx={{ mb: 1 }}>
-          {t('Label.email')}
-        </Typography>
-        <RHFTextField
-          name="email"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="end">
-                <Iconify icon={'ic:round-email'} />
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Box>
+  const [otp, setOtp] = useState<string[]>(Array(4).fill(''));
 
-      <LoadingButton
-        fullWidth
-        size="large"
-        type="submit"
-        variant="contained"
-        loading={isSubmitting}
-        sx={{ backgroundColor: primary.main, ':hover': { backgroundColor: primary.lighter } }}
-      >
-        {t('Button.sign_in')}
-      </LoadingButton>
+
+  const [secondsLeft, setSecondsLeft] = useState(60);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+  useEffect(() => {
+    if (!isTimerRunning) return;
+
+    if (secondsLeft <= 0) {
+      setIsTimerRunning(false);
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setSecondsLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [secondsLeft, isTimerRunning]);
+
+  /* ---------------- SEND OTP ---------------- */
+
+  const onSubmit = async (data: FormValues) => {
+    const isEmail = !!data.email?.trim();
+    const payload: {
+      channel: 'Email' | 'Phone';
+      value: string;
+      role: string;
+    } = {
+      channel: isEmail ? 'Email' : 'Phone',
+      value: isEmail ? data.email!.trim() : data.phone!.trim(),
+      role: 'Student',
+    };
+
+    const res = await SendLoginOtp(payload);
+
+    // Check if there's an error in the response
+    if ('error' in res) {
+      alert(res.error || 'Failed to send OTP');
+      console.log('OTP Response Error:', res.error);
+      return;
+    }
+
+    // Success case - check if response has required fields
+    if (!res || !res.channel || !res.value) {
+      alert('Invalid response from server');
+      console.log('OTP Response:', res);
+      return;
+    }
+
+    // لو كل حاجة تمام
+    setLoginMeta({
+      channel: res.channel,
+      value: res.value,
+    });
+
+    setStep(2);
+    setSecondsLeft(60);
+    setIsTimerRunning(true);
+
+  };
+
+
+  const [showPostVerificationSelection, setShowPostVerificationSelection] = useState(false);
+    const [confirm, setConfirm] = useState<null | {}>(null);
+
+  /* ---------------- VERIFY OTP ---------------- */
+  const verifyOtp = async () => {
+    if (!loginMeta || otp.length < 4) return;
+
+    if (!isTimerRunning) {
+      alert('انتهى وقت الكود، اضغط إعادة إرسال');
+      return;
+    }
+    const fullOtp = otp.join('');
+
+    if (fullOtp.length < 4) return;
+    try {
+      const res = await loginWithOtp({
+        channel: loginMeta.channel,
+        value: loginMeta.value,
+        otp: fullOtp,
+      });
+
+      // Fetch user profile to get learning preference
+      const profileRes = await getData<any>(endpoints.profile.get);
+      if (profileRes.success && profileRes.data) {
+        const learningPreference = profileRes.data.learningPreference;
+        const educationApproach = profileRes.data.educationApproach;
+        
+        if (learningPreference === 'Courses') {
+          window.location.href = '/courses';
+        } else if (learningPreference === 'Curricula') {
+          if (educationApproach === null) {
+            setConfirm(null); // Close the OTP dialog first
+            setShowPostVerificationSelection(true); 
+          }else{
+
+            window.location.href = '/curricula';
+          }
+        } else {
+          // Default redirect if learningPreference is not set
+          window.location.href = '/';
+        }
+      } else {
+        // Default redirect if profile fetch fails
+        window.location.href = '/';
+      }
+
+      handleClose();
+
+      
+    } catch (e: any) {
+      alert(e.message || 'Invalid OTP');
+    }
+  };
+
+  /* ---------------- CLOSE ---------------- */
+
+  const handleClose = () => {
+    reset();
+    setOtp(Array(4).fill(''));
+    setStep(1);
+    setLoginMeta(null);
+    onClose();
+  };
+
+  /* ---------------- UI ---------------- */
+
+  const renderHead = (
+    <Stack sx={{ mb: 2, mt: 4 }}>
+      <Typography variant="h6" textTransform="capitalize" textAlign="center">
+        {/* {t('Title.sign_in')} */}
+        {t('Description.mas_sign_in')}
+      </Typography>
     </Stack>
   );
-
-  // ------------------------------ UI
-
   return (
     <>
-      <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
-        <DialogTitle sx={{ display: 'flex', justifyContent: 'flex-end', p: '0', pt: '5px' }}>
-          {/* {t('Button.sign_in')} */}
+    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs" sx={{ width: '100%', height: '100%', alignContent: 'center' }}>
 
-          <IconButton onClick={onClose}>
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
+      <Stack
+        spacing={3}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          mt: 3,
+        }}
+      >
+        <Image src="/logo/SLogo.png" alt="logo" width={400} height={80} />
 
-        <DialogContent>
-          {!!errorMsg && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {errorMsg}
-            </Alert>
-          )}
+      </Stack>
 
-          <Box sx={{ width: '100%', height: '100%' }}>
-            {/* Logo */}
-            <Stack
-              spacing={3}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                mt: 2,
-              }}
-            >
-              <Image src="/favicon/Frame.png" alt="logo" width={160} height={35} />
-            </Stack>
 
-            <Container>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  flexDirection: 'column',
-                  minHeight: '40dvh',
-                }}
-              >
-                {/* Title */}
-                <Stack sx={{ mb: 2, mt: 4 }}>
-                  <Typography variant="h6" textAlign="center">
-                    {t('Description.mas_sign_in')}
+      <Container >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            minHeight: '35dvh',
+            my: 4
+
+          }}
+        >
+          <DialogContent >
+            {step === 1 ? (
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Stack spacing={2}>
+                  {renderHead}
+                  
+                  {/* Toggle Button to Switch Between Email and Phone */}
+                  <ToggleButtonGroup
+                    value={inputType}
+                    exclusive
+                    onChange={(_, newType) => {
+                      if (newType !== null) {
+                        handleSwitchType(newType);
+                      }
+                    }}
+                    fullWidth
+                    size="small"
+                    sx={{ mb: 1 }}
+                  >
+                    <ToggleButton value="email" aria-label="email">
+                      {t('Global.Label.email')}
+                    </ToggleButton>
+                    <ToggleButton value="phone" aria-label="phone">
+                      {t('Global.Label.phone')}
+                    </ToggleButton>
+                  </ToggleButtonGroup>
+
+                  {/* Single Input Field - Conditionally render based on inputType */}
+                  {inputType === 'email' ? (
+                    <TextField
+                      label={t('Global.Label.email')}
+                      {...register('email')}
+                      fullWidth
+                      type="email"
+                      InputProps={{
+                        endAdornment: (
+                          ICONS.SocialIcons.gmail
+
+
+                        ),
+                      }}
+                    />
+                  ) : (
+                    <TextField
+                      label={t('Global.Label.phone')}
+                      {...register('phone')}
+                      fullWidth
+                      type="tel"
+                      InputProps={{
+                        startAdornment: (
+                          ICONS.SocialIcons.phone
+                        ),
+                        // endAdornment: (
+                        //     <TextField value="966+" disabled sx={{ width: 95 }} />
+                        // ),
+                      }}
+                    />
+                  )}
+
+                  <Button type="submit" variant="contained" fullWidth color='primary'>
+                    {t('Pages.Auth.login_submit')}
+                  </Button>
+
+                </Stack>
+                <Stack>
+
+
+                  <Typography variant="caption" mx={0.2} sx={{ textAlign: 'center', mt: 2 }}>
+                    {t('Label.Donot_account')}
+                    <Button
+                      style={{ fontSize: '12px', color: 'blue' }}
+                      onClick={() => setOpenRe(true)}
+                    >
+                      {t('Button.creat_account')}
+                    </Button>
+
                   </Typography>
                 </Stack>
-
-                {/* FORM */}
-                <FormProvider methods={methods} onSubmit={onSubmit}>
-                  {renderForm}
-                </FormProvider>
-
-                {/* Register link */}
-                <Typography variant="caption" mx={0.2} sx={{ textAlign: 'center', mt: 2, mb: 2 }}>
-                  {t('Label.Donot_account')}
-
-                  <Button
-                    // href="/auth/jwt/register"
-                    style={{ fontSize: '12px', color: 'blue' }}
-                    onClick={() => setOpenRe(true)}
-                  >
-                    {t('Button.creat_account')}
-                  </Button>
+              </form>
+            ) : (
+              <Stack spacing={2}>
+                <Typography variant="body2" textAlign="center">
+                  {t('Label.we_sent_code')} <b>{loginMeta?.value}</b> {t('Label.please_enter_code')}
                 </Typography>
-              </Box>
-            </Container>
-          </Box>
-        </DialogContent>
-      </Dialog>
+
+                <OtpVerificationInputs
+                  otp={otp}
+                  setOtp={setOtp}
+                  disabled={false}
+                />
+
+                <Button
+                  variant="contained"
+                  fullWidth
+                  onClick={verifyOtp}
+                  disabled={otp.join('').length < 4}
+                >
+                  {t('Pages.Auth.verify_otp')}
+                </Button>
+                <Stack>
+
+                  <Typography
+                    variant="body2"
+                    textAlign="center"
+                    sx={{ color: secondsLeft > 0 ? 'primary.main' : 'error.main' }}
+                  >
+                    {secondsLeft > 0
+                      // ? `ينتهي الكود خلال ${secondsLeft} ثانية`
+                      ? `${t('Label.check_resend')} ${secondsLeft} ${t('Label.second')} `
+                      : t('Label.check_resend')}
+                  </Typography>
+
+                    <Typography textAlign="center">
+                      <span>{t('Label.donot_code')}</span>
+                      <Button
+                        variant="text"
+                        color='primary'
+                        disabled={isTimerRunning}
+                        onClick={() => {
+                          setSecondsLeft(60);
+                          setIsTimerRunning(true);
+                          onSubmit({ email:loginMeta?.value || '', phone: loginMeta?.value || '' });
+                        }}
+                      >
+                        {t('Label.resend_code')}
+                      </Button>
+                    </Typography>
+
+                </Stack>
+
+                <Button
+                  variant="text"
+                  onClick={() => {
+                    setStep(1);
+                    setOtp(Array(4).fill(''));
+                  }}
+                >
+                  {t('Global.Action.back')}
+                </Button>
+              </Stack>
+            )}
+          </DialogContent>
+
+          {/* <LoginBYPhoneView /> */}
+        </Box>
+      </Container>
       <JwtRegisterDialog open={openRe} onClose={() => setOpenRe(false)} />
-    </>
+
+    </Dialog>
+
+          <SelectedMethod
+            open={showPostVerificationSelection}
+            onClose={() => {
+              setShowPostVerificationSelection(false);
+              handleClose();
+            }}
+            onConfirm={(data) => {
+              console.log('Post-verification curriculum selection:', data);
+              setShowPostVerificationSelection(false);
+              // Redirect to curricula after selection
+              window.location.href = '/curricula';
+            }}
+          />
+          </>
   );
 }

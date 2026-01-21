@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import { bgBlur } from 'src/theme/css';
 import AppBar from '@mui/material/AppBar';
@@ -14,10 +14,14 @@ import { useSettingsContext } from 'src/components/settings';
 import { useRouter } from 'next/dist/client/components/navigation';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
 
+import { useAuthContext } from 'src/auth/hooks';
+import { ACCESS_TOKEN } from 'src/auth/constants';
+
 import { LogoText } from './logo-text';
 import { HEADER } from '../config-layout';
 import { AuthButtons } from './auth-buttons';
 import AccountPopover from '../common/account-popover';
+import Cookies from 'js-cookie';
 
 // ----------------------------------------------------------------------
 
@@ -29,6 +33,36 @@ export default function Header() {
 
   const settings = useSettingsContext();
   const [isSignIn, setIsSignIn] = useState(false);
+  const [hasAccessToken, setHasAccessToken] = useState(false);
+
+  const { authenticated, user } = useAuthContext();
+
+  useEffect(() => {
+    // Check for access token in localStorage
+    const checkAccessToken = () => {
+      if (typeof window !== 'undefined') {
+        const token = localStorage.getItem(ACCESS_TOKEN)||Cookies.get(ACCESS_TOKEN);
+        setHasAccessToken(!!token);
+      }
+    };
+
+    checkAccessToken();
+
+    // Listen for storage changes (in case token is added/removed in other tabs)
+    const handleStorageChange = () => {
+      checkAccessToken();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also check periodically in case localStorage is changed programmatically
+    const interval = setInterval(checkAccessToken, 500);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, [authenticated]); // Re-check when authenticated state changes
 
   const isNavHorizontal = settings.themeLayout === 'horizontal';
 
@@ -48,19 +82,19 @@ export default function Header() {
 
   const renderContent = (
     <Box width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
-      <Link href="/ar/lisson" style={{ textDecoration: 'none' }}>
+      <Link href="/ar/curricula" style={{ textDecoration: 'none' }}>
         <Box sx={{ display: 'flex', cursor: 'pointer' }}>
           <LogoText {...{ lgUp }} />
         </Box>
       </Link>
       {isLanding ? (
         <AuthButtons changeSignIn={setIsSignIn} />
-      ) : (
+      ) : hasAccessToken ? (
         <Box display="flex" alignItems="center" gap={1.5} pt={0.5}>
           <Link href="/ar/courses/favorites/">
             <IconButton>
-  <FavoriteIcon sx={{ color: cleanPath === '/ar/courses/favorites' ? 'red' : 'inherit' }} />
-</IconButton>
+              <FavoriteIcon sx={{ color: cleanPath === '/ar/courses/favorites' ? 'red' : 'inherit' }} />
+            </IconButton>
           </Link>
 
           <Link href="/ar/cart/">
@@ -71,21 +105,9 @@ export default function Header() {
 
           <AccountPopover />
         </Box>
+      ) : (
+        <AuthButtons changeSignIn={setIsSignIn} />
       )}
-
-      {/* <Box sx={{ maxWidth: '150px' }}>
-      </Box> */}
-      {/* <Stack
-        flexGrow={1}
-        direction="row"
-        alignItems="center"
-        justifyContent="flex-end"
-        spacing={{ xs: 0.5, sm: 1 }}
-      >
-        <LanguagePopover />
-
-        <AccountPopover />
-      </Stack> */}
     </Box>
   );
 

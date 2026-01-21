@@ -1,6 +1,9 @@
+
+
+
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -22,281 +25,426 @@ import {
 } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { primary } from 'src/theme/palette';
+import { editData, getData } from 'src/utils/crud-fetch-api';
+import { endpoints } from 'src/utils/axios';
+import { useAuthContext } from 'src/auth/hooks';
+import { useRouter } from 'next/dist/client/components/navigation';
 
 interface Props {
   open: boolean;
   onClose: () => void;
-  onConfirm: (data: { country: string; type: string; stage: string; class: string }) => void; // تم إضافة هذا
-}
-export default function SelectedMethod({ open, onClose, onConfirm }: Props) {
-  const [opened, setOpened] = useState(true);
-  const [step, setStep] = useState(0);
+  onConfirm: (data: {
 
-  // لحفظ القيم المختارة
-  const [selectedCountry, setSelectedCountry] = useState('');
-  const [selectedType, setSelectedType] = useState('');
-  const [selectedStage, setSelectedStage] = useState('');
-  const [selectedClass, setSelectedClass] = useState('');
+    EducationApproachTypeStageGradeId
+    : string;
+  }) => void;
+}
+
+export default function SelectedMethod({
+  open,
+  onClose,
+  onConfirm,
+}: Props) {
+  const router = useRouter();
+
+  const [step, setStep] = useState(0);
 
   const steps = ['المنهج', 'نوع المنهج', 'المرحلة', 'الصف'];
 
   const next = () => setStep((s) => Math.min(s + 1, 3));
   const prev = () => setStep((s) => Math.max(s - 1, 0));
 
-  const countries = [
-    { name: 'مصري', flag: 'https://flagcdn.com/w40/eg.png' },
-    { name: 'إماراتي', flag: 'https://flagcdn.com/w40/ae.png' },
-    { name: 'سعودي', flag: 'https://flagcdn.com/w40/sa.png' },
-    { name: 'كويتي', flag: 'https://flagcdn.com/w40/kw.png' },
-  ];
-  const handleSubmit = () => {
-    onConfirm({
-      country: selectedCountry,
-      type: selectedType,
-      stage: selectedStage,
-      class: selectedClass,
-    });
+  // القيم المختارة
+  const [selectedTypeId, setSelectedTypeId] = useState('');
+  const [selectedTypeMapId, setSelectedTypeMapId] = useState('');
+  const [selectedTypeStageId, setSelectedTypeStageId] = useState('');
+  const [selectedTypeStageGradeId, setSelectedTypeStageGradeId] =
+    useState('');
 
-    // onClose(); // إغلاق القائمة بعد الإرسال
+  // بيانات الـ API
+  const [type, setType] = useState<any[]>([]);
+  const [typeMap, setTypeMap] = useState<any[]>([]);
+  const [typeStage, setTypeStage] = useState<any[]>([]);
+  const [typeStageGrade, setTypeStageGrade] = useState<any[]>([]);
+
+  // ======================
+  // تحميل المناهج
+  // ======================
+  useEffect(() => {
+    const fetchType = async () => {
+      try {
+        const res = await getData<any>(
+          endpoints.EducationApproach.type
+        );
+
+
+        if (res?.success && Array.isArray(res?.data?.items)) {
+          setType(res.data.items);
+        } else {
+          setType([]);
+        }
+      } catch (error) {
+        console.error('Error fetching types:', error);
+      }
+    };
+
+    fetchType();
+  }, []);
+
+
+  // ======================
+  // تحميل نوع المنهج حسب المنهج المختار
+  // ======================
+  useEffect(() => {
+    if (!selectedTypeId) return;
+
+    const fetchTypeMap = async () => {
+      try {
+        const res = await getData<any>(
+          `${endpoints.EducationApproach.typeMap}?educationApproachId=${selectedTypeId}`
+        );
+
+        if (res?.success && Array.isArray(res?.data?.items)) {
+          setTypeMap(res.data.items);
+        } else {
+          setTypeMap([]);
+        }
+      } catch (error) {
+        console.error('Error fetching type map:', error);
+      }
+    };
+
+    // إعادة التهيئة عند التغيير
+    setSelectedTypeMapId('');
+    setSelectedTypeStageId('');
+    setSelectedTypeStageGradeId('');
+    setTypeStage([]);
+    setTypeStageGrade([]);
+
+    fetchTypeMap();
+  }, [selectedTypeId]);
+
+  // ======================
+  // تحميل المراحل حسب نوع المنهج
+  // ======================
+  useEffect(() => {
+    if (!selectedTypeMapId) return;
+
+    const fetchTypeStages = async () => {
+      try {
+        const res = await getData<any>(
+          `${endpoints.EducationApproach.typeStage}?educationApproachTypeMapId=${selectedTypeMapId}`
+        );
+
+
+        if (res?.success && Array.isArray(res?.data?.items)) {
+          setTypeStage(res.data.items);
+        } else {
+          setTypeStage([]);
+        }
+      } catch (error) {
+        console.error('Error fetching stages:', error);
+      }
+    };
+
+    setSelectedTypeStageId('');
+    setSelectedTypeStageGradeId('');
+    setTypeStageGrade([]);
+
+    fetchTypeStages();
+  }, [selectedTypeMapId]);
+
+
+  // ======================
+  // تحميل الصفوف حسب المرحلة
+  // ======================
+  useEffect(() => {
+    if (!selectedTypeStageId) return;
+
+    const fetchTypeStagesGrade = async () => {
+      try {
+        const res = await getData<any>(
+          `${endpoints.EducationApproach.typeStageGrade}?educationApproachTypeStageId=${selectedTypeStageId}`
+        );
+
+        if (res?.success && Array.isArray(res?.data?.items)) {
+          setTypeStageGrade(res.data.items);
+        } else {
+          setTypeStageGrade([]);
+        }
+      } catch (error) {
+        console.error('Error fetching grades:', error);
+      }
+    };
+
+    fetchTypeStagesGrade();
+  }, [selectedTypeStageId]);
+
+
+  
+
+
+  const handleSubmit = async () => {
+    try {
+      if (!selectedTypeStageGradeId) {
+        alert('الرجاء اختيار الصف أولاً');
+        return;
+      }
+
+      // ⭐ إرسال كـ query parameters كما هو مطلوب من الـ backend
+      const formData = new FormData();
+      formData.append('EducationApproachTypeStageGradeId', selectedTypeStageGradeId);
+
+      const response = await editData(
+        endpoints.profile.update,
+        'PUT',
+        formData,
+      );
+
+
+      if (response.success) {
+        alert('تم ✅');
+        router.push('/curricula');
+        onClose();
+      } else {
+        alert(`خطأ: ${response.error}`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
-  console.log();
+
+
+
   return (
-    <>
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
-        <DialogContent
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
+      <DialogContent
+        sx={{
+          position: 'relative',
+          textAlign: 'center',
+          minHeight: '525px',
+          padding: '20px 24px',
+        }}
+      >
+        {/* زر الرجوع */}
+        <Stack sx={{ alignItems: 'start' }}>
+          <IconButton onClick={prev}>
+            <ArrowForwardIcon />
+          </IconButton>
+        </Stack>
+
+        {/* Progress */}
+        <LinearProgress
+          variant="determinate"
+          value={(step / (steps.length - 1)) * 100}
           sx={{
-            position: 'relative',
-            textAlign: 'center',
-            minHeight: '525px',
-            justifyContent: 'center',
-            padding: '20px 24px',
+            height: 6,
+            borderRadius: 5,
+            mb: 2,
           }}
-        >
-          {/* زر السهم ← رجوع فقط */}
-          {/* {step > 0 && ( */}
-          <Stack sx={{ alignItems: 'start' }}>
-            <IconButton
-              onClick={prev}
-              sx={
-                {
-                  //   position: 'absolute',
-                  //   left: 10,
-                  //   top: 10,
-                  // bgcolor: '#f5f5f5',
-                }
-              }
+        />
+
+        <Stepper activeStep={step} alternativeLabel sx={{ mb: 3 }}>
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+
+        {/* ===== الخطوة 1 ===== */}
+        {step === 0 && (
+          <Box>
+            <Typography variant="h5" mb={3}>
+              اختر المنهج الذي تدرسه
+            </Typography>
+
+            <Grid container spacing={2}>
+              {type.map((c) => (
+                <Grid xs={6} key={c.id}>
+                  <Card
+                    onClick={() => setSelectedTypeId(c.id)}
+                    sx={{
+                      cursor: 'pointer',
+                      border:
+                        selectedTypeId === c.id
+                          ? '2px solid #1976d2'
+                          : '2px solid #e0e0e0',
+                      borderRadius: '12px',
+                      transition: '0.2s',
+                      '&:hover': {
+                        border: '2px solid #1976d2',
+                        transform: 'scale(1.03)',
+                      },
+                      width: 175,
+                      height: 100,
+                      m: 1,
+                    }}
+                  >
+                    <CardActionArea>
+                      <CardContent sx={{ py: 2 }}>
+                        <img src={c.logo} alt="" width={45} />
+                        <Typography mt={1} fontWeight="bold">
+                          {c.name}
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{
+                mt: 3,
+                backgroundColor: primary.main,
+                ':hover': { backgroundColor: primary.lighter },
+              }}
+              disabled={!selectedTypeId}
+              onClick={next}
+              size="large"
             >
-              <ArrowForwardIcon />
-            </IconButton>
-          </Stack>
-          {/* )} */}
+              التالي
+            </Button>
+          </Box>
+        )}
 
-          {/* Stepper */}
-          <LinearProgress
-            variant="determinate"
-            value={(step / (steps.length - 0)) * 100}
-            sx={{
-              height: 6,
-              borderRadius: 5,
-              mb: 2,
-            }}
-          />
-          <Stepper activeStep={step} alternativeLabel sx={{ mb: 3 }}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
+        {/* ===== الخطوة 2 ===== */}
+        {step === 1 && (
+          <Box>
+            <Typography variant="h6" mb={2}>
+              نوع المنهج؟
+            </Typography>
 
-          {/* ======== الخطوة 1: اختيار الدولة ======== */}
-          {step === 0 && (
-            <Box>
-              <Typography variant="h5" mb={3}>
-                اختر المنهج الذي تدرسه
-              </Typography>
-
-              <Grid container spacing={2} sx={{}}>
-                {countries.map((c) => (
-                  <Grid xs={6} key={c.name}>
-                    <Card
-                      onClick={() => setSelectedCountry(c.name)}
-                      sx={{
-                        cursor: 'pointer',
-                        border:
-                          selectedCountry === c.name ? '2px solid #1976d2' : '2px solid #e0e0e0',
-                        borderRadius: '12px',
-                        transition: '0.2s',
-                        '&:hover': {
-                          border: '2px solid #1976d2',
-                          transform: 'scale(1.03)',
-                        },
-                        width: 175,
-                        height: 100,
-                        m: 1,
-                      }}
-                    >
-                      <CardActionArea>
-                        <CardContent sx={{ py: 2 }}>
-                          <img src={c.flag} alt="" width={45} />
-                          <Typography mt={1} fontWeight="bold">
-                            {c.name}
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                    </Card>
-                  </Grid>
-                ))}
-              </Grid>
-
-              <Button
-                variant="contained"
-                fullWidth
+            {typeMap.map((item) => (
+              <FormControlLabel
+                key={item.id}
+                control={
+                  <Radio
+                    checked={selectedTypeMapId === item.id}
+                    onChange={() =>
+                      setSelectedTypeMapId(item.id)
+                    }
+                  />
+                }
+                label={item.educationApproachTypeName}
                 sx={{
-                  mt: 3,
-                  backgroundColor: primary.main,
-                  ':hover': { backgroundColor: primary.lighter },
+                  display: 'flex',
+                  px: 2,
+                  borderRadius: '8px',
+                  mb: 2,
+                  height: 50,
+                  ':hover': { backgroundColor: primary.light },
                 }}
-                disabled={!selectedCountry}
-                onClick={next}
-                size="large"
-                // color="primary"
-              >
-                التالي
-              </Button>
-            </Box>
-          )}
+              />
+            ))}
 
-          {/* ======== الخطوة 2: نوع المنهج ======== */}
-          {step === 1 && (
-            <Box>
-              <Typography variant="h6" mb={2}>
-                نوع المنهج؟
-              </Typography>
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{ mt: 3 }}
+              disabled={!selectedTypeMapId}
+              onClick={next}
+              size="large"
+            >
+              التالي
+            </Button>
+          </Box>
+        )}
 
-              {['علمي', 'أدبي', 'متقدم'].map((item) => (
-                <FormControlLabel
-                  key={item}
-                  control={
-                    <Radio checked={selectedType === item} onChange={() => setSelectedType(item)} />
-                  }
-                  label={item}
-                  sx={{
-                    display: 'flex',
-                    // justifyContent: 'space-between',
-                    px: 2,
-                    // border: '1px solid #ddd',
-                    borderRadius: '8px',
-                    mb: 2,
-                    height: 50,
-                    ':hover': { backgroundColor: primary.light },
-                  }}
-                />
-              ))}
+        {/* ===== الخطوة 3 ===== */}
+        {step === 2 && (
+          <Box>
+            <Typography variant="h6" mb={2}>
+              اختر المرحلة
+            </Typography>
 
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{ mt: 3 }}
-                disabled={!selectedType}
-                onClick={next}
-                color="primary"
-                size="large"
-              >
-                التالي
-              </Button>
-            </Box>
-          )}
+            {typeStage.map((item) => (
+              <FormControlLabel
+                key={item.id}
+                control={
+                  <Radio
+                    checked={selectedTypeStageId === item.id}
+                    onChange={() =>
+                      setSelectedTypeStageId(item.id)
+                    }
+                  />
+                }
+                label={item.educationStageName}
+                sx={{
+                  display: 'flex',
+                  px: 2,
+                  borderRadius: '8px',
+                  mb: 2,
+                  height: 50,
+                  ':hover': { backgroundColor: primary.light },
+                }}
+              />
+            ))}
 
-          {/* ======== الخطوة 3: المرحلة ======== */}
-          {step === 2 && (
-            <Box>
-              <Typography variant="h6" mb={2}>
-                اختر المرحلة
-              </Typography>
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{ mt: 3 }}
+              disabled={!selectedTypeStageId}
+              onClick={next}
+              size="large"
+            >
+              التالي
+            </Button>
+          </Box>
+        )}
 
-              {['ابتدائي', 'إعدادي', 'ثانوي'].map((item) => (
-                <FormControlLabel
-                  key={item}
-                  control={
-                    <Radio
-                      checked={selectedStage === item}
-                      onChange={() => setSelectedStage(item)}
-                    />
-                  }
-                  label={item}
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'start',
-                    px: 2,
-                    // border: '1px solid #ddd',
-                    borderRadius: '8px',
-                    mb: 2,
-                    height: 50,
-                    ':hover': { backgroundColor: primary.light },
-                  }}
-                />
-              ))}
+        {/* ===== الخطوة 4 ===== */}
+        {step === 3 && (
+          <Box>
+            <Typography variant="h6" mb={2}>
+              اختر الصف
+            </Typography>
 
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{ mt: 3 }}
-                disabled={!selectedStage}
-                onClick={next}
-                color="primary"
-                size="large"
-              >
-                التالي
-              </Button>
-            </Box>
-          )}
+            {typeStageGrade.map((item) => (
+              <FormControlLabel
+                key={item.id}
+                control={
+                  <Radio
+                    checked={
+                      selectedTypeStageGradeId ===
+                      item.id
+                    }
+                    onChange={() =>
+                      setSelectedTypeStageGradeId(
+                        item.id
+                      )
+                    }
+                  />
+                }
+                label={item.educationGradeName}
+                sx={{
+                  display: 'flex',
+                  px: 2,
+                  borderRadius: '8px',
+                  mb: 2,
+                  height: 50,
+                  ':hover': { backgroundColor: primary.light },
+                }}
+              />
+            ))}
 
-          {/* ======== الخطوة 4: الصف ======== */}
-          {step === 3 && (
-            <Box>
-              <Typography variant="h6" mb={2}>
-                اختر الصف
-              </Typography>
-
-              {['الأول', 'الثاني', 'الثالث'].map((item) => (
-                <FormControlLabel
-                  key={item}
-                  control={
-                    <Radio
-                      checked={selectedClass === item}
-                      onChange={() => setSelectedClass(item)}
-                    />
-                  }
-                  label={item}
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'start',
-                    px: 2,
-                    // border: '1px solid #ddd',
-                    borderRadius: '8px',
-                    mb: 2,
-                    height: 50,
-                    ':hover': { backgroundColor: primary.light },
-                  }}
-                />
-              ))}
-
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{ mt: 3 }}
-                disabled={!selectedClass}
-                onClick={handleSubmit}
-                color="primary"
-                size="large"
-              >
-                تأكيد
-              </Button>
-            </Box>
-          )}
-        </DialogContent>
-      </Dialog>
-    </>
+            <Button
+              variant="contained"
+              fullWidth
+              sx={{ mt: 3 }}
+              disabled={!selectedTypeStageGradeId}
+              onClick={handleSubmit}
+              size="large"
+            >
+              تأكيد
+            </Button>
+          </Box>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 }

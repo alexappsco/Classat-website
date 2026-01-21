@@ -8,9 +8,9 @@ import { HOST_API, HOST_API_SHARED } from 'src/config-global';
 import { ACCESS_TOKEN } from '../auth/constants';
 // ----------------------------------------------------------------------
 
-const axiosInstance = axios.create({ baseURL: HOST_API });
+// const axiosInstance = axios.create({ baseURL: HOST_API });
 
-// Add a request interceptor
+// // Add a request interceptor
 // axiosInstance.interceptors.request.use(
 //   (config) => {
 //     config.headers['Content-Type'] = 'application/json';
@@ -30,7 +30,47 @@ const axiosInstance = axios.create({ baseURL: HOST_API });
 //     return Promise.reject({ message, status });
 //   }
 // );
-// export default axiosInstance;
+// export { axiosInstance };
+
+
+const axiosInstance = axios.create({
+  baseURL: HOST_API,
+});
+
+// Request interceptor
+axiosInstance.interceptors.request.use(
+  (config) => {
+    // خلي Axios يحدد النوع تلقائيًا
+    if (!(config.data instanceof FormData)) {
+      config.headers['Content-Type'] = 'application/json';
+    }
+
+    // ضيف التوكن لو موجود
+    const token =
+      typeof window !== 'undefined'
+        ? localStorage.getItem('accessToken')
+        : null;
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor
+axiosInstance.interceptors.response.use(
+  (response) => response, // رجّع الـ response كامل
+  (error) => {
+    // سيب الـ error زي ما هو
+    return Promise.reject(error);
+  }
+);
+
+export { axiosInstance };
+
 // ----------------------------------------------------------------------
 
 // export const getErrorMessage = (error: unknown): string => {
@@ -70,7 +110,7 @@ const apiClient: AxiosInstance = axios.create({
 });
 
 const SharedApiClient: AxiosInstance = axios.create({
-  baseURL: HOST_API_SHARED,
+  baseURL: process.env.NEXT_PUBLIC_HOST_API_SHARED,
   headers: {
     'Content-Type': 'application/json',
     'Accept-Language': Cookie.get('Language') ? Cookie.get('Language') : 'en',
@@ -79,13 +119,13 @@ const SharedApiClient: AxiosInstance = axios.create({
     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
   },
 });
-axios.interceptors.request.use(
-  (config) => {
-    config.headers['Accept-Language'] = Cookie.get('Language');
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+// axios.interceptors.request.use(
+//   (config) => {
+//     config.headers['Accept-Language'] = Cookie.get('Language');
+//     return config;
+//   },
+//   (error) => Promise.reject(error)
+// );
 
 apiClient.interceptors.response.use(
   (response) => response,
@@ -99,6 +139,7 @@ SharedApiClient.interceptors.response.use(
 
 export default apiClient;
 export { apiClient, SharedApiClient };
+
 
 export const baseUrl = HOST_API;
 export const sharedBaseUrl = HOST_API_SHARED;
@@ -158,13 +199,36 @@ export const getErrorMessage = (error: any): string => {
   return first || 'Something went wrong';
 };
 
+
+
+
 export const endpoints = {
   auth: {
-    login: '/auth/email-login',
-    register: '/users/register',
-    forgetPassword: '/users/request-forget-password',
-    verifyforgetPassword: '/users/verify-forget-password',
-    verifyOtpLogin: '/users/verify-phone-login',
-    sendQuestions: '/users/questions',
+    logout: '/shared/auth/logout',
+    sendOtp: '/shared/auth/otp/send',
+    verifyOtp: '/shared/auth/otp/verify',
+    verifyOtpLogin: '/shared/auth/otp/verify',
+    register: '/students/register',
+    refreshToken: '/shared/auth/refresh-token',
+    // sendOtp: '/shared/auth/send-otp',
+    // verifyOtp: '/shared/auth/verify-otp',
+    forgetPassword: '/shared/users/request-forget-password',
+    // verifyforgetPassword: '/shared/users/verify-forget-password',
+    // sendQuestions: '/shared/users/questions',
+  },
+  country:{
+    get: '/shared/location/countries',
+  },
+  EducationApproach:
+  {
+    type:'/shared/education/approach-types',
+    typeMap:'/shared/education/mappings/approach-type',
+    typeStage:'/shared/education/mappings/approach-type-stages',
+    typeStageGrade:'/shared/education/mappings/approach-type-stage-grades',
+
+  },
+  profile: {
+    get: '/students/profile',
+    update: '/students/profile/update',
   },
 };

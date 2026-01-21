@@ -1,4 +1,4 @@
-import Courses from 'src/sections/lisson/view';
+import Courses from 'src/sections/curricula/view';
 
 export default async function Page() {
   return <Courses />;

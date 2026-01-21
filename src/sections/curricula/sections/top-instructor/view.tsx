@@ -7,7 +7,7 @@ import Hero from '../Hero';
 import Categories from '../categories';
 import FiltersBar from '../FiltersBar';
 import LiveSessionsSection from '../live-sessions/LiveSessionSection';
-import InstructorsSection from '../top-instructor/TopInstructorsSection';
+import InstructorsSection from './TopInstructorsSection';
 import TeachersFilters from './filterTeacher';
 
 export default function TopTeacher() {

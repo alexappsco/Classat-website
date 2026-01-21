@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import Image from 'src/components/image';
 import { useResponsive } from 'src/hooks/use-responsive';
 import JwtRegisterDialog from 'src/sections/auth/jwt-register-view';
+import LoginView from 'src/sections/auth/login-view';
+import LoginDialog from 'src/sections/auth/login-with-email';
 import LoginBYEmailDialog from 'src/sections/auth/login-with-email';
 import { primary } from 'src/theme/palette';
 
@@ -48,7 +50,7 @@ export const AuthButtons = ({ changeSignIn }: any) => {
       >
         {smDown ? <Image src="/assets/header/register-icon.png" /> : 'تسجيل حساب جديد'}
       </Button>
-      <LoginBYEmailDialog open={open} onClose={() => setOpen(false)} />
+      <LoginDialog open={open} onClose={() => setOpen(false)} />
       <JwtRegisterDialog open={openRe} onClose={() => setOpenRe(false)} />
     </Stack>
   );

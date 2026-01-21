@@ -74,7 +74,8 @@
     "logout": "Logout",
     "upcoming_sessions": "Upcoming sessions",
     "live_broadcasts": "Live Broadcasts",
-    "lisson": "Curricula",
+    "curricula": "Curricula",
+    "Curricula": "Curricula",
     "courses": "Training courses",
 
     "categories": "Categories",
@@ -109,6 +110,7 @@
   "Global": {
     "title": "Classat",
     "comma": ",",
+    "or": "OR",
     "Date": {
       "sunday": "Sunday",
       "monday": "Monday",
@@ -234,6 +236,9 @@
       "finish": "Finish",
       "register": "Register"
     },
+    "Actions": {
+      "confirm": "Confirm"
+    },
     "Validation": {
       "var_required": "{var} is Required",
       "var_exists": "{var} already exists",
@@ -269,7 +274,13 @@
       "required": "This field is required",
       "vat_min": "VAT must be at least 0.01",
       "vat_max": "VAT cannot exceed 1.00",
-      "vat_invalid": "Please enter a valid VAT percentage between 0.01 and 1.00"
+      "vat_invalid": "Please enter a valid VAT percentage between 0.01 and 1.00",
+      "invalid_email": "Invalid email address",
+      "phone_or_email_required": "Phone or Email is required",
+      "full_name_required": "First name required",
+      "parent_phone_required": "Parent phone number is required",
+      "country_required": "Country is required",
+      "learning_preference_required": "Learning preference required"
     },
     "Sections": {
       "DeleteDialog": {
@@ -315,7 +326,16 @@
       "reset_password": "Reset Password",
       "otp_sent_to": "Enter the OTP code sent to the email: {email}",
       "resend_otp": "Resend OTP",
-      "login_redirect": "Sign in instead"
+      "login_redirect": "Sign in instead",
+      "verify_sms_title": "Verify OTP",
+      "verify_sms_text": "Code sent to {phoneNumberMasked}",
+      "code_expires_in": "Expires in",
+      "otp_expired_please_resend": "OTP expired, please resend",
+      "otp_must_be_4_digits": "OTP must be 4 digits",
+      "code_sent_successfully": "Code sent successfully",
+      "no_code": "Didn't receive code?",
+      "resend_code": "Resend",
+      "back_to_login": "Back to login"
     },
     "Home": {
       "min_free_shipping": "Minimum free shipping",
@@ -795,6 +815,7 @@
     "create_an_account": "Create an account",
     "email_address": "Email address",
     "phone": "Number Phone",
+    "country": "Country",
     "phone_Parent": "Parent's number",
     "full_name": "full name",
     "return_to_sign_in": "Return to sign in",
@@ -834,11 +855,16 @@
     "days": "days",
     "curriculum": "curriculum",
     "Donot_account": "Don't have an account?",
-    "we_sent_code": "We have sent you a 6-digit verification code to",
-    "please_enter_code": "Please enter the code in the box below to confirm your email address.",
-    "check_resend": "Didn't receive the email? Please check your spam folder, or resend the code within 60 seconds.",
+    "we_sent_code": "We have sent you a 4-digit verification code to",
+    "please_enter_code": "Please enter the code in the box below to confirm .",
+    "please_verify_registration": "Please verify your registration",
+    "please_verify_login": "Please verify your login",
+    "check_resend": "Didn't receive the email? Please check your spam folder, or resend the code within ",
     "donot_code": "Don't have a code?",
-    "resend_code": "Resend code"
+    "resend_code": "Resend code",
+    "resending": "Sending",
+    "second": "Second"
+
   },
   "Button": {
     "creat_account": "Create Account",

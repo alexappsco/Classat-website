@@ -15,7 +15,7 @@
 // import SearchIcon from '@mui/icons-material/Search';
 // import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-// import LiveSessionCard from 'src/sections/lisson/live-sessions/LiveSessionCard';
+// import LiveSessionCard from 'src/sections/curricula/live-sessions/LiveSessionCard';
 
 // const UPCOMING_SESSIONS = [
 //   {

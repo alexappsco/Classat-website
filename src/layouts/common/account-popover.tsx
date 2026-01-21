@@ -151,7 +151,7 @@ import Typography from '@mui/material/Typography';
 
 import { useRouter } from 'src/routes/hooks';
 
-import { useAuthContext } from 'src/auth/hooks';
+// import { useAuthContext } from 'src/auth/hooks';
 
 import { varHover } from 'src/components/animate';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
@@ -161,6 +161,7 @@ import { paths } from 'src/routes/paths';
 import { Button } from '@mui/material';
 
 import Link from 'next/link';
+import { useJwtAuth } from 'src/auth/jwt-context';
 // ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
@@ -170,26 +171,26 @@ export default function AccountPopover() {
   const router = useRouter();
   const t = useTranslations();
 
-  const { logout } = useAuthContext();
+  const { logout } =useJwtAuth();
 
   const popover = usePopover();
 
-  // const handleLogout = async () => {
-  //   try {
-  //     await logout();
-  //     popover.onClose();
-  //     router.replace(paths.auth.login);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
   const handleLogout = async () => {
     try {
-      router.replace('/');
+      await logout();
+      popover.onClose();
+      router.replace(paths.auth.login);
     } catch (error) {
       console.error(error);
     }
   };
+  // const handleLogout = async () => {
+  //   try {
+  //     router.replace('/');
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const handleClickItem = (path: string) => {
     popover.onClose();
@@ -197,34 +198,28 @@ export default function AccountPopover() {
   };
   const OPTIONS = [
     // {
-    //   label: t('Nav.main'),
-    //   linkTo: '/lisson',
-    //   icon:'/favicon/das/!.svg'
+    //   label: t('Nav.curricula'),
+    //   linkTo: '/curricula',
+    //   icon:'/favicon/das/book.svg'
+    // },
+    // {
+    //   label: t('Nav.courses'),
+    //   linkTo: '/courses',
+    //   icon:'/favicon/das/Vector.svg'
 
     // },
-    {
-      label: t('Nav.lisson'),
-      linkTo: '/lisson',
-      icon:'/favicon/das/book.svg'
-    },
-    {
-      label: t('Nav.courses'),
-      linkTo: '/courses',
-      icon:'/favicon/das/Vector.svg'
+    // {
+    //   label: t('Nav.upcoming_sessions'),
+    //   linkTo: '/upcoming-sessions',
+    //   icon:'/favicon/das/setting.svg'
 
-    },
-    {
-      label: t('Nav.upcoming_sessions'),
-      linkTo: '/upcoming-sessions',
-      icon:'/favicon/das/setting.svg'
+    // },
+    // {
+    //   label: t('Nav.mycourses'),
+    //   linkTo: '/mycourses',
+    //   icon:'/favicon/das/book.svg'
 
-    },
-    {
-      label: t('Nav.mycourses'),
-      linkTo: '/mycourses',
-      icon:'/favicon/das/book.svg'
-
-    },
+    // },
     {
       label: t('Pages.ContactUs.title'),
       linkTo: paths.controlPanel.contactUs.list,
@@ -290,7 +285,7 @@ export default function AccountPopover() {
 
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 200, p: 0 }}>
         
-        <Button sx={{ p: 1,display:'flex' }} onClick={() => handleClickItem('/profile')} >
+        {/* <Button sx={{ p: 1,display:'flex' }} onClick={() => handleClickItem('/profile')} >
 
         <Avatar
           // src={user?.avatar}
@@ -307,17 +302,15 @@ export default function AccountPopover() {
         </Avatar>
       <Box sx={{justifyItems:'start'}}>
           <Typography variant="subtitle2" noWrap >
-            {/* {user?.name} */}
             عبدالله محمد
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {/* {user?.email} */}
             abdullah@gmail.com
           </Typography>
         </Box>  
-        </Button>
-<Divider/>
+        </Button> */}
+{/* <Divider/> */}
         {/* <Divider sx={{ borderStyle: 'dashed' }} /> */}
 
         <Stack >
