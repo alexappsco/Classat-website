@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 
 import Categories from '../categories';
 import FiltersBar from '../FiltersBar';
-import LiveSessionsSection from '../live-sessions/LiveSessionSection';
+import LiveSessionsSection from './LiveSessionSection';
 import InstructorsSection from '../top-instructor/TopInstructorsSection';
 import Hero from '../Hero';
 import TimerCard from 'src/components/timer/TimerShow';

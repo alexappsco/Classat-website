@@ -49,5 +49,6 @@ export const ICONS = {
     telegram:icon('social-icons/ic_telegram'),
     snapchat:icon('social-icons/ic_snapchat'),
     tiktok:icon('social-icons/ic_tiktok'),
+    phone:icon('social-icons/call'),
   }
 };

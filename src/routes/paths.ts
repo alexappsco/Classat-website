@@ -7,7 +7,7 @@ const ROOTS = {
 export const paths = {
   // AUTH
   auth: {
-    login: '/auth/login',
+    login: '/',
     forgotPassword: '/auth/forgot-password',
     register: `${ROOTS.AUTH}/jwt/register`,
 

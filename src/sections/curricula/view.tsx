@@ -33,7 +33,7 @@ export default function Courses() {
       country: ' المنهج المصري',
       date: '13/11/2025',
       time: '3:00 م',
-      href:'/lisson/details-mathod'
+      href:'/curricula/details-mathod'
     },
     {
       img: '/favicon/teacher1.png',
@@ -43,7 +43,7 @@ export default function Courses() {
       country: ' المنهج الإماراتي',
       date: '12/11/2025',
       time: '2:00 م',
-      href:'/lisson/details-mathod'
+      href:'/curricula/details-mathod'
 
     },
     {
@@ -54,7 +54,7 @@ export default function Courses() {
       country: ' المنهج المصري',
       date: '13/11/2025',
       time: '3:00 م',
-      href:'/lisson/details-mathod'
+      href:'/curricula/details-mathod'
 
     },
     {
@@ -65,7 +65,7 @@ export default function Courses() {
       country: ' المنهج المصري',
       date: '13/11/2025',
       time: '3:00 م',
-      href:'/lisson/details-mathod'
+      href:'/curricula/details-mathod'
 
     },
   ];
@@ -156,7 +156,7 @@ export default function Courses() {
             <Button
               color="info"
               sx={{ lineHeight: 1 }}
-              // onClick={() => router.push('/lisson/live')}
+              // onClick={() => router.push('/curricula/live')}
             >
               الكل
               <span>
@@ -212,7 +212,7 @@ export default function Courses() {
             <Button
               color="info"
               sx={{ lineHeight: 1 }}
-              onClick={() => router.push('/lisson/topTeacher')}
+              onClick={() => router.push('/curricula/topTeacher')}
             >
               الكل
               <span>

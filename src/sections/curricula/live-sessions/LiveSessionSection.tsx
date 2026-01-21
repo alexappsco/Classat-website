@@ -74,7 +74,7 @@ export default function LiveSessionsSection() {
           {/* </Grid> */}
 
           {/* Action Button (Left side in RTL) */}
-          <Button color="info" sx={{ lineHeight: 1 }} onClick={() => router.push('/lisson/live')}>
+          <Button color="info" sx={{ lineHeight: 1 }} onClick={() => router.push('/curricula/live')}>
             الكل
             <span>
               <LeftIcon />

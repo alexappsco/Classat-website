@@ -78,6 +78,12 @@ export const setSession = ({
     Cookies.set('accessTokenExpireAt', accessTokenExpireAt);
     Cookies.set('refreshTokenExpireAt', refreshTokenExpireAt);
 
+    // Keep a copy in localStorage for client-side usage (non-authoritative)
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+    localStorage.setItem('accessTokenExpireAt', accessTokenExpireAt);
+    localStorage.setItem('refreshTokenExpireAt', refreshTokenExpireAt);
+
     axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
     const now = Date.now();
     const accessExpTime = new Date(accessTokenExpireAt).getTime();
@@ -105,6 +111,10 @@ export const setSession = ({
     Cookies.remove('refreshTokenExpireAt');
     Cookies.remove('user');
     delete axios.defaults.headers.common.Authorization;
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('accessTokenExpireAt');
+    localStorage.removeItem('refreshTokenExpireAt');
     clearTimeout(accessTokenTimer);
     clearTimeout(refreshTokenTimer);
   }

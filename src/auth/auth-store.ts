@@ -8,7 +8,7 @@ type AuthStore = {
   loading: boolean;
   authenticated: boolean;
   user: any | null;
-  login: (credentials: { email: string; password: string }) => Promise<void | { error: string }>;
+  login: (credentials: { email: string ; phone: string }) => Promise<void | { error: string }>;
   verifyOtp: (otp: string) => Promise<void | { error: string }>;
   init: () => Promise<void | { accessTokenExp: number }>;
   logout: () => Promise<void>;
@@ -20,14 +20,14 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
   authenticated: false,
   user: null,
 
-   login: async ({ email, password }) => {
+   login: async ({ email, phone }) => {
     try {
       const credentials = {
         email,
-        password,
+        phone,
       };
 
-      const { user, accessToken, refreshToken } = await login(credentials);
+      const { user, accessToken, refreshToken } = await login(credentials.email, credentials.phone);
 
       await saveSession({ user, accessToken, refreshToken });
 

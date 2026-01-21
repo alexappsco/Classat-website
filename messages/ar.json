@@ -70,7 +70,8 @@
     "upcoming_sessions": "الجلسات القادمة",
     "live_broadcasts": "الدروس المباشرة",
     "main": "الرئيسية",
-    "lisson": "المناهج الدراسية",
+    "curricula": "المناهج الدراسية",
+    "Curricula": "المناهج الدراسية",
     "courses": "الدورات التدريبية",
     "categories": "الأقسام",
     "subcategories": "الأقسام الفرعية",
@@ -106,6 +107,7 @@
   "Global": {
     "title": "ثمار كلاسات",
     "comma": "،",
+    "or": "أو",
     "Date": {
       "sunday": "الأحد",
       "monday": "الإثنين",
@@ -230,6 +232,9 @@
       "finish": "اكتمال",
       "register": "تسجيل"
     },
+    "Actions": {
+      "confirm": "تأكيد"
+    },
     "Validation": {
       "var_required": "{var} مطلوب",
       "var_exists": "{var} موجود مسبقاً",
@@ -265,7 +270,13 @@
       "required": "هذا الحقل مطلوب",
       "vat_min": "يجب أن تكون نسبة الضريبة على الأقل 0.01",
       "vat_max": "لا يمكن أن تتجاوز نسبة الضريبة 1.00",
-      "vat_invalid": "الرجاء إدخال نسبة ضريبة صالحة بين 0.01 و 1.00"
+      "vat_invalid": "الرجاء إدخال نسبة ضريبة صالحة بين 0.01 و 1.00",
+      "invalid_email": "البريد الإلكتروني غير صالح",
+      "phone_or_email_required": "رقم الهاتف أو البريد الإلكتروني مطلوب",
+      "full_name_required": "الاسم الكامل مطلوب",
+      "parent_phone_required": "رقم هاتف الآب مطلوب",
+      "country_required": "الدولة مطلوبة",
+      "learning_preference_required": "فضلة التعلم مطلوبة"
     },
     "Sections": {
       "DeleteDialog": {
@@ -316,7 +327,16 @@
       "reset_password": "إعادة تعيين كلمة المرور",
       "otp_sent_to": "ادخل الرمز التأكيدي الذي تم إرساله إلى البريد الإلكتروني: {email}",
       "resend_otp": "إعادة إرسال الرمز",
-      "login_redirect": "تسجيل الدخول بدلاً من ذلك"
+      "login_redirect": "تسجيل الدخول بدلاً من ذلك",
+      "verify_sms_title": "تحقق من رمز OTP",
+      "verify_sms_text": "تم إرسال الرمز إلى {phoneNumberMasked}",
+      "code_expires_in": "ينتهي خلال",
+      "otp_expired_please_resend": "انتهت صلاحية الرمز، يرجى إعادة الإرسال",
+      "otp_must_be_4_digits": "يجب أن يكون رمز OTP مكون من 4 أرقام",
+      "code_sent_successfully": "تم إرسال الرمز بنجاح",
+      "no_code": "لم تستلم الرمز؟",
+      "resend_code": "إعادة إرسال الرمز",
+      "back_to_login": "العودة إلى تسجيل الدخول"
     },
     "Home": {
       "min_free_shipping": "الحد الأدنى للشحن المجاني",
@@ -837,11 +857,15 @@
     "days": "يوم",
     "curriculum": "المنهج",
     "Donot_account": "ليس لديك حساب؟",
-    "we_sent_code": "لقد أرسلنا لك  رمز تأكيد مكون من 6 أرقام إلى",
-    "please_enter_code": " يرجى إدخال الرمز في المربع أدناه لتأكيد بريدك الإلكتروني",
-    "check_resend": "لم تستلم البريد الإلكتروني؟ يرجي التحقق من مجلد الرسائل الغير مرغوب فيها , أو إعادة إرسال الرمز خلال 60 ثانية.",
+    "we_sent_code": "لقد أرسلنا لك  رمز تأكيد مكون من 4 أرقام إلى",
+    "please_enter_code": " يرجى إدخال الرمز في المربع أدناه لتأكيد ",
+    "please_verify_registration": "الرجاء التحقق من تسجيلك",
+    "please_verify_login": "الرجاء التحقق من تسجيل الدخول",
+    "check_resend": "لم تستلم البريد الإلكتروني؟ يرجي التحقق من مجلد الرسائل الغير مرغوب فيها , أو إعادة إرسال الرمز خلال ",
     "donot_code": "ليس لديك رمز؟",
-    "resend_code": "إعادة إرسال الرمز"
+    "resend_code": "إعادة إرسال الرمز",
+    "resending": "جاري الإرسال",
+    "second": "ثانية"
   },
   "Button": {
     "creat_account": "إنشاء حساب",

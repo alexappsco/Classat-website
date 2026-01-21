@@ -9,13 +9,17 @@ export const endpoints = {
     editFreeShipping:(id:string)=>`/admin/settings/${id}`
   },
   auth: {
-    login: '/auth/login',
-    refreshToken: '/auth/refresh-token',
-    sendOtp: '/otps/resend-otp',
-    verifyOtp: '/otps/verify-otp',
-    changePassword: '/auth/change-password',
-    viewProf:"/admin/profile/get-profile",
-    editProf:"/admin/profile/update-profile"
+    // login: '/auth/login',
+    // refreshToken: '/auth/refresh-token',
+    // sendOtp: '/otps/resend-otp',
+    // verifyOtp: '/otps/verify-otp',
+    // changePassword: '/auth/change-password',
+    // viewProf:"/admin/profile/get-profile",
+    editProf:"/admin/profile/update-profile",
+    sendOtp: '/shared/auth/otp/send',
+    register: '/students/register',
+    verifyOtpLogin: '/shared/auth/otp/verify',
+    refreshToken: '/shared/auth/refresh-token',
   },
   categories: {
     single: (id: string) => `/admin/categories/${id}`,
