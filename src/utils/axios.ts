@@ -210,18 +210,17 @@ export const endpoints = {
     verifyOtpLogin: '/shared/auth/otp/verify',
     register: '/students/register',
     refreshToken: '/shared/auth/refresh-token',
+    forgetPassword: '/shared/users/request-forget-password',
     // sendOtp: '/shared/auth/send-otp',
     // verifyOtp: '/shared/auth/verify-otp',
-    forgetPassword: '/shared/users/request-forget-password',
-    // verifyforgetPassword: '/shared/users/verify-forget-password',
-    // sendQuestions: '/shared/users/questions',
+
   },
   country:{
     get: '/shared/location/countries',
   },
   EducationApproach:
   {
-    type:'/shared/education/approach-types',
+    type:'/shared/education/approaches',
     typeMap:'/shared/education/mappings/approach-type',
     typeStage:'/shared/education/mappings/approach-type-stages',
     typeStageGrade:'/shared/education/mappings/approach-type-stage-grades',

@@ -131,26 +131,7 @@ export default function JwtRegisterDialog({ open, onClose }: any) {
     onClose?.();
   };
 
-  // ======================== VALIDATION =========================
-  // const RegisterSchema = Yup.object().shape({
-  //   name: Yup.string().required('First name required'),
-  //   email: Yup.string().email('Email must be valid'),
-  //   phoneNumber: Yup.string().max(9),
-  //   guardianPhoneNumber: Yup.string().when('learningPreference', {
-  //     is: 'Curricula',
-  //     then: (schema) =>
-  //       schema.required('Guardian phone required').min(6).max(9),
-  //     otherwise: (schema) => schema.notRequired(),
-  //   }),
-  //   countryId: Yup.string().required('Country required'),
-  //   learningPreference: Yup.string().required('Learning preference required'),
-  // }).test(
-  //   'email-or-phone',
-  //   t('Global.Validation.phone_or_email_required'),
-  //   function (values) {
-  //     return !!(values.email || values.phoneNumber);
-  //   }
-  // );
+
 
   const RegisterSchema = Yup.object().shape({
     name: Yup.string().required(t('Global.Validation.full_name_required')),
@@ -246,22 +227,6 @@ export default function JwtRegisterDialog({ open, onClose }: any) {
       }
       return '+966' + phone;
     };
-
-    // const registrationPayload = {
-    //   name: data.name,
-    //   email: data.email || '',
-    //   phoneNumber: formatPhoneNumber(data.phoneNumber||'')||'',
-    //   guardianPhoneNumber: formatPhoneNumber(data.guardianPhoneNumber || ''),
-    //   countryId: data.countryId,
-    //   learningPreference: data.learningPreference,
-    // };
-
-
-
-
-
-
-    // First, register the student
 
 
     const registrationPayload: any = {

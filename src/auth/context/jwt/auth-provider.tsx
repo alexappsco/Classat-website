@@ -94,7 +94,7 @@ export function AuthProvider({ children }: Readonly<Props>) {
 
   const initialize = useCallback(async () => {
     try {
-      const lang: string = Cookie.get('Language') || 'en';
+      const lang: string = Cookie.get('Language') || 'ar';
       Cookie.set('Language', lang);
       const accessToken = Cookie.get(ACCESS_TOKEN);
       const refreshToken = Cookie.get('refreshToken');

@@ -10,7 +10,7 @@ import { IRegister } from 'src/types/regester';
 
 const getServerLanguage = async () => {
   const cookieStore = await cookies();
-  return cookieStore.get('Language')?.value || 'en';
+  return cookieStore.get('Language')?.value || 'ar';
 };
 
 export const Login = async (data: { email: string; password: string }) => {
