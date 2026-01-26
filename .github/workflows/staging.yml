@@ -28,9 +28,9 @@ jobs:
 
       - name: Deploy and Run Post-Build Commands on Server
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_STAGING }}
+          SSH_HOST: ${{ secrets.SSH_HOST_STAGING }}
+          SSH_USER: ${{ secrets.SSH_USER_STAGING }}
         run: |
           # Setup SSH directory and keys
           mkdir -p ~/.ssh
@@ -48,7 +48,7 @@ jobs:
             # Source bashrc and setup SSH agent
             source ~/.bashrc
             eval "$(ssh-agent -s)"
-            cd /home/classatadmin/site
+            cd /home/alex/classat/staging/site
             git reset --hard HEAD
             git fetch
             git checkout staging
