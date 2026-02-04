@@ -22,8 +22,21 @@ import StatisticsStudentsCard from './teacherCard/nextSecion';
 // import InstructorsSection from '../landing/top-instructor/TopInstructorsSection';
 import InstructorsSections from './TopInstructorsSection';
 import InstructorsSection from './sections/top-instructor/TopInstructorsSection';
+type EducationGrade = { id: string; name: string };
 
-export default function Courses() {
+type SubjectItem = {
+  id: string;
+  educationSubjectId: string;
+  educationSubjectName: string;
+  educationSubjectLogo: string;
+};
+
+// ===== Props =====
+type CoursesProps = {
+  educationGrade?: EducationGrade;
+  subjects: SubjectItem[];
+};
+export default function Courses({ educationGrade, subjects }: CoursesProps) {
   const studentsData = [
     {
       img: '/favicon/teacher1.png',
@@ -33,7 +46,7 @@ export default function Courses() {
       country: ' المنهج المصري',
       date: '13/11/2025',
       time: '3:00 م',
-      href:'/curricula/details-mathod'
+      href:'/curricula/details-mathod/[id]'
     },
     {
       img: '/favicon/teacher1.png',
@@ -43,7 +56,7 @@ export default function Courses() {
       country: ' المنهج الإماراتي',
       date: '12/11/2025',
       time: '2:00 م',
-      href:'/curricula/details-mathod'
+      href:'/curricula/details-mathod/[id]'
 
     },
     {
@@ -54,7 +67,7 @@ export default function Courses() {
       country: ' المنهج المصري',
       date: '13/11/2025',
       time: '3:00 م',
-      href:'/curricula/details-mathod'
+      href:'/curricula/details-mathod/[id]'
 
     },
     {
@@ -65,7 +78,7 @@ export default function Courses() {
       country: ' المنهج المصري',
       date: '13/11/2025',
       time: '3:00 م',
-      href:'/curricula/details-mathod'
+      href:'/curricula/details-mathod/[id]'
 
     },
   ];
@@ -136,7 +149,10 @@ export default function Courses() {
             maxWidth: 1300,
           }}
         >
-          <CategoriesClasse />
+          <CategoriesClasse
+            // educationGrade={educationGrade}
+            subjects={subjects}
+          />
         </Box>
       </Box>
 

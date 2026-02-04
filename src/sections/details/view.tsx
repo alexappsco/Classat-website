@@ -43,8 +43,19 @@ const instructor = {
     ' Udacity في Full Stack Web Development Nanodegree.',
   ],
 };
+type Package = {
+  id: string;
+  name: string;
+  hours: number;
+  validityDays: number;
+  price: number;
+  discountPercentage: number;
+};
 
-export default function InstructorProfileUI() {
+type Props = {
+  packagesData: Package[];
+};
+export default function InstructorProfileUI({ packagesData }: Props) {
   const [tab, setTab] = useState('about');
 
   const theme = useTheme();
@@ -166,7 +177,7 @@ export default function InstructorProfileUI() {
         <Box sx={{ mt: 4 }}>
           {tab === 'about' && <AboutSection />}
           {tab === 'courses' && <EducationalLessons />}
-          {tab === 'packages' && <PackagesSection  />}
+          {tab === 'packages' && <PackagesSection packages={packagesData} />}
           {tab === 'live' && <LiveSectionDetails title="البث المباشر" />}
           {tab === 'session' && <LiveSectionTimeDetails title="جلسة خاصة" />}
         </Box>

@@ -1,3 +1,4 @@
+import { get } from "lodash";
 import DeliveryFeesView from "src/sections/delivery-fees/views/list-view";
 
 export const endpoints = {
@@ -143,5 +144,17 @@ employee:{
     patch:(id:string)=>`/admin/shoping-costs/${id}`,
     create:'/admin/shoping-costs',
     delete:(id:string)=>`/admin/shoping-costs/${id}`,
+  },
+  student:{
+    get:'/students/profile',
+    getEducationTypeStageGradeSubject:'/shared/education/mappings/approach-type-stage-grade-subjects',
+    getStudentTeacherEducation: (id: string, teacherName?: string) => {
+  let url = `/students/subject/${id}/teachers`;
+  if (teacherName) url += `?TeacherName=${teacherName}`;
+  return url;
+}
+  },
+  packages: {
+    get:(id: string) => `/students/teacher/${id}/packages`,
   }
 };
