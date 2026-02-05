@@ -156,5 +156,8 @@ employee:{
   },
   packages: {
     get:(id: string) => `/students/teacher/${id}/packages`,
+  },
+  courseCategory:{
+    get:'/shared/course-categories',
   }
 };
