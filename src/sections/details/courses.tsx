@@ -1,6 +1,5 @@
 import { Box, Container, Grid, MenuItem, Select, Typography } from "@mui/material";
 import CourseActions from "../course-details/views/course-btn-actions";
-import CourseCurriculum from "../course-details/views/course-curriculum";
 import { warning } from 'src/theme/palette';
 
 
@@ -64,7 +63,7 @@ export default function EducationalLessons() {
     </Box>
     <Box display={{xs:'block',md:'flex' }}  justifyContent="space-between">
 
-      <CourseCurriculum />
+      {/* <CourseCurriculum /> */}
     <Box sx={{ mt: 2,p:2, justifyContent:'end', border: '1px solid', borderColor: 'divider', borderRadius: "25px",mx:2,height:'100%'}} >
     <Typography textAlign="start" variant="h4" color="warning" sx={{ py: 2 }}>
     220.40 درهم
