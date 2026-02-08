@@ -145,5 +145,21 @@ export default async function Page({ params, searchParams }: any) {
 
  const packagesData = (response.data as ApiResponse)?.items ?? [];
 
-  return <InstructorProfileUI packagesData={packagesData} />;
+ let studentAppointments = null;
+ if (id) {
+   try {
+      const appointments = await getData<any>(endpoints.student.teacherid_appoint(id));
+      console.log("appointments",appointments);
+      if (response.success && response.data) {
+        studentAppointments = response.data;
+      }
+    } catch (error) {
+      console.error('Error fetching company details:', error);
+    }
+  }
+  console.log("studentAppointments",studentAppointments);
+
+  return <InstructorProfileUI packagesData={packagesData}
+    studentAppointments={studentAppointments}
+    />;
 }

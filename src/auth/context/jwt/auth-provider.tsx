@@ -1,22 +1,20 @@
 'use client';
 
-/* eslint-disable consistent-return */
+
 
 import axios from 'axios';
 import Cookie from 'js-cookie';
-import { useMemo, useEffect, useReducer, useCallback } from 'react';
-
+import { IUser } from 'src/@types/user';
+import { IRegister } from 'src/types/regester';
 import { endpoints, getErrorMessage } from 'src/utils/axios';
-
+import { useMemo, useEffect, useReducer, useCallback } from 'react';
 // import { IUser } from 'src/@types/user';
-import { RefreshToken, LoginWithEmail, VerifyOtpLogin, SendLoginOtp, VerifyLoginOtp } from 'src/actions/auth';
+import { RefreshToken, LoginWithEmail, VerifyOtpLogin, VerifyLoginOtp } from 'src/actions/auth';
 
 import { AuthContext } from './auth-context';
 import { setSession, isValidToken } from './utils';
 import { USER_KEY, ACCESS_TOKEN } from '../../constants';
 import { AuthUserType, ActionMapType, AuthStateType } from './types';
-import { IUser } from 'src/@types/user';
-import { IRegister } from 'src/types/regester';
 
 // ----------------------------------------------------------------------
 /**
@@ -171,7 +169,7 @@ export function AuthProvider({ children }: Readonly<Props>) {
         setSession({ accessToken, refreshToken, accessTokenExpireAt, refreshTokenExpireAt });
         sessionStorage.setItem(USER_KEY, JSON.stringify(res));
         Cookie.set(USER_KEY, name ?? '');
-        
+
         dispatch({
           type: Types.LOGIN,
           payload: {
@@ -260,7 +258,7 @@ export function AuthProvider({ children }: Readonly<Props>) {
 // };
 
 
-  
+
   const loginWithPhone = useCallback(async (phone: string, code: string) => {
     const credentials = {
       phone,

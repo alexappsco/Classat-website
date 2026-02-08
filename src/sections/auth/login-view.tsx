@@ -27,13 +27,13 @@
 
 
 //    const handleClose = () => {
-   
+
 //     onClose();
 //   };
 //   return (
 //         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs" >
 
-    
+
 //     <Box
 //       sx={{
 //         width: '100%',

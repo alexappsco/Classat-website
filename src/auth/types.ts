@@ -15,8 +15,15 @@ export interface User {
 
 
 export interface LoginCretentials {
-  email: string;
-  password: string;
+  channel?:string;
+  value:string;
+  role:string;
+}
+export interface VerifyCretentials {
+  channel?:string;
+  value:string;
+  role:string;
+  otp:string;
 }
 
 export interface AuthStore {

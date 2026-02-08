@@ -20,7 +20,7 @@ export const endpoints = {
     sendOtp: '/shared/auth/otp/send',
     register: '/students/register',
     verifyOtpLogin: '/shared/auth/otp/verify',
-    refreshToken: '/shared/auth/refresh-token',
+    refreshToken: '/shared/auth/token/refresh',
   },
   categories: {
     single: (id: string) => `/admin/categories/${id}`,
@@ -146,6 +146,7 @@ employee:{
     delete:(id:string)=>`/admin/shoping-costs/${id}`,
   },
   student:{
+    teacherid_appoint:(teacherId:string)=>`/students/teacher/${teacherId}/appointments`,
     get:'/students/profile',
     getEducationTypeStageGradeSubject:'/shared/education/mappings/approach-type-stage-grade-subjects',
     getStudentTeacherEducation: (id: string, teacherName?: string) => {

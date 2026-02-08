@@ -179,7 +179,7 @@ export default function InstructorProfileUI() {
 
           {tab === 'packages' && <PackagesSection />}
           {tab === 'live' && <LiveSectionDetails title="البث المباشر" />}
-          {tab === 'session' && <LiveSectionTimeDetails title="جلسة خاصة" />}
+          {tab === 'session' && <LiveSectionTimeDetails title="جلسة " />}
         </Box>
       </Card>
     </Container>
