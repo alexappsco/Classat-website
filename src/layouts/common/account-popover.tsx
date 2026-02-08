@@ -162,6 +162,7 @@ import { Button } from '@mui/material';
 
 import Link from 'next/link';
 import { useJwtAuth } from 'src/auth/jwt-context';
+import { useAuthStore } from 'src/auth/auth-store';
 // ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
@@ -171,7 +172,7 @@ export default function AccountPopover() {
   const router = useRouter();
   const t = useTranslations();
 
-  const { logout } =useJwtAuth();
+  const { logout } =useAuthStore();
 
   const popover = usePopover();
 
