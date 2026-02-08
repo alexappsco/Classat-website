@@ -52,6 +52,7 @@ type Props = {
 import { Box, Container, Grid } from '@mui/material';
 
 export function PackagesSection({ packages = [] }: Props) {
+  console.log("packages",packages)
   if (!packages.length) {
     return (
       <Box sx={{ textAlign: 'center', py: 6 }}>
@@ -117,9 +118,9 @@ export function PackagesSection({ packages = [] }: Props) {
             //     <MenuItem value={item}>{item}</MenuItem>
             //   </Select>
             // ))}
-  
+
             {/* Search Input */}
-       
+
           // </Box>
-    
+
     // */}

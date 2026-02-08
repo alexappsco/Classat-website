@@ -148,18 +148,18 @@ export default async function Page({ params, searchParams }: any) {
  let studentAppointments = null;
  if (id) {
    try {
-      const appointments = await getData<any>(endpoints.student.teacherid_appoint(id));
-      console.log("appointments",appointments);
+      const appointments = await getData<any>(`/students/teacher/${id}/appointments`);
+      console.log("appoin55555555555555555tments",appointments);
       if (response.success && response.data) {
-        studentAppointments = response.data;
+        studentAppointments = appointments.data;
       }
     } catch (error) {
       console.error('Error fetching company details:', error);
     }
   }
-  console.log("studentAppointments",studentAppointments);
+  console.log("studentAppoi 88 777ntments",studentAppointments);
 
   return <InstructorProfileUI packagesData={packagesData}
-    studentAppointments={studentAppointments}
+    studentAppointments={studentAppointments.items}
     />;
 }
