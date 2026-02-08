@@ -1,7 +1,13 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { Icon } from '@iconify/react';
+ type Props = {
+  durationInHours: number;
+  numberOfLessons: number;
+  averageRating: number;
+  numberOfReviews: number;
+};
+export default function ({ durationInHours, numberOfLessons,averageRating ,numberOfReviews }: Props) {
 
-export default function CourseInfo() {
   return (
     <Box sx={{ mb: 3}}>
       <Stack direction="row" spacing={3} alignItems="center" flexWrap="wrap">
@@ -10,26 +16,26 @@ export default function CourseInfo() {
         <Stack direction="row" spacing={1} alignItems="center">
           <Icon icon="mdi:star" width={18} color="#EE7F50" />
           <Typography variant="body2" sx={{ fontWeight: 400, color: '#7F8490', fontSize: "16px" }}>
-            4.8/5 (3K+)
+            {averageRating}
           </Typography>
         </Stack>
          {/* Students count */}
         <Stack direction="row" spacing={1} alignItems="center">
           <Icon icon="mdi:account-group-outline" width={18} color='#637381' />
           <Typography variant="body2" sx={{ fontWeight: 400, color: '#7F8490', fontSize: "16px" }}>
-            2.5K طالب
+           {numberOfReviews} طالب
           </Typography>
         </Stack>
         {/* Lessons count */}
         <Stack direction="row" spacing={1} alignItems="center" >
           <Icon icon="mdi:play-circle-outline" width={18} color='#637381' />
           <Typography variant="body2" sx={{ fontWeight: 400, color: '#7F8490', fontSize: "16px" }}>
-            45 درس
+           {numberOfLessons} درس
           </Typography>
         </Stack>
         <Stack direction="row" spacing={1} alignItems="center">
           <Icon icon="mdi:clock-outline" width={18} color='#637381'/>
-          <Typography variant="body2" sx={{ fontWeight: 400, color: '#7F8490', fontSize: "16px" }}>24h : 40min    </Typography>
+          <Typography variant="body2" sx={{ fontWeight: 400, color: '#7F8490', fontSize: "16px" }}>{durationInHours} ساعة</Typography>
         </Stack>
       </Stack>
     </Box>
