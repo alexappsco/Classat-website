@@ -157,5 +157,16 @@ employee:{
   },
   packages: {
     get:(id: string) => `/students/teacher/${id}/packages`,
-  }
+  },
+  // courseCategory:{
+  //   get:'/shared/course-categories',
+  //   getCourses:'/students/teacher/courses',
+  // },
+  courseCategory: {
+  get: '/shared/course-categories',
+  getCourses: (categoryId: string) =>
+    `/students/teacher/courses?CourseCategoryId=${categoryId}`,
+  getCourse:(courseId: string) =>
+    `/students/teacher/course/${courseId}`,
+}
 };
