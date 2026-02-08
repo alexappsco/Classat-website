@@ -22,8 +22,6 @@ import {
 } from '@mui/material';
 
 
-import { SendLoginOtp } from 'src/actions/auth';
-import { useJwtAuth } from 'src/auth/jwt-context';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -71,6 +69,7 @@ import { styled } from '@mui/material/styles';
 import { useRef, useCallback } from 'react';
 import { ICONS } from 'src/config-icons';
 import SelectedMethod from '../selected-method/selectedMethod';
+import { useAuthStore } from 'src/auth/auth-store';
 
 const OtpInput = styled('input')(({ theme }) => ({
   width: '100%',
@@ -155,11 +154,6 @@ function OtpVerificationInputs({
     [otp]
   );
 
-
-
-
-
-
   return (
     <Stack direction="row" spacing={1.5} sx={{ my: 1 }} dir="ltr">
       {Array.from({ length: 4 }).map((_, index) => (
@@ -191,7 +185,7 @@ function OtpVerificationInputs({
 
 
 export default function LoginDialog({ open, onClose }: Props) {
-  const { loginWithOtp } = useJwtAuth();
+  const { login, verifyOtp } = useAuthStore();
   const t = useTranslations();
 
 
@@ -256,26 +250,19 @@ export default function LoginDialog({ open, onClose }: Props) {
       role: 'Student',
     };
 
-    const res = await SendLoginOtp(payload);
+    const res = await login(payload);
 
     // Check if there's an error in the response
-    if ('error' in res) {
+    if (res && 'error' in res) {
       alert(res.error || 'Failed to send OTP');
       console.log('OTP Response Error:', res.error);
       return;
     }
 
-    // Success case - check if response has required fields
-    if (!res || !res.channel || !res.value) {
-      alert('Invalid response from server');
-      console.log('OTP Response:', res);
-      return;
-    }
-
-    // لو كل حاجة تمام
+    // Success case - use payload data since login returns redirectTo
     setLoginMeta({
-      channel: res.channel,
-      value: res.value,
+      channel: payload.channel,
+      value: payload.value,
     });
 
     setStep(2);
@@ -289,7 +276,7 @@ export default function LoginDialog({ open, onClose }: Props) {
     const [confirm, setConfirm] = useState<null | {}>(null);
 
   /* ---------------- VERIFY OTP ---------------- */
-  const verifyOtp = async () => {
+  const handleVerifyOtp = async () => {
     if (!loginMeta || otp.length < 4) return;
 
     if (!isTimerRunning) {
@@ -299,27 +286,34 @@ export default function LoginDialog({ open, onClose }: Props) {
     const fullOtp = otp.join('');
 
     if (fullOtp.length < 4) return;
-    try {
-      const res = await loginWithOtp({
-        channel: loginMeta.channel,
-        value: loginMeta.value,
-        otp: fullOtp,
-      });
 
-      // Fetch user profile to get learning preference
+    const res = await verifyOtp({
+      channel: loginMeta.channel,
+      value: loginMeta.value,
+      otp: fullOtp,
+      role: 'Student',
+    });
+
+    // Check if there's an error in the response
+    if (res && 'error' in res) {
+      alert(res.error || 'Invalid OTP');
+      return;
+    }
+
+    // Success case - fetch user profile to get learning preference
+    try {
       const profileRes = await getData<any>(endpoints.profile.get);
       if (profileRes.success && profileRes.data) {
         const learningPreference = profileRes.data.learningPreference;
         const educationApproach = profileRes.data.educationApproach;
-        
+
         if (learningPreference === 'Courses') {
           window.location.href = '/courses';
         } else if (learningPreference === 'Curricula') {
           if (educationApproach === null) {
             setConfirm(null); // Close the OTP dialog first
-            setShowPostVerificationSelection(true); 
-          }else{
-
+            setShowPostVerificationSelection(true);
+          } else {
             window.location.href = '/curricula';
           }
         } else {
@@ -332,10 +326,8 @@ export default function LoginDialog({ open, onClose }: Props) {
       }
 
       handleClose();
-
-      
     } catch (e: any) {
-      alert(e.message || 'Invalid OTP');
+      alert(e.message || 'Failed to fetch profile');
     }
   };
 
@@ -393,7 +385,7 @@ export default function LoginDialog({ open, onClose }: Props) {
               <form onSubmit={handleSubmit(onSubmit)}>
                 <Stack spacing={2}>
                   {renderHead}
-                  
+
                   {/* Toggle Button to Switch Between Email and Phone */}
                   <ToggleButtonGroup
                     value={inputType}
@@ -482,7 +474,7 @@ export default function LoginDialog({ open, onClose }: Props) {
                 <Button
                   variant="contained"
                   fullWidth
-                  onClick={verifyOtp}
+                  onClick={handleVerifyOtp}
                   disabled={otp.join('').length < 4}
                 >
                   {t('Pages.Auth.verify_otp')}

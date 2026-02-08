@@ -130,7 +130,7 @@ import { cookies } from 'next/headers';
 import axiosInstance, { endpoints, SharedApiClient } from 'src/utils/axios';
 
 import { REFRESH_TOKEN } from './config';
-import { User, UserSession } from './types';
+import { User, LoginCretentials, UserSession, VerifyCretentials } from './types';
 
 export interface LoginRes extends User {
   accessToken: string;
@@ -141,72 +141,85 @@ export interface LoginRes extends User {
 
 // This function is deprecated since we now use OTP-based login
 // Keeping it for reference
-export async function login(email: string, phone: string): Promise<UserSession> {
+export async function login(credentials: LoginCretentials) {
   try {
-    // Check if API endpoints are configured
-    if (!SharedApiClient.defaults.baseURL) {
-      console.error('API base URL is not configured. Please set NEXT_PUBLIC_HOST_API_SHARED in your environment variables.');
-      throw new Error('API configuration error. Please contact administrator.');
-    }
-    
-    // Determine whether to send email or phone based on which is provided
-    const payload = email ? { email, role: 'Student' } : { phone, role: 'Student' };
-    
-    const res = await SharedApiClient.post(endpoints.auth.sendOtp, payload);
+    const res = await axiosInstance.post(endpoints.auth.sendOtp, credentials);
 
-    const { accessToken, refreshToken, accessTokenExpireAt, refreshTokenExpireAt, ...user } =
-      res.data as LoginRes;
     return {
-      user,
-      accessToken: {
-        value: accessToken,
-        expire: accessTokenExpireAt,
-      },
-      refreshToken: {
-        value: refreshToken,
-        expire: refreshTokenExpireAt,
-      },
+      success: true,
+      data: res.data, // return only useful data
     };
-  } catch (error) {
-    throw error;
+  } catch (error: any) {
+    const errorMsg =
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      error?.message ||
+      'Login failed';
+
+    return {
+      success: false,
+      message: errorMsg,
+      status: error?.response?.status ?? 500,
+    };
   }
 }
-
-export async function refreshSession(): Promise<UserSession> {
+export async function verifyOtpApi(credentials: VerifyCretentials): Promise<UserSession> {
   try {
-    // Check if API endpoints are configured
-    if (!SharedApiClient.defaults.baseURL) {
-      console.error('API base URL is not configured. Please set NEXT_PUBLIC_HOST_API_SHARED in your environment variables.');
-      throw new Error('API configuration error. Please contact administrator.');
-    }
-    
-    const cookiesStore = await cookies();
-    const refreshTokenCookie = cookiesStore.get(REFRESH_TOKEN);
-
-    if (!refreshTokenCookie?.value) {
-      throw new Error('No refresh token found');
-    }
-
-    const res = await SharedApiClient.post(endpoints.auth.refreshToken, {
-      refreshToken: refreshTokenCookie.value,
-    });
-
+    const res = await axiosInstance.post(endpoints.auth.verifyOtp, credentials);
     const { accessToken, refreshToken, accessTokenExpireAt, refreshTokenExpireAt, ...user } =
       res.data as LoginRes;
 
     return {
       user,
-      accessToken: {
-        value: accessToken,
-        expire: accessTokenExpireAt,
-      },
-      refreshToken: {
-        value: refreshToken,
-        expire: refreshTokenExpireAt,
-      },
+      accessToken: { value: accessToken, expire: accessTokenExpireAt },
+      refreshToken: { value: refreshToken, expire: refreshTokenExpireAt },
     };
-  } catch (error) {
-    throw error;
+  } catch (error: any) {
+    const errorMsg =
+      error?.response?.data?.message ||
+      error?.response?.data?.error ||
+      error?.message ||
+      'OTP verification failed';
+    throw new Error(errorMsg);
   }
 }
+
+
+// export async function refreshSession(): Promise<UserSession> {
+//   try {
+//     // Check if API endpoints are configured
+//     if (!SharedApiClient.defaults.baseURL) {
+//       console.error('API base URL is not configured. Please set NEXT_PUBLIC_HOST_API_SHARED in your environment variables.');
+//       throw new Error('API configuration error. Please contact administrator.');
+//     }
+
+//     const cookiesStore = await cookies();
+//     const refreshTokenCookie = cookiesStore.get(REFRESH_TOKEN);
+
+//     if (!refreshTokenCookie?.value) {
+//       throw new Error('No refresh token found');
+//     }
+
+//     const res = await SharedApiClient.post(endpoints.auth.refreshToken, {
+//       refreshToken: refreshTokenCookie.value,
+//     });
+
+//     const { accessToken, refreshToken, accessTokenExpireAt, refreshTokenExpireAt, ...user } =
+//       res.data as LoginRes;
+
+//     return {
+//       user,
+//       accessToken: {
+//         value: accessToken,
+//         expire: accessTokenExpireAt,
+//       },
+//       refreshToken: {
+//         value: refreshToken,
+//         expire: refreshTokenExpireAt,
+//       },
+//     };
+//   } catch (error) {
+//     throw error;
+//   }
+// }
 
