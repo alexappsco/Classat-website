@@ -31,10 +31,10 @@ const instructor = {
   price: 45,
   duration: '60 دقيقة / الساعة',
   bioImage: 'https://images.pexels.com/photos/1181395/pexels-photo-1181395.jpeg?auto=compress',
-  bio: `مرّ البرنامج على مدار سنوات بمحاضرين متخصصين في تطوير الويب (Web Development)، يقدم خبرة كبيرة 
-  بالأفكار و المحتوى في كيفية تطوير مواقع الويب باستخدام أحدث التقنيات.  
+  bio: `مرّ البرنامج على مدار سنوات بمحاضرين متخصصين في تطوير الويب (Web Development)، يقدم خبرة كبيرة
+  بالأفكار و المحتوى في كيفية تطوير مواقع الويب باستخدام أحدث التقنيات.
 
-  كما يعمل المحاضر كـ مبرمج واجهات (Frontend Developer) حيث يمتلك خبرة قوية في مجال 
+  كما يعمل المحاضر كـ مبرمج واجهات (Frontend Developer) حيث يمتلك خبرة قوية في مجال
   التطوير الشامل (Full Stack) إضافة لتجربة تدريس متميزة للطلاب.`,
   qualifications: [
     'حاصل على بكالوريوس علوم الحاسب من جامعة القاهرة.',
@@ -54,8 +54,10 @@ type Package = {
 
 type Props = {
   packagesData: Package[];
+  studentAppointments: any;
 };
-export default function InstructorProfileUI({ packagesData }: Props) {
+export default function InstructorProfileUI({ packagesData, studentAppointments }: Props) {
+  console.log("studentAppointments",studentAppointments);
   const [tab, setTab] = useState('about');
 
   const theme = useTheme();
@@ -182,7 +184,7 @@ export default function InstructorProfileUI({ packagesData }: Props) {
           {tab === 'session' && <LiveSectionTimeDetails title="جلسة خاصة" />}
         </Box>
       </Card>
-    </Container> 
+    </Container>
   );
 }
 

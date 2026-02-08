@@ -35,15 +35,20 @@ export default function Header() {
   const [isSignIn, setIsSignIn] = useState(false);
   const [hasAccessToken, setHasAccessToken] = useState(false);
 
-  const { authenticated, user } = useAuthContext();
+  const { authenticated } = useAuthContext();
 
   useEffect(() => {
     // Check for access token in localStorage
     const checkAccessToken = () => {
-      if (typeof window !== 'undefined') {
-        const token = localStorage.getItem(ACCESS_TOKEN)||Cookies.get(ACCESS_TOKEN);
+      // if (typeof window !== 'undefined') {
+      //   const token = localStorage.getItem(ACCESS_TOKEN)||Cookies.get(ACCESS_TOKEN);
+      //   setHasAccessToken(!!token);
+      // }
+           if (typeof window !== 'undefined') {
+         const token = localStorage.getItem(ACCESS_TOKEN)||Cookies.get(ACCESS_TOKEN);
         setHasAccessToken(!!token);
-      }
+     }
+
     };
 
     checkAccessToken();
@@ -54,7 +59,7 @@ export default function Header() {
     };
 
     window.addEventListener('storage', handleStorageChange);
-    
+
     // Also check periodically in case localStorage is changed programmatically
     const interval = setInterval(checkAccessToken, 500);
 
@@ -87,7 +92,7 @@ export default function Header() {
           <LogoText {...{ lgUp }} />
         </Box>
       </Link>
-      {isLanding ? (
+      {!authenticated ? (
         <AuthButtons changeSignIn={setIsSignIn} />
       ) : hasAccessToken ? (
         <Box display="flex" alignItems="center" gap={1.5} pt={0.5}>

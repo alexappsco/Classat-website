@@ -44,6 +44,7 @@ export default function LiveSectionTimeDetails({title}:{title: string}) {
   return (
     <Box>
       <Container>
+        ddd
       <Box
           display="flex"
           flexDirection={{ xs: 'column', md: 'row-reverse' }}
@@ -75,7 +76,7 @@ export default function LiveSectionTimeDetails({title}:{title: string}) {
           ))}
 
           {/* Search Input */}
-     
+
         </Box>
 
         {/* عنوان قسم جدول المواعيد */}
@@ -94,7 +95,7 @@ export default function LiveSectionTimeDetails({title}:{title: string}) {
             overflowX: 'auto',
             pb: 2,
           }}
-         
+
         >
           <Stack
             direction={{xs:'column',md:'row'}}
@@ -105,7 +106,7 @@ export default function LiveSectionTimeDetails({title}:{title: string}) {
             {AVAILABLE_SLOTS.map((day, index) => (
               <Card
                 key={index}
-                
+
                 sx={{
                   // columnCount:2.5,
                   minWidth: 202,
