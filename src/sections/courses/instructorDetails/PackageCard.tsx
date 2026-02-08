@@ -12,11 +12,15 @@ type PackageCardProps = {
 function PackageCard({
   title,
   descriptionLine1,
-
   hoursLabel,
   price,
   discountText,
 }: PackageCardProps) {
+  console.log("dgdd", title,
+    descriptionLine1,
+    hoursLabel,
+    price,
+    discountText,)
   return (
     <Card
       sx={{
