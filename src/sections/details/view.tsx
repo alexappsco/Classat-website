@@ -57,7 +57,7 @@ type Props = {
   studentAppointments: any;
 };
 export default function InstructorProfileUI({ packagesData, studentAppointments }: Props) {
-  console.log("studentAppointments",studentAppointments);
+  console.log("studentAppointments 2222222",studentAppointments);
   const [tab, setTab] = useState('about');
 
   const theme = useTheme();
@@ -181,7 +181,7 @@ export default function InstructorProfileUI({ packagesData, studentAppointments 
           {tab === 'courses' && <EducationalLessons />}
           {tab === 'packages' && <PackagesSection packages={packagesData} />}
           {tab === 'live' && <LiveSectionDetails title="البث المباشر" />}
-          {tab === 'session' && <LiveSectionTimeDetails title="جلسة خاصة" />}
+          {tab === 'session' && <LiveSectionTimeDetails title="جلسة خاصة" studentAppointments={studentAppointments} />}
         </Box>
       </Card>
     </Container>

@@ -1,4 +1,7 @@
-import { Card, Stack, Typography, Button, Box } from '@mui/material';
+import { Icon } from '@iconify/react';
+import { Box, Card, Button, Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { paths } from 'src/routes/paths';
 import { primary, warning } from 'src/theme/palette';
 
 type PackageCardProps = {
@@ -18,6 +21,8 @@ function PackageCard({
   price,
   discountText,
 }: PackageCardProps) {
+
+  const router =useRouter();
   return (
     <Card
       sx={{
@@ -74,18 +79,38 @@ function PackageCard({
         </Typography>
       </Stack>
 
-      <Button
-        variant="contained"
-        size="large"
-        sx={{
-          mt: 3,
-          borderRadius: 999,
-          bgcolor: primary.main,
-          ':hover': { bgcolor: primary.dark },
-        }}
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={2}
+        sx={{ mt: 3, width: '100%' }}
       >
-        اشترِ الآن
-      </Button>
+        <Button
+          variant="contained"
+          size="large"
+          fullWidth
+          sx={{
+            borderRadius: 999,
+            bgcolor: primary.main,
+            ':hover': { bgcolor: primary.dark },
+          }}
+        >
+          اشترِ الآن
+        </Button>
+        <Button
+          variant="contained"
+          size="large"
+          fullWidth
+          sx={{
+            borderRadius: 999,
+            bgcolor: primary.main,
+            ':hover': { bgcolor: primary.dark },
+          }}
+          endIcon={<Icon icon="solar:cart-large-2-bold" />}
+          onClick={()=>{router.push('')}}
+        >
+          أضف الى السلة
+        </Button>
+      </Stack>
     </Card>
   );
 }
