@@ -82,6 +82,7 @@ export type Course = {
   averageRating: number;
   numberOfReviews: number;
   teacherName: string;
+  teacherId: string;
   teacherImageUrl: string;
   categoryName: string;
   sections: {
@@ -125,7 +126,10 @@ export default function CourseDetailsView({ course }: Props) {
           averageRating= {course.averageRating}
           numberOfReviews= {course.numberOfReviews}
           />
-          <CourseActions />
+          <CourseActions
+          teacherId={course.teacherId}
+          courseId={course.courseId}
+          />
           <CourseCurriculum sections={course.sections} />
 
           {/* Sidebar on mobile */}
