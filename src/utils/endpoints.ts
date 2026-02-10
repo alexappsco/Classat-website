@@ -150,7 +150,7 @@ employee:{
     get:'/students/profile',
     getEducationTypeStageGradeSubject:'/shared/education/mappings/approach-type-stage-grade-subjects',
     getStudentTeacherEducation: (id: string, teacherName?: string) => {
-  let url = `/students/subject/${id}/teachers`;
+      let url = `/students/subject/${id}/teachers`;
   if (teacherName) url += `?TeacherName=${teacherName}`;
   return url;
 }
@@ -168,5 +168,10 @@ employee:{
     `/students/teacher/courses?CourseCategoryId=${categoryId}`,
   getCourse:(courseId: string) =>
     `/students/teacher/course/${courseId}`,
+},
+cart:{
+  getCarts:'/students/cart',
+  addToCart:'/students/cart/items',
+
 }
 };

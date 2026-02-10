@@ -5,6 +5,12 @@
     "Categories": {
       "title": "Categories | Classat"
     },
+    "Cart":{
+      "title": "Cart |  Classat"
+    },
+    "Payment":{
+      "title": "Payment |  Classat"
+    },
     "SubCategories": {
       "title": "Subcategories | Classat"
     },

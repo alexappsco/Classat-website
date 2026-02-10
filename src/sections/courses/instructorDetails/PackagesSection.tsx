@@ -1,3 +1,4 @@
+'use client'
 import { Box, Stack, Container } from '@mui/material';
 
 import PackageCard from './PackageCard';
@@ -39,7 +40,7 @@ export function PackagesSection() {
         >
           {packages.map((pkg, id) => (
             <Box key={id} sx={{ flex: 1 }}>
-              <PackageCard {...pkg} />
+              <PackageCard {...pkg}  id={id}/>
             </Box>
           ))}
         </Stack>

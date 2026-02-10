@@ -1,26 +1,25 @@
 'use client';
 
 import { useState } from 'react';
-import {
-  Box,
-  Card,
-  Tabs,
-  Tab,
-  Stack,
-  Typography,
-  Container,
-  Avatar,
-  Divider,
-  Chip,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
 import { Icon } from '@iconify/react';
 import { warning } from 'src/theme/palette';
+import {
+  Box,
+  Tab,
+  Card,
+  Tabs,
+  Stack,
+  Avatar,
+  useTheme,
+  Container,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
+
 import AboutSection from './aboutSection';
 import EducationalLessons from './courses';
-import LiveSectionDetails from './LiveSectionDetails';
 import { PackagesSection } from './PackagesSection';
+import LiveSectionDetails from './LiveSectionDetails';
 import LiveSectionTimeDetails from './LiveSectionTimeDetails';
 
 const instructor = {
@@ -55,9 +54,11 @@ type Package = {
 type Props = {
   packagesData: Package[];
   studentAppointments: any;
+  id: string
 };
-export default function InstructorProfileUI({ packagesData, studentAppointments }: Props) {
-  console.log("studentAppointments 2222222",studentAppointments);
+export default function InstructorProfileUI({ packagesData, studentAppointments, id }: Props) {
+  console.log("studentAppointments 2222222", studentAppointments);
+  console.log("id", id)
   const [tab, setTab] = useState('about');
 
   const theme = useTheme();
@@ -87,11 +88,8 @@ export default function InstructorProfileUI({ packagesData, studentAppointments 
             <Typography variant="h5" fontWeight={700}>
               {instructor.name}
             </Typography>
-
             <Typography color="text.secondary">{instructor.role}</Typography>
-
             <Typography fontSize={14}> {instructor.skills} </Typography>
-
             <Stack
               direction="row"
               spacing={1}
@@ -120,9 +118,7 @@ export default function InstructorProfileUI({ packagesData, studentAppointments 
           scrollButtons="auto"
           // aria-label="icon tabs example"
           // textColor='primary'
-
           // indicatorColor="primary"
-
           sx={{
             mt: 4,
             // borderBottom: '1px solid #eee',
@@ -158,7 +154,7 @@ export default function InstructorProfileUI({ packagesData, studentAppointments 
             sx={{ width: { xs: '50%', md: '17%' } }}
             icon={<img src="/favicon/Vector.svg" alt="" />}
           />
-           <Tab
+          <Tab
             label="البث المباشر"
             value="live"
             sx={{ width: { xs: '50%', md: '17%' } }}
@@ -172,14 +168,13 @@ export default function InstructorProfileUI({ packagesData, studentAppointments 
             icon={<img src="/favicon/Mask group.svg" alt="" />}
 
           />
-
         </Tabs>
 
         {/* ---------- المحتوى ---------- */}
         <Box sx={{ mt: 4 }}>
           {tab === 'about' && <AboutSection />}
           {tab === 'courses' && <EducationalLessons />}
-          {tab === 'packages' && <PackagesSection packages={packagesData} />}
+          {tab === 'packages' && <PackagesSection packages={packagesData} teacher_id={id}/>}
           {tab === 'live' && <LiveSectionDetails title="البث المباشر" />}
           {tab === 'session' && <LiveSectionTimeDetails title="جلسة خاصة" studentAppointments={studentAppointments} />}
         </Box>
