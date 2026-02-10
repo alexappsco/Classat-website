@@ -1,7 +1,11 @@
+
+'use client'
 import { Icon } from '@iconify/react';
-import { Box, Card, Button, Stack, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import { paths } from 'src/routes/paths';
+import { Box, Card, Stack, Button, Typography } from '@mui/material';
+import { useSnackbar } from 'notistack';
+
+import { endpoints } from 'src/utils/endpoints';
+import { postData } from 'src/utils/crud-fetch-api';
 import { primary, warning } from 'src/theme/palette';
 
 type PackageCardProps = {
@@ -11,6 +15,8 @@ type PackageCardProps = {
   hoursLabel: string;
   price: string;
   discountText: string;
+  id: string;
+  teacher_id: string;
 };
 
 function PackageCard({
@@ -20,9 +26,35 @@ function PackageCard({
   hoursLabel,
   price,
   discountText,
+  id,
+  teacher_id,
 }: PackageCardProps) {
+  const { enqueueSnackbar } = useSnackbar();
 
-  const router =useRouter();
+  const addToCart = async () => {
+    const payload = {
+      itemType: '2',
+      teacherPackageId: id,
+      teacherId: teacher_id,
+    };
+
+      const res = await postData(endpoints.cart.addToCart, payload)
+
+
+      if(res.status==200){
+        // ✅ Success
+        enqueueSnackbar('تم الاضافة للسلة بنجاح', {
+          variant: 'success',
+        });
+      }
+
+      enqueueSnackbar( 'حدث خطأ ما', {
+          variant: 'error',
+        });
+        return;
+      }
+
+
   return (
     <Card
       sx={{
@@ -106,7 +138,7 @@ function PackageCard({
             ':hover': { bgcolor: primary.dark },
           }}
           endIcon={<Icon icon="solar:cart-large-2-bold" />}
-          onClick={()=>{router.push('')}}
+          onClick={addToCart}
         >
           أضف الى السلة
         </Button>

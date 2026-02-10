@@ -7,6 +7,7 @@ type PackageCardProps = {
   hoursLabel: string;
   price: string;
   discountText: string;
+  id: number;
 };
 
 function PackageCard({
@@ -15,12 +16,9 @@ function PackageCard({
   hoursLabel,
   price,
   discountText,
+  id,
 }: PackageCardProps) {
-  console.log("dgdd", title,
-    descriptionLine1,
-    hoursLabel,
-    price,
-    discountText,)
+  console.log("id",id)
   return (
     <Card
       sx={{
@@ -84,6 +82,7 @@ function PackageCard({
           bgcolor: primary.main,
           ':hover': { bgcolor: primary.dark },
         }}
+       
       >
         اشترِ الآن
       </Button>
