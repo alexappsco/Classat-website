@@ -1,13 +1,46 @@
+"use client";
 
 import { Box, Button, Stack, IconButton } from '@mui/material';
 import { Icon } from '@iconify/react';
+import { enqueueSnackbar } from 'notistack';
 
-export default function CourseActions() {
+import { postData } from 'src/utils/crud-fetch-api';
+import { endpoints } from 'src/utils/endpoints';
+
+type Props = {
+  teacherId: string;
+  courseId: string;
+};
+
+export default function CourseActions({ teacherId, courseId }: Props) {
+
+  // ===== Add To Cart Function =====
+ const addToCart = async () => {
+  const res = await postData(endpoints.cart.addToCart, {
+    itemType: '4',
+    teacherId: teacherId,
+    courseId: courseId,
+  });
+
+  if (res.success) {
+    enqueueSnackbar('تم الاضافة للسلة بنجاح', {
+      variant: 'success',
+    });
+  } else {
+    enqueueSnackbar(
+      res.error || 'حدث خطأ ما',
+      { variant: 'error' }
+    );
+  }
+};
+
+
   return (
     <Box sx={{ mb: 4 }}>
       {/* Main action buttons row */}
       <Stack direction="row" spacing={2} alignItems="center">
-        {/* Primary purchase button */}
+
+        {/* Purchase */}
         <Button
           variant="contained"
           sx={{
@@ -26,7 +59,7 @@ export default function CourseActions() {
           شراء الكورس
         </Button>
 
-        {/* Wishlist icon button */}
+        {/* Wishlist */}
         <IconButton
           sx={{
             width: '50px',
@@ -39,11 +72,17 @@ export default function CourseActions() {
             }
           }}
         >
-          <Icon icon="mdi:heart-outline" width={24} height={24}  color='#153A52'/>
+          <Icon
+            icon="mdi:heart-outline"
+            width={24}
+            height={24}
+            color='#153A52'
+          />
         </IconButton>
+
       </Stack>
 
-      {/* Add to cart button */}
+      {/* Add to cart */}
       <Button
         variant="outlined"
         size="large"
@@ -65,6 +104,7 @@ export default function CourseActions() {
             backgroundColor: 'rgba(84, 176, 215, 0.04)',
           }
         }}
+        onClick={addToCart}  
       >
         أضف إلى السلة
       </Button>

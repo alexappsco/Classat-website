@@ -69,7 +69,7 @@ export default function EducationalLessons() {
     220.40 درهم
     </Typography>
 
-      <CourseActions />
+      {/* <CourseActions /> */}
     </Box>
     </Box>
     </Box>
