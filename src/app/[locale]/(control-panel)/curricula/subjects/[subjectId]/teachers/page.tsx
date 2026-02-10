@@ -226,7 +226,7 @@
 //     subjects={subjectsForFilter} // تبعته للكمبوننت
 //   />
 // );
-  
+
 // }
 
 
@@ -335,6 +335,7 @@ export default async function TeachersPage({ params, searchParams }: any) {
       teachers={teachers}
       currentSubjectId={subjectId}
       subjects={subjectsForFilter}
+      subjectId={subjectId}
     />
   );
 }

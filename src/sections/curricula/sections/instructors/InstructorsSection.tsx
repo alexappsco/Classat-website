@@ -12,7 +12,7 @@
 //   teacherImageUrl: string;
 //   rating: number;
 //   nearestAvailableDate: string;
-//   nearestAvailableTime: string; 
+//   nearestAvailableTime: string;
 //   educationApproachId: string;
 //   educationApproachTypeId: string;
 //   educationStageId: string;
@@ -36,7 +36,7 @@
 //     <>
 //     <Hero />
 //     <TeachersFilters
-  
+
 //     />
 //     <Box sx={{ mt: 10, mb: 10, py: { xs: 4, md: 6 }, px: { xs: 2, md: 3 }}}>
 //       <Container>
@@ -57,7 +57,7 @@
 //       </Container>
 //     </Box>
 //     </>
-    
+
 //   );
 // }
 
@@ -156,26 +156,29 @@ type Props = {
   teachers: TeacherItem[];
   subjects: { id: string; name: string }[];
   currentSubjectId: string;
+  subjectId: string;
 };
 
 export default function InstructorsSection({
   teachers,
   subjects,
   currentSubjectId,
+  subjectId
 }: Props) {
   const router = useRouter();
 
   const handleBookNow = (teacherId: string) => {
-    router.push(`/curricula/details-mathod/${teacherId}`);
+      router.push(`/curricula/details-mathod/${teacherId}?subjectId=${subjectId}`);
   };
 
   return (
+
     <>
       <Hero />
 
       <TeachersFilters
         currentSubjectId={currentSubjectId}
-        subjects={subjects} 
+        subjects={subjects}
       />
 
       <Box sx={{ mt: 8, mb: 10 }}>
@@ -191,6 +194,7 @@ export default function InstructorsSection({
                   teacherId={teacher.teacherId}
                   onBookNow={handleBookNow}
                 />
+                يييي
               </Grid>
             ))}
           </Grid>

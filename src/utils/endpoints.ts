@@ -158,9 +158,9 @@ employee:{
   packages: {
     get:(id: string) => `/students/teacher/${id}/packages`,
   },
-  education_lesson:{
-    list:(teacher:string, id: string,) =>`/students/teacher/${teacher}/education/${id}/lessons`
-  },
+education_lesson: {
+  list: (teacherId: string, subjectId: string) =>
+`/students/teacher/${teacherId}/education/${subjectId}/lessons`},
   // courseCategory:{
   //   get:'/shared/course-categories',
   //   getCourses:'/students/teacher/courses',
