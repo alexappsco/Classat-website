@@ -159,7 +159,9 @@ export default async function Page({ params, searchParams }: any) {
   }
   console.log("studentAppoi 88 777ntments",studentAppointments);
 
-  return <InstructorProfileUI packagesData={packagesData}
+  return <InstructorProfileUI
+     packagesData={packagesData}
     studentAppointments={studentAppointments.items}
+    id={id}
     />;
 }

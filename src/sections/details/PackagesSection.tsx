@@ -1,3 +1,4 @@
+'use client'
 // src/sections/details/PackagesSection.tsx
 import PackageCard from './PackageCard';
 
@@ -12,6 +13,7 @@ type Package = {
 
 type Props = {
   packages?: Package[]; // اجعلها optional
+  teacher_id:string;
 };
 
 // export function PackagesSection({ packages = [] }: Props) {
@@ -51,7 +53,7 @@ type Props = {
 // }
 import { Box, Container, Grid } from '@mui/material';
 
-export function PackagesSection({ packages = [] }: Props) {
+export function PackagesSection({ packages = [],teacher_id }: Props) {
   console.log("packages",packages)
   if (!packages.length) {
     return (
@@ -60,7 +62,6 @@ export function PackagesSection({ packages = [] }: Props) {
       </Box>
     );
   }
-
   return (
      <Box>
       <Container>
@@ -79,6 +80,8 @@ export function PackagesSection({ packages = [] }: Props) {
                 discountText={`وفر %${pkg.discountPercentage}`}
                 descriptionLine1={`مدة الصلاحية: ${pkg.validityDays} يوم`}
                 descriptionLine2=""
+                id={pkg.id}
+                teacher_id={teacher_id}
               />
             </Grid>
           ))}
@@ -88,7 +91,7 @@ export function PackagesSection({ packages = [] }: Props) {
   );
 }
 
-  {/**
+{/**
     <Box
             display="flex"
             flexDirection={{ xs: 'column', md: 'row-reverse' }}
@@ -118,9 +121,6 @@ export function PackagesSection({ packages = [] }: Props) {
             //     <MenuItem value={item}>{item}</MenuItem>
             //   </Select>
             // ))}
-
             {/* Search Input */}
-
           // </Box>
-
     // */}
