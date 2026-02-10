@@ -136,12 +136,18 @@ type GetDataResponse = {
   message?: string;
 };
 
+interface Props {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<
+    Record<'parentName' | 'page' | 'limit' | 'status' | 'search', string | undefined>
+  >;
+}
 // ===== Page Component =====
-export default async function Page({ params, searchParams }: any) {
-  const id = params?.id;
+export default async function Page({ params, searchParams }: Props) {
+  const { id } = await params;
   if (!id) throw new Error('ID is required');
 
-  const response = await getData<GetDataResponse>(endpoints.packages.get(id));
+  const response = await getData<ApiResponse>(endpoints.packages.get(id));
 
  const packagesData = (response.data as ApiResponse)?.items ?? [];
 

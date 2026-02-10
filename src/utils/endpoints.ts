@@ -172,6 +172,7 @@ employee:{
 cart:{
   getCarts:'/students/cart',
   addToCart:'/students/cart/items',
+  deleteCartItem: (cartItemId: string) => `/students/cart/items/${cartItemId}`,
 
 }
 };

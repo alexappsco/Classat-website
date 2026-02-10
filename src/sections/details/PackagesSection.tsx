@@ -16,45 +16,9 @@ type Props = {
   teacher_id:string;
 };
 
-// export function PackagesSection({ packages = [] }: Props) {
-//   if (!packages || packages.length === 0) {
-//     return (
-//       <Box sx={{ textAlign: 'center', py: 6 }}>
-//         لا توجد باقات متاحة حالياً.
-//       </Box>
-//     );
-//   }
-
-//   return (
-//     <Box>
-//       <Container>
-//         <Stack
-//           direction={{ xs: 'column', md: 'row' }}
-//           spacing={3}
-//           justifyContent="space-between"
-//           alignItems="stretch"
-//         >
-//           {packages.map((pkg) => (
-//             <Box key={pkg.id} sx={{ flex: 1 }}>
-//               <PackageCard
-//                 title={pkg.name}
-//                 hoursLabel={`عدد الساعات: ${pkg.hours}`}
-//                 price={`${pkg.price}`}
-//                 discountText={`وفر %${pkg.discountPercentage}`}
-//                 descriptionLine1={`مدة الصلاحية: ${pkg.validityDays} يوم`}
-//                 descriptionLine2=""
-//               />
-//             </Box>
-//           ))}
-//         </Stack>
-//       </Container>
-//     </Box>
-//   );
-// }
 import { Box, Container, Grid } from '@mui/material';
 
 export function PackagesSection({ packages = [],teacher_id }: Props) {
-  console.log("packages",packages)
   if (!packages.length) {
     return (
       <Box sx={{ textAlign: 'center', py: 6 }}>

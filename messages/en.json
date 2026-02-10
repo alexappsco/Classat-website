@@ -639,6 +639,19 @@
       "title_ar": "Title in Arabic",
       "title_en": "Title in English"
     },
+    "Cart": {
+      "title": "Cart",
+      "confirm_delete_item": "Confirm Delete Item",
+      "item": "Item",
+      "items": "Items",
+      "empty_cart": "Empty Cart",
+      "checkout": "Checkout",
+      "cart_total": "Cart Total",
+      "cart_subtotal": "Cart Subtotal",
+      "cart_tax": "Cart Tax",
+      "cart_discount": "Cart Discount",
+      "cart_total_items": "Total Items"
+    },
     "PrivacyPolicy": {
       "title": "Privacy Policy",
       "privacy_policy": "Privacy Policy",
