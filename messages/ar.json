@@ -686,6 +686,19 @@
       "title_ar": "العنوان بالعربية",
       "title_en": "العنوان بالانجليزية"
     },
+    "Cart":{
+      "title": "السلة",
+      "confirm_delete_item": "تأكيد حذف العنصر",
+      "item": "العنصر",
+      "items": "العناصر",
+      "empty_cart": "السلة فارغة",
+      "checkout": "تسهيل",
+      "cart_total": "مجموع السلة",
+      "cart_subtotal": "المجموع الفرعي",
+      "cart_tax": "الضريبة",
+      "cart_discount": "الخصم",
+      "cart_total_items": "مجموع العناصر"
+    },
     "PrivacyPolicy": {
       "title": "سياسة الخصوصية",
       "privacy_policy": "سياسة الخصوصية",
