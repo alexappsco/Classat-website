@@ -92,9 +92,9 @@ export default function Header() {
           <LogoText {...{ lgUp }} />
         </Box>
       </Link>
-      {!authenticated && isLanding ? (
+      {!authenticated && isLanding? (
         <AuthButtons changeSignIn={setIsSignIn} />
-      ) :!hasAccessToken ? (
+      ) : hasAccessToken ? (
         <Box display="flex" alignItems="center" gap={1.5} pt={0.5}>
           <Link href="/ar/courses/favorites/">
             <IconButton>
