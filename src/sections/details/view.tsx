@@ -174,7 +174,7 @@ console.log("teacherId",id)
         {/* ---------- المحتوى ---------- */}
         <Box sx={{ mt: 4 }}>
           {tab === 'about' && <AboutSection />}
-          {tab === 'courses' && <EducationalLessons lessonList={lessonList} />}
+          {tab === 'courses' && <EducationalLessons lessonList={lessonList} teacher_id={id} />}
           {tab === 'packages' && <PackagesSection packages={packagesData} teacher_id={id}/>}
           {tab === 'live' && <LiveSectionDetails title="البث المباشر" />}
           {tab === 'session' && <LiveSectionTimeDetails title="جلسة خاصة" studentAppointments={studentAppointments} />}

@@ -1,5 +1,5 @@
-import PrivacyPolicySection from 'src/sections/setting/policy/PrivacyPolicySection';
 import { getTranslations } from 'next-intl/server';
+import PrivacyPolicySection from 'src/sections/setting/policy/PrivacyPolicySection';
 
 export default function PrivacyPolicyPage() {
   return <PrivacyPolicySection />;

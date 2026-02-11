@@ -1,7 +1,7 @@
 'use server';
 
-import { getData } from 'src/utils/crud-fetch-api';
 import { endpoints } from 'src/utils/endpoints';
+import { getData } from 'src/utils/crud-fetch-api';
 import InstructorProfileUI from 'src/sections/details/view';
 
 // ===== Types =====
@@ -30,17 +30,11 @@ export default async function Page({ params, searchParams }: Props) {
   const { id } = await params;
   const { subjectId } = await searchParams;
 
-  console.log("Received params and searchParams:", {
-    id,
-    subjectId,
-    allSearchParams: await searchParams
-  });
-
   if (!id) throw new Error('Teacher ID is required');
 
   // 1. Fetch packages
   const response = await getData<ApiResponse>(endpoints.packages.get(id));
-  const packagesData = response.data?.items ?? [];
+  const packagesData = (response.data as any).items || [];
 
   // 2. Fetch student appointments
   let studentAppointments = null;
@@ -57,13 +51,9 @@ export default async function Page({ params, searchParams }: Props) {
   let lessonList: any[] = [];
   if (id && subjectId) {
     try {
-      console.log("Fetching lessons with:", { id, subjectId });
-
       const res = await getData<any>(
         `/students/teacher/${id}/education/${subjectId}/lessons`
       );
-
-      console.log("Lessons response:", res);
 
       if (res.success && res.data) {
         // Handle different response structures
@@ -79,14 +69,6 @@ export default async function Page({ params, searchParams }: Props) {
       console.error('Error fetching lessons:', error);
     }
   }
-
-  console.log("Final data:", {
-    packagesCount: packagesData.length,
-    appointments: studentAppointments?.length || 0,
-    lessonsCount: lessonList.length
-  });
-  console.log("lessonList:", lessonList)
-
   return (
     <InstructorProfileUI
       packagesData={packagesData}
