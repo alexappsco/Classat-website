@@ -1,12 +1,11 @@
 
 'use client'
 import { Icon } from '@iconify/react';
-import { Box, Card, Stack, Button, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
-
 import { endpoints } from 'src/utils/endpoints';
 import { postData } from 'src/utils/crud-fetch-api';
 import { primary, warning } from 'src/theme/palette';
+import { Box, Card, Stack, Button, Typography } from '@mui/material';
 
 type PackageCardProps = {
   title: string;

@@ -54,16 +54,17 @@ type Package = {
 type Props = {
   packagesData: Package[];
   studentAppointments: any;
+  lessonList: any[];
   id: string
 };
-export default function InstructorProfileUI({ packagesData, studentAppointments, id }: Props) {
+export default function InstructorProfileUI({ packagesData, studentAppointments, id, lessonList }: Props) {
   console.log("studentAppointments 2222222", studentAppointments);
   console.log("id", id)
   const [tab, setTab] = useState('about');
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
+console.log("teacherId",id)
   return (
     <Container maxWidth="xl" sx={{ pt: 10 }}>
       <Card sx={{ p: { xs: 2, md: 4 } }}>
@@ -173,7 +174,7 @@ export default function InstructorProfileUI({ packagesData, studentAppointments,
         {/* ---------- المحتوى ---------- */}
         <Box sx={{ mt: 4 }}>
           {tab === 'about' && <AboutSection />}
-          {tab === 'courses' && <EducationalLessons />}
+          {tab === 'courses' && <EducationalLessons lessonList={lessonList} teacher_id={id} />}
           {tab === 'packages' && <PackagesSection packages={packagesData} teacher_id={id}/>}
           {tab === 'live' && <LiveSectionDetails title="البث المباشر" />}
           {tab === 'session' && <LiveSectionTimeDetails title="جلسة خاصة" studentAppointments={studentAppointments} />}

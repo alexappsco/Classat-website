@@ -10,7 +10,8 @@ import SessionsSection from './sessions/SessionsSection';
 export default function Favorites() {
   return (
      <>
-        <SearchBar />
+        {/* <SearchBar /> */}
+        sss
         <SessionsSection sessions={SESSIONS.TOP_RATED_SESSIONS} />
         <CustomPagination />
     </>
