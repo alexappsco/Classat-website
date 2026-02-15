@@ -1,12 +1,11 @@
 
 'use client'
 import { Icon } from '@iconify/react';
-import { Box, Card, Stack, Button, Typography } from '@mui/material';
 import { useSnackbar } from 'notistack';
-
 import { endpoints } from 'src/utils/endpoints';
 import { postData } from 'src/utils/crud-fetch-api';
 import { primary, warning } from 'src/theme/palette';
+import { Box, Card, Stack, Button, Typography } from '@mui/material';
 
 type PackageCardProps = {
   title: string;
@@ -31,30 +30,24 @@ function PackageCard({
 }: PackageCardProps) {
   const { enqueueSnackbar } = useSnackbar();
 
-  const addToCart = async () => {
-    const payload = {
-      itemType: '2',
-      teacherPackageId: id,
-      teacherId: teacher_id,
-    };
+const addToCart = async () => {
+  const res = await postData(endpoints.cart.addToCart, {
+    itemType: '2',
+    teacherPackageId: id,
+    teacherId: teacher_id,
+  });
 
-      const res = await postData(endpoints.cart.addToCart, payload)
-
-
-      if(res.status==200){
-        // ✅ Success
-        enqueueSnackbar('تم الاضافة للسلة بنجاح', {
-          variant: 'success',
-        });
-      }
-
-      enqueueSnackbar( 'حدث خطأ ما', {
-          variant: 'error',
-        });
-        return;
-      }
-
-
+  if (res.success) {
+    enqueueSnackbar('تم الاضافة للسلة بنجاح', {
+      variant: 'success',
+    });
+  } else {
+    enqueueSnackbar(
+      res.error || 'حدث خطأ ما',
+      { variant: 'error' }
+    );
+  }
+};
   return (
     <Card
       sx={{

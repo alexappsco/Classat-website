@@ -1,118 +1,7 @@
-// // src/app/[locale]/(control-panel)/curricula/details-mathod/[id]/page.tsx
-// import { getData } from 'src/utils/crud-fetch-api';
-// import { endpoints } from 'src/utils/endpoints';
-
-// type Package = {
-//   id: string;
-//   name: string;
-//   hours: number;
-//   validityDays: number;
-//   price: number;
-//   discountPercentage: number;
-// };
-
-// type Params = {
-//   params: { id: string };
-// };
-
-// export default async function Page({ params }: Params) {
-//   const id = params.id;
-
-//   // استدعاء الباك اند
-//   const response = await getData<{ totalCount: number; items: Package[] }>(
-//     endpoints.packages.get(id)
-//   );
-
-//   // طباعة البيانات في كونسول السيرفر
-//   console.log('Request URL:');
-//   // console.log(`https://api-staging.classat.net/api/v1${packages.get(id)}`);
-//   console.log('Server response:');
-//   console.log(response);
-
-//   // الصفحة تظهر فارغة أو رسالة بسيطة
-//   return <div>Data printed in server console ✅</div>;
-// }
-// page.tsx (Server Component)
-// import { getData } from 'src/utils/crud-fetch-api';
-// import { endpoints } from 'src/utils/endpoints';
-// import InstructorProfileUI from 'src/sections/details/view';
-
-// type Package = {
-//   id: string;
-//   name: string;
-//   hours: number;
-//   validityDays: number;
-//   price: number;
-//   discountPercentage: number;
-// };
-
-// type Params = {
-//   params: { id: string };
-// };
-
-// export default async function Page({ params }: Params) {
-//   const response = await getData<{ totalCount: number; items: Package[] }>(
-//     endpoints.packages.get(params.id)
-//   );
-
-//   console.log('SERVER RESPONSE:', response);
-
-//   return (
-//     <InstructorProfileUI
-//       packagesData={response.data?.items ?? []}
-//     />
-//   );
-// }
-// import { getData } from 'src/utils/crud-fetch-api';
-// import { endpoints } from 'src/utils/endpoints';
-// import InstructorProfileUI from 'src/sections/details/view';
-
-// type Package = {
-//   id: string;
-//   name: string;
-//   hours: number;
-//   validityDays: number;
-//   price: number;
-//   discountPercentage: number;
-// };
-
-// type ApiResponse = {
-//   totalCount: number;
-//   items: Package[];
-// };
-
-// type GetDataResponse = {
-//   data?: ApiResponse;
-//   status?: number;
-//   message?: string;
-// };
-
-// type Params = {
-//   params: { id: string };
-// };
-
-// export default async function Page({ params }: Params) {
-//   const response = await getData<GetDataResponse>(
-//     endpoints.packages.get(params.id)
-//   );
-
-//   const packagesData = (response.data as ApiResponse)?.items ?? [];
-
-//   return (
-//     <InstructorProfileUI
-//       packagesData={packagesData}
-//     />
-//   );
-// }
-
-
-
-
-
 'use server';
 
-import { getData } from 'src/utils/crud-fetch-api';
 import { endpoints } from 'src/utils/endpoints';
+import { getData } from 'src/utils/crud-fetch-api';
 import InstructorProfileUI from 'src/sections/details/view';
 
 // ===== Types =====
@@ -130,38 +19,62 @@ type ApiResponse = {
   items: Package[];
 };
 
-type GetDataResponse = {
-  data?: ApiResponse;
-  status?: number;
-  message?: string;
-};
+interface Props {
+  params: Promise<{ id: string }>; // Only id in params
+  searchParams: Promise<{ subjectId?: string }>; // subjectId comes from searchParams
+}
 
 // ===== Page Component =====
-export default async function Page({ params, searchParams }: any) {
-  const id = params?.id;
-  if (!id) throw new Error('ID is required');
+export default async function Page({ params, searchParams }: Props) {
+  // Get both params and searchParams
+  const { id } = await params;
+  const { subjectId } = await searchParams;
 
-  const response = await getData<GetDataResponse>(endpoints.packages.get(id));
+  if (!id) throw new Error('Teacher ID is required');
 
- const packagesData = (response.data as ApiResponse)?.items ?? [];
+  // 1. Fetch packages
+  const response = await getData<ApiResponse>(endpoints.packages.get(id));
+  const packagesData = (response.data as any).items || [];
 
- let studentAppointments = null;
- if (id) {
-   try {
-      const appointments = await getData<any>(`/students/teacher/${id}/appointments`);
-      console.log("appoin55555555555555555tments",appointments);
-      if (response.success && response.data) {
-        studentAppointments = appointments.data;
+  // 2. Fetch student appointments
+  let studentAppointments = null;
+  try {
+    const appointments = await getData<any>(`/students/teacher/${id}/appointments`);
+    if (response.success && response.data) {
+      studentAppointments = appointments.data?.items || appointments.data;
+    }
+  } catch (error) {
+    console.error('Error fetching appointments:', error);
+  }
+
+  // 3. Fetch lessons - using subjectId from query params
+  let lessonList: any[] = [];
+  if (id && subjectId) {
+    try {
+      const res = await getData<any>(
+        `/students/teacher/${id}/education/${subjectId}/lessons`
+      );
+
+      if (res.success && res.data) {
+        // Handle different response structures
+        if (Array.isArray(res.data)) {
+          lessonList = res.data;
+        } else if (res.data.items && Array.isArray(res.data.items)) {
+          lessonList = res.data.items;
+        } else {
+          lessonList = res.data;
+        }
       }
     } catch (error) {
-      console.error('Error fetching company details:', error);
+      console.error('Error fetching lessons:', error);
     }
   }
-  console.log("studentAppoi 88 777ntments",studentAppointments);
-
-  return <InstructorProfileUI
-     packagesData={packagesData}
-    studentAppointments={studentAppointments.items}
-    id={id}
-    />;
+  return (
+    <InstructorProfileUI
+      packagesData={packagesData}
+      studentAppointments={studentAppointments}
+      id={id}
+      lessonList={lessonList}
+    />
+  );
 }

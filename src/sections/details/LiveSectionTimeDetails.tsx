@@ -71,39 +71,7 @@ export default function LiveSectionTimeDetails({title,studentAppointments}:Props
   return (
     <Box>
       <Container>
-      <Box
-          display="flex"
-          flexDirection={{ xs: 'column', md: 'row-reverse' }}
-          alignItems={{ xs: 'stretch', md: 'start' }}
-          gap={2}
-          justifyContent="start"
-          // dir="rtl"
-          sx={{ width: '100%', my: 2 }}
-        >
-          {/* Dropdowns */}
-          {['الصف الثالث','المرحلة الايتدائية','التاريخ'].map((item, idx) => (
-            <Select
-              key={idx}
-              defaultValue={item}
-              variant="outlined"
-              sx={{
-                borderRadius: '50px',
-                height: { xs: 40, md: 48 },
-                minWidth: { xs: 120, md: 140 + idx * 10 },
-                px: 1,
-                '& fieldset': { border: 'none' },
-                bgcolor: '#fff',
-                boxShadow: '0 0 5px rgba(0,0,0,0.15)',
-                fontSize: { xs: 14, md: 16 },
-              }}
-            >
-              <MenuItem value={item}>{item}</MenuItem>
-            </Select>
-          ))}
-
-          {/* Search Input */}
-
-        </Box>
+  
 
         {/* عنوان قسم جدول المواعيد */}
         <Box  sx={{ mb: 3 }}>

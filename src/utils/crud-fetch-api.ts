@@ -83,9 +83,13 @@ async function apiRequest<TResponse, TBody = undefined>(
 
     // Response check after parsing so i can get the error message
     if (!response.ok) {
-      const errMsg = Array.isArray(responseData?.message)
-        ? responseData?.message.join(' | ')
-        : responseData?.message || t;
+      // const errMsg = Array.isArray(responseData?.message)
+      //   ? responseData?.message.join(' | ')
+      //   : responseData?.message || t;
+      const errMsg =
+        responseData?.message ||
+        responseData?.error?.message ||
+        t('unexpected_error');
       const resCode = responseData?.code || null;
       const resDetails = responseData?.details || null;
       const resData = responseData?.data || {};
@@ -138,6 +142,22 @@ export async function deleteData<TResponse>(
   return apiRequest<TResponse>(endpoint, 'DELETE', undefined, options);
 }
 
+// const errorObject = (
+//   error: string = '',
+//   status: string | number = '',
+//   code: unknown = null,
+//   details: unknown = null,
+//   data: unknown = {},
+//   validationErrors: unknown = null
+// ): ApiErrorResponse => ({
+//   success: false,
+//   error,
+//   status,
+//   code,
+//   details,
+//   data,
+//   validationErrors,
+// });
 const errorObject = (
   error: string = '',
   status: string | number = '',
@@ -147,7 +167,7 @@ const errorObject = (
   validationErrors: unknown = null
 ): ApiErrorResponse => ({
   success: false,
-  error,
+  error: String(error), // 👈 safety net
   status,
   code,
   details,
