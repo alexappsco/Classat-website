@@ -162,6 +162,7 @@ import { Button } from '@mui/material';
 
 import Link from 'next/link';
 import { useJwtAuth } from 'src/auth/jwt-context';
+import AcountInfo from 'src/sections/profile/AcountInfo';
 // ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
@@ -285,34 +286,12 @@ export default function AccountPopover() {
 
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 200, p: 0 }}>
         
-        {/* <Button sx={{ p: 1,display:'flex' }} onClick={() => handleClickItem('/profile')} >
-
-        <Avatar
-          // src={user?.avatar}
-          src={'/favicon/studend.jpg'}
-          alt={user?.name}
-          sx={{
-            width: 36,
-            height: 36,
-            mr:1,
-            border: (theme: any) => `solid 2px ${theme.palette.background.default}`,
-          }}
-        >
-          {user?.name?.charAt(0).toUpperCase()}
-        </Avatar>
-      <Box sx={{justifyItems:'start'}}>
-          <Typography variant="subtitle2" noWrap >
-            عبدالله محمد
-          </Typography>
-
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            abdullah@gmail.com
-          </Typography>
-        </Box>  
-        </Button> */}
-{/* <Divider/> */}
-        {/* <Divider sx={{ borderStyle: 'dashed' }} /> */}
-
+        <Button sx={{ p: 1,display:'flex' }} onClick={() => handleClickItem('/profile')} >
+            <AcountInfo />
+          
+        </Button>
+            <Divider/>
+        <Divider sx={{ borderStyle: 'dashed' }} />
         <Stack >
           {OPTIONS.map((option) => (
             <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>

@@ -148,6 +148,7 @@ employee:{
   student:{
     teacherid_appoint:(teacherId:string)=>`/students/teacher/${teacherId}/appointments`,
     get:'/students/profile',
+    update: '/students/profile/update',
     getEducationTypeStageGradeSubject:'/shared/education/mappings/approach-type-stage-grade-subjects',
     getStudentTeacherEducation: (id: string, teacherName?: string) => {
       let url = `/students/subject/${id}/teachers`;
@@ -177,5 +178,20 @@ cart:{
   addToCart:'/students/cart/items',
   deleteCartItem: (cartItemId: string) => `/students/cart/items/${cartItemId}`,
 
+},
+country:{
+  get: '/shared/location/countries',
+},
+approaches: {
+  get: "/shared/education/approaches"
+},
+educationApproachType:{
+  get:"/shared/education/approach-types"
+},
+educationApproachTypeStage:{
+  get: "/shared/education/mappings/approach-type-stages"
+},
+educationApproachTypeStageGrade:{
+  get: "/shared/education/mappings/approach-type-stage-grades"
 }
 };
