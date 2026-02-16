@@ -191,7 +191,6 @@ export default function SelectedMethod({
         return;
       }
 
-      // ⭐ إرسال كـ query parameters كما هو مطلوب من الـ backend
       const formData = new FormData();
       formData.append('EducationApproachTypeStageGradeId', selectedTypeStageGradeId);
 
@@ -203,7 +202,7 @@ export default function SelectedMethod({
 
 
       if (response.success) {
-        alert('تم ✅');
+        // alert('تم ✅');
         router.push('/curricula');
         onClose();
       } else {
