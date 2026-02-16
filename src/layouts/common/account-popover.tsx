@@ -290,8 +290,10 @@ export default function AccountPopover() {
             <AcountInfo />
           
         </Button>
+
             <Divider/>
         <Divider sx={{ borderStyle: 'dashed' }} />
+        
         <Stack >
           {OPTIONS.map((option) => (
             <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>
