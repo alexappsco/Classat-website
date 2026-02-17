@@ -193,5 +193,8 @@ educationApproachTypeStage:{
 },
 educationApproachTypeStageGrade:{
   get: "/shared/education/mappings/approach-type-stage-grades"
+},
+studentCourse:{
+  getCourses: "/students/courses",
 }
 };
