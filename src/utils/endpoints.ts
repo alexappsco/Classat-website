@@ -149,12 +149,17 @@ employee:{
     teacherid_appoint:(teacherId:string)=>`/students/teacher/${teacherId}/appointments`,
     get:'/students/profile',
     update: '/students/profile/update',
+    changeEmailConfirm:"/shared/auth/email/change/confirm",
+    changePhoneConfirm: "/shared/auth/phone/change/confirm",
+    changePhone: "/shared/auth/phone/change/request",
+    changeEmail:"/shared/auth/email/change/request",
     getEducationTypeStageGradeSubject:'/shared/education/mappings/approach-type-stage-grade-subjects',
     getStudentTeacherEducation: (id: string, teacherName?: string) => {
       let url = `/students/subject/${id}/teachers`;
   if (teacherName) url += `?TeacherName=${teacherName}`;
   return url;
-}
+},
+
   },
   packages: {
     get:(id: string) => `/students/teacher/${id}/packages`,
