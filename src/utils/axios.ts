@@ -230,4 +230,7 @@ export const endpoints = {
     get: '/students/profile',
     update: '/students/profile/update',
   },
+  post_payment: '/shared/payment-methods',
+  get_payment: '/shared/payment-methods',
+
 };

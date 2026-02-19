@@ -14,11 +14,13 @@ type Package = {
 type Props = {
   packages?: Package[]; // اجعلها optional
   teacher_id:string;
+  paymentList:any[];
+
 };
 
-import { Box, Container, Grid } from '@mui/material';
+import { Box, Grid, Container } from '@mui/material';
 
-export function PackagesSection({ packages = [],teacher_id }: Props) {
+export function PackagesSection({ packages = [],teacher_id,paymentList }: Props) {
   if (!packages.length) {
     return (
       <Box sx={{ textAlign: 'center', py: 6 }}>
@@ -34,8 +36,8 @@ export function PackagesSection({ packages = [],teacher_id }: Props) {
             <Grid
               key={pkg.id}
               item
-              xs={12}   // 📱 موبايل: كارد واحد (مثل الآن)
-              md={4}    // 🖥️ ديسكتوب: 3 كروت في الصف
+              xs={12}
+              md={4}
             >
               <PackageCard
                 title={pkg.name}
@@ -46,6 +48,7 @@ export function PackagesSection({ packages = [],teacher_id }: Props) {
                 descriptionLine2=""
                 id={pkg.id}
                 teacher_id={teacher_id}
+                paymentList={paymentList}
               />
             </Grid>
           ))}

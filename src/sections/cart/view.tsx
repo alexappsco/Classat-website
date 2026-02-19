@@ -178,30 +178,30 @@ const handleDelete = useCallback(
 
                 <Box sx={summaryRowStyle}>
                   <Typography color="gray">المجموع الفرعي</Typography>
-                  <Typography fontWeight={500}>{summary.subTotal} درهم</Typography>
+                  <Typography fontWeight={500}>{summary?.subTotal} درهم</Typography>
                 </Box>
 
                 <Box sx={summaryRowStyle}>
                   <Typography color="gray">ضريبة القيمة المضافة</Typography>
-                  <Typography fontWeight={500}>{summary.vat} درهم</Typography>
+                  <Typography fontWeight={500}>{summary?.vat} درهم</Typography>
                 </Box>
 
                 <Box sx={summaryRowStyle}>
                   <Typography color="gray">خصم</Typography>
-                  <Typography sx={{ color: 'green', fontWeight: 500 }}>{summary.discount} درهم</Typography>
+                  <Typography sx={{ color: 'green', fontWeight: 500 }}>{summary?.discount} درهم</Typography>
                 </Box>
 
                 <Divider sx={{ my: 2 }} />
 
                 <Box sx={summaryRowStyle}>
                   <Typography color="gray">الإجمالي</Typography>
-                  <Typography fontWeight={600}>{summary.total} درهم</Typography>
+                  <Typography fontWeight={600}>{summary?.total} درهم</Typography>
                 </Box>
 
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
                   <Typography fontWeight={700}>الإجمالي بعد الخصم</Typography>
                   <Typography fontWeight={800} sx={{ fontSize: '1.5rem', color: '#00bcd4' }}>
-                    {summary.totalAfterDiscount} درهم
+                    {summary?.totalAfterDiscount} درهم
                   </Typography>
                 </Box>
 

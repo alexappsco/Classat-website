@@ -53,11 +53,11 @@ interface Props{
   title:string;
   studentAppointments:any
 }
-export default function LiveSectionTimeDetails({title,studentAppointments}:Props) {
+export default function LiveSectionTimeDetails({title:_,studentAppointments}:Props) {
   const primaryTextColor = text.primary;
   const paragraphTextColor = text.paragraph;
-  const mainColor = primary.main;
-  const smDown = useResponsive('down', 'sm');
+  // const mainColor = primary.main;
+  // const smDown = useResponsive('down', 'sm');
 
   // Transform the API data to match the display format
   const availableSlots = (studentAppointments || []).map((appointment: any) => ({
@@ -71,7 +71,7 @@ export default function LiveSectionTimeDetails({title,studentAppointments}:Props
   return (
     <Box>
       <Container>
-  
+
 
         {/* عنوان قسم جدول المواعيد */}
         <Box  sx={{ mb: 3 }}>
