@@ -69,12 +69,18 @@ export default async function Page({ params, searchParams }: Props) {
       console.error('Error fetching lessons:', error);
     }
   }
+  let paymentList: any[] = [];
+    const paymentResponse = await getData<any>(
+      endpoints.payment.get,  // What is this endpoint?
+    );
+    paymentList = paymentResponse?.data?.items || [];
   return (
     <InstructorProfileUI
       packagesData={packagesData}
       studentAppointments={studentAppointments}
       id={id}
       lessonList={lessonList}
+      paymentList={paymentList}
     />
   );
 }

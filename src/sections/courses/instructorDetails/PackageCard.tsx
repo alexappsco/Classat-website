@@ -82,7 +82,7 @@ function PackageCard({
           bgcolor: primary.main,
           ':hover': { bgcolor: primary.dark },
         }}
-       
+
       >
         اشترِ الآن
       </Button>

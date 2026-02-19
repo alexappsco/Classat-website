@@ -196,5 +196,10 @@ educationApproachTypeStageGrade:{
 },
 studentCourse:{
   getCourses: "/students/courses",
-}
+},
+payment:{
+  get: '/shared/payment-methods',
+  post_all_payment: '/students/cart/checkout',
+  post_single_item: '/students/cart/checkout/direct-booking',
+},
 };
