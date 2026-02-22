@@ -1,5 +1,5 @@
 
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, Typography } from "@mui/material";
 import { useTranslations } from "next-intl";
 import LessonCard from "./lessonCard";
 
@@ -37,6 +37,9 @@ const LessonsSection = ({ cards }: IProps) => {
         mb: 8,
       }}
     >
+      <Typography variant="h4" sx={{ mb: 4,  }}>
+        دروسك القادمة
+      </Typography>
       <Grid container spacing={{ xs: 2, md: 3 }}>
         {cards.map((card, index) => (
           <Grid

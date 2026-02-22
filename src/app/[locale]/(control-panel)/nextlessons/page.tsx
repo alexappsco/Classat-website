@@ -79,7 +79,6 @@ async function page() {
     href: "#",
   }));
 
-  console.log("CARDS:", cards);
 
   return <LessonsSection cards={cards} />;
 }

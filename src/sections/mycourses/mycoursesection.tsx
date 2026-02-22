@@ -142,7 +142,7 @@ export default function MyCoursesSection({ courses }: Props) {
     <Box sx={{ py: { xs: 8, md: 10 }, px: { xs: 4, md: 6 } }}>
       <Container>
         {/* Courses Grid */}
-        <Grid container spacing={4} justifyContent={'center'}>
+        <Grid container spacing={4} >
           {courses.map((course, index) => (
             <Grid
               item

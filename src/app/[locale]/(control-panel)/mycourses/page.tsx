@@ -70,9 +70,6 @@ export default async function Page({ searchParams }: { searchParams?: any }) {
     const query = searchParams?.Sorting
       ? `${endpoints.studentCourse.getCourses}?Sorting=${searchParams.Sorting}`
       : endpoints.studentCourse.getCourses;
-
-    console.log("Query =>", query);
-
     const response = await getData<any>(query, {
       cache: "no-store",
     });
