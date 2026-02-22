@@ -169,7 +169,6 @@ export default function Courses({ educationGrade, subjects }: CoursesProps) {
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              دروسك القادمة
             </Typography>
             <Button
               color="info"
