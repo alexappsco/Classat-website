@@ -58,6 +58,7 @@ import { SESSIONS } from './data/sessions';
 import CustomPagination from './CustomPagination';
 import SessionsSection from './sessions/SessionsSection';
 import LiveSessionsSection from './live-sessions/LiveSessionSection';
+import MyCoursesPreview from './myCoursesPreview';
 
 // ===== Types =====
 type CourseCategory = {
@@ -93,7 +94,7 @@ export default function Courses({ categories }: Props) {
 
       <Box sx={{ pt: 16 }}>
         <MiniSessions title="استئناف التعلم" sessions={SESSIONS.sessionsData} />
-
+          <MyCoursesPreview/>
         <SessionsSection
           title="موصى به لك"
           sessions={SESSIONS.RECOMMENDED_SESSIONS}
@@ -102,7 +103,7 @@ export default function Courses({ categories }: Props) {
         <SessionsSection
           title="الأعلى تقييماً"
           sessions={SESSIONS.TOP_RATED_SESSIONS}
-        />
+        /> 
 
         <LiveSessionsSection />
         <CustomPagination />
