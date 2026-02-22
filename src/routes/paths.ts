@@ -1,3 +1,4 @@
+import MyCoursesCard from "src/sections/mycourses/mycoursecard";
 
 const ROOTS = {
   AUTH: '/auth',
@@ -113,6 +114,12 @@ export const paths = {
     },
     deliveryFees: {
       list: '/delivery-fees'
+    },
+     mycourses: {
+      list: '/mycourses'
+    },
+    nextlessons:{
+      list: '/nextlessons'
     }
   },
 };
