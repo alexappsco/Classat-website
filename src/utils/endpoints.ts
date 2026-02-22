@@ -207,4 +207,7 @@ payment:{
   post_all_payment: '/students/cart/checkout',
   post_single_item: '/students/cart/checkout/direct-booking',
 },
+studentEducationSession:{
+  get: "/students/education-sessions"
+}
 };
