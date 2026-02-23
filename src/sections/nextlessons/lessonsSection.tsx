@@ -33,13 +33,11 @@ const LessonsSection = ({ cards }: IProps) => {
   return (
     <Container
       sx={{
-        mt: 20, 
+        mt: 20,
         mb: 8,
       }}
     >
-      <Typography variant="h4" sx={{ mb: 4,  }}>
-        دروسك القادمة
-      </Typography>
+
       <Grid container spacing={{ xs: 2, md: 3 }}>
         {cards.map((card, index) => (
           <Grid

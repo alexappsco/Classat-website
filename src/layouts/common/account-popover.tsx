@@ -163,6 +163,7 @@ import { Button } from '@mui/material';
 import Link from 'next/link';
 import { useJwtAuth } from 'src/auth/jwt-context';
 import AcountInfo from 'src/sections/profile/AcountInfo';
+import { useAuthStore } from 'src/auth/auth-store';
 // ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
@@ -172,7 +173,7 @@ export default function AccountPopover() {
   const router = useRouter();
   const t = useTranslations();
 
-  const { logout } =useJwtAuth();
+  const { logout } = useAuthStore();
 
   const popover = usePopover();
 
@@ -285,15 +286,15 @@ export default function AccountPopover() {
       </IconButton>
 
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 200, p: 0 }}>
-        
+
         <Button sx={{ p: 1,display:'flex' }} onClick={() => handleClickItem('/profile')} >
             <AcountInfo />
-          
+
         </Button>
 
             <Divider/>
         <Divider sx={{ borderStyle: 'dashed' }} />
-        
+
         <Stack >
           {OPTIONS.map((option) => (
             <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>

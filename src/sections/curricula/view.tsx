@@ -186,7 +186,7 @@ export default function Courses({ educationGrade, subjects }: CoursesProps) {
         </Box>
 
         <LiveSessionsSection />
-{/*         
+{/*
         <Box
           sx={{
             py: { xs: 4, md: 6 },

@@ -209,5 +209,8 @@ payment:{
 },
 studentEducationSession:{
   get: "/students/education-sessions"
+},
+Lives:{
+  get: "/students/lives"
 }
 };
