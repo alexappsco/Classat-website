@@ -37,9 +37,9 @@ const LessonsSection = ({ cards }: IProps) => {
         mb: 8,
       }}
     >
-      <Typography variant="h4" sx={{ mb: 4,  }}>
+      {/* <Typography variant="h4" sx={{ mb: 4,  }}>
         دروسك القادمة
-      </Typography>
+      </Typography> */}
       <Grid container spacing={{ xs: 2, md: 3 }}>
         {cards.map((card, index) => (
           <Grid
