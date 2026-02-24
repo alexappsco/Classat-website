@@ -212,5 +212,8 @@ studentEducationSession:{
 },
 Lives:{
   get: "/students/lives"
+},
+studentEducationLesson:{
+  get:"/students/education-lessons"
 }
 };
