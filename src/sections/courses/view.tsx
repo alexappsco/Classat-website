@@ -103,7 +103,7 @@ export default function Courses({ categories }: Props) {
         <SessionsSection
           title="الأعلى تقييماً"
           sessions={SESSIONS.TOP_RATED_SESSIONS}
-        /> 
+        />
 
         <LiveSessionsSection />
         <CustomPagination />

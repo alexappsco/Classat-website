@@ -1,25 +1,23 @@
 'use client';
 
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { endpoints } from 'src/utils/endpoints';
+import { getData } from 'src/utils/crud-fetch-api';
 import { Box, Button, Typography } from '@mui/material';
+import { useSettingsContext } from 'src/components/settings';
+import { LeftIcon } from 'src/components/carousel/arrow-icons';
 
 import Hero from './Hero';
-import LiveSessionsSection from './live-sessions/LiveSessionSection';
 import CategoriesClasse from './categories';
-import InstructorsSection from './sections/top-instructor/TopInstructorsSection';
 import NextLessonsPreview from './nextLessonsPreview';
+import LiveSessionsSection from './live-sessions/LiveSessionSection';
+import InstructorsSection from './sections/top-instructor/TopInstructorsSection';
 import RecoarLessonsSection, {
   StudentLesson,
 } from './recoardlessons/RecoarLessonsSection';
-
-import { useTranslations } from 'next-intl';
-import { useSettingsContext } from 'src/components/settings';
-import { useRouter } from 'next/navigation';
-import { LeftIcon } from 'src/components/carousel/arrow-icons';
-
-import { getData } from 'src/utils/crud-fetch-api';
-import { endpoints } from 'src/utils/endpoints';
 
 type EducationGrade = { id: string; name: string };
 
@@ -115,6 +113,7 @@ export default function Courses({ educationGrade, subjects }: CoursesProps) {
 
         {/* ===== Live Sessions ===== */}
         <LiveSessionsSection />
+{/*
 
         {/* ===== Top Teachers + Recorded Lessons ===== */}
         <Box

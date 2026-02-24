@@ -210,6 +210,9 @@ payment:{
 studentEducationSession:{
   get: "/students/education-sessions"
 },
+Lives:{
+  get: "/students/lives"
+},
 studentEducationLesson:{
   get:"/students/education-lessons"
 }

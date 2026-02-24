@@ -36,11 +36,13 @@ export default function MiniSessionsWithHeader({
         {/* Header */}
         <Grid container alignItems="center" justifyContent="space-between" sx={{ mb: 4 }}>
           <Grid item xs={12} sm={8} md={9}>
+            {sessions.length!=0 &&
             <Stack spacing={0.5}>
               <Typography variant="h3" sx={{ fontWeight: 700, color: primaryTextColor }}>
                 {title}
               </Typography>
             </Stack>
+}
           </Grid>
 
           {!hideButton && (
@@ -55,7 +57,7 @@ export default function MiniSessionsWithHeader({
           )}
         </Grid>
 
-        
+
         <Grid container spacing={2}>
           {sessions.map((session, index) => (
             <Grid
@@ -76,7 +78,7 @@ export default function MiniSessionsWithHeader({
                   alignItems: "center",
                 }}
               >
-                
+
                 <Box
                   component="img"
                   src={session.image}
@@ -89,14 +91,14 @@ export default function MiniSessionsWithHeader({
                   }}
                 />
 
-               
+
                 <Stack spacing={0.5} flexGrow={1}>
-                  
+
                   <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                     {session.title}
                   </Typography>
 
-               
+
                   <Stack direction="row" spacing={1} alignItems="center">
                     <Avatar
                       src={session.instructorAvatar}
@@ -107,12 +109,12 @@ export default function MiniSessionsWithHeader({
                     </Typography>
                   </Stack>
 
-                  
+
                   <Typography variant="caption" sx={{ color: "text.secondary" }}>
                     {session.details}
                   </Typography>
 
-                  
+
                   <LinearProgress
                     variant="determinate"
                     value={session.progress}

@@ -33,7 +33,7 @@ const LessonsSection = ({ cards }: IProps) => {
   return (
     <Container
       sx={{
-        mt: 20, 
+        mt: 20,
         mb: 8,
       }}
     >

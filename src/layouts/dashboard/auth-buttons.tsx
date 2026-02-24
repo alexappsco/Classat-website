@@ -1,12 +1,10 @@
-import { Stack, Button, darken, Box, SvgIcon } from '@mui/material';
 import React, { useState } from 'react';
 import Image from 'src/components/image';
-import { useResponsive } from 'src/hooks/use-responsive';
-import JwtRegisterDialog from 'src/sections/auth/jwt-register-view';
-import LoginView from 'src/sections/auth/login-view';
-import LoginDialog from 'src/sections/auth/login-with-email';
-import LoginBYEmailDialog from 'src/sections/auth/login-with-email';
 import { primary } from 'src/theme/palette';
+import { Stack, Button, darken } from '@mui/material';
+import { useResponsive } from 'src/hooks/use-responsive';
+import LoginDialog from 'src/sections/auth/login-with-email';
+import JwtRegisterDialog from 'src/sections/auth/jwt-register-view';
 
 export const AuthButtons = ({ changeSignIn }: any) => {
   const smDown = useResponsive('down', 'sm');
