@@ -38,6 +38,7 @@ const LessonsSection = ({ cards }: IProps) => {
       }}
     >
 
+
       <Grid container spacing={{ xs: 2, md: 3 }}>
         {cards.map((card, index) => (
           <Grid

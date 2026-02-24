@@ -57,8 +57,10 @@ type Props = {
   lessonList: any[];
   id: string;
   paymentList: any[];
+  subjectId: string;
+
 };
-export default function InstructorProfileUI({ packagesData, studentAppointments, id, lessonList, paymentList }: Props) {
+export default function InstructorProfileUI({ packagesData, studentAppointments, id, lessonList, paymentList, subjectId }: Props) {
   const [tab, setTab] = useState('about');
 
   const theme = useTheme();
@@ -175,7 +177,7 @@ export default function InstructorProfileUI({ packagesData, studentAppointments,
           {tab === 'courses' && <EducationalLessons lessonList={lessonList} teacher_id={id} paymentList={paymentList} />}
           {tab === 'packages' && <PackagesSection packages={packagesData} teacher_id={id} paymentList={paymentList} />}
           {tab === 'live' && <LiveSectionDetails title="البث المباشر" />}
-          {tab === 'session' && <LiveSectionTimeDetails title="جلسة خاصة" studentAppointments={studentAppointments} />}
+          {tab === 'session' && <LiveSectionTimeDetails title="جلسة خاصة" teacherId={id} educationApproachTypeStageGradeSubjectId={subjectId} studentAppointments={studentAppointments} paymentList={paymentList} />}
         </Box>
       </Card>
     </Container>

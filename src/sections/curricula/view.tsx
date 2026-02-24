@@ -1,29 +1,20 @@
 'use client';
 
 import * as React from 'react';
-import { Box, Button, Grid, Stack, Typography } from '@mui/material';
+import { useTranslations } from 'next-intl';
+import { Box, Button, Typography } from '@mui/material';
+import { useSettingsContext } from 'src/components/settings';
+import { LeftIcon } from 'src/components/carousel/arrow-icons';
+import { useRouter } from 'next/dist/client/components/navigation';
 
 import Hero from './Hero';
-import Categories from './categories';
-import MiniSessions from './MiniSessions';
-import { SESSIONS } from './data/sessions';
-import CustomPagination from './CustomPagination';
-import SessionsSection from './sessions/SessionsSection';
-import LiveSessionsSection from './live-sessions/LiveSessionSection';
 import CategoriesClasse from './categories';
-import { useTranslations } from 'next-intl';
-import { useSettingsContext } from 'src/components/settings';
-import { useRouter } from 'next/dist/client/components/navigation';
-import { LeftIcon } from 'src/components/carousel/arrow-icons';
-import StudentCardSimple from './teacherCard/nextSecion';
-import StatisticsStudentsCard from './teacherCard/nextSecion';
+import NextLessonsPreview from './nextLessonsPreview';
 // import PrettyLiveBroadcastsCard from '../liveBroadcasts/prettyLiveBroadcastsCard';
 // import SectionHeader from '../landing/section-header/SectionHeader';
 // import InstructorsSection from '../landing/top-instructor/TopInstructorsSection';
-import InstructorsSections from './TopInstructorsSection';
+import LiveSessionsSection from './live-sessions/LiveSessionSection';
 import InstructorsSection from './sections/top-instructor/TopInstructorsSection';
-import LessonsSection from '../nextlessons/lessonsSection';
-import NextLessonsPreview from './nextLessonsPreview';
 type EducationGrade = { id: string; name: string };
 
 type SubjectItem = {
@@ -169,6 +160,7 @@ export default function Courses({ educationGrade, subjects }: CoursesProps) {
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
+              {t('Nav.upcoming_sessions')}
             </Typography>
             <Button
               color="info"

@@ -141,8 +141,8 @@ export interface MyCoursesCardProps {
   image: string;
   title: string;
   instructor: string;
-  status: string;       
-  statusText: number | string; 
+  status: string;
+  statusText: number | string;
   barStatus: number;
 }
 
