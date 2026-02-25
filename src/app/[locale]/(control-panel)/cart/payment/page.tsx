@@ -1,48 +1,38 @@
-import { getTranslations } from 'next-intl/server';
-import Payment from 'src/sections/cart/payment';
-import { ApiResponse } from 'src/types/crud-types';
-import { getData } from 'src/utils/crud-fetch-api';
+
+import { CartData } from 'src/types/cart';
 import { endpoints } from 'src/utils/endpoints';
+import Payment from 'src/sections/cart/payment';
+import { getTranslations } from 'next-intl/server';
+import { getData } from 'src/utils/crud-fetch-api';
+import { ApiResponse } from 'src/types/crud-types';
+import { FetchTags } from 'src/actions/config-actions';
+import { DEFAULT_LIMIT } from 'src/components/constant';
 
-// Define precisely what the API returns based on your log
-interface CartItem {
-  cartItemId: string;
-  itemType: string;
-  title: string;
-  imageUrl: string | null;
-  price: number;
-  rating: number | null;
-  sessions: any[];
+interface Props {
+  searchParams: Promise<Record<'page' | 'limit' | 'status' | 'search', string | undefined>>;
 }
 
-interface PaymentSummary {
-  subTotal: number;
-  vat: number;
-  discount: number;
-  total: number;
-  totalAfterDiscount: number;
-}
+export default async function Page({ searchParams }: Props) {
+  let { page, limit, status, search } = await searchParams;
 
-interface CartData {
-  cartId: string;
-  items: CartItem[];
-  paymentSummary: PaymentSummary;
-  sessions: any[]; // Added to match your JSON log
-}
+  // const urlSearchParams = new URLSearchParams({
+  //   page: page || '1',
+  //   limit: limit || `${DEFAULT_LIMIT}`,
+  //   ...(status && { IsActive: status }),
+  //   ...(search && { Name: search }),
 
-export default async function Page() {
-  // Explicitly typing the response
+  // });
+
   const cartResponse = await getData<ApiResponse<CartData>>(
     endpoints.cart.getCarts
+    , { tags: [FetchTags.PaymentMethod] }
   );
-
-  // Guard clause for type safety and rendering
-  if (!cartResponse?.data) {
-    return <div>No cart data available.</div>;
-  }
-
-  return <Payment items={cartResponse.data as CartData} />;
+  const paymentResponse = await getData<ApiResponse<any>>(
+    endpoints.payment.get  // What is this endpoint?
+  );
+  return <Payment items={cartResponse.data as CartData} paymentList={paymentResponse.data as any} />;
 }
+
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

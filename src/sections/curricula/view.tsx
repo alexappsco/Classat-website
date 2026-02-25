@@ -22,6 +22,8 @@ import StatisticsStudentsCard from './teacherCard/nextSecion';
 // import InstructorsSection from '../landing/top-instructor/TopInstructorsSection';
 import InstructorsSections from './TopInstructorsSection';
 import InstructorsSection from './sections/top-instructor/TopInstructorsSection';
+import LessonsSection from '../nextlessons/lessonsSection';
+import NextLessonsPreview from './nextLessonsPreview';
 type EducationGrade = { id: string; name: string };
 
 type SubjectItem = {
@@ -167,12 +169,12 @@ export default function Courses({ educationGrade, subjects }: CoursesProps) {
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              {t('Nav.upcoming_sessions')}
+              دروسك القادمة
             </Typography>
             <Button
               color="info"
               sx={{ lineHeight: 1 }}
-              // onClick={() => router.push('/curricula/live')}
+              onClick={() => router.push('/nextlessons')}
             >
               الكل
               <span>
@@ -180,11 +182,11 @@ export default function Courses({ educationGrade, subjects }: CoursesProps) {
               </span>
             </Button>
           </Box>
-          <StatisticsStudentsCard cards={studentsData} />
+         <NextLessonsPreview />
         </Box>
 
         <LiveSessionsSection />
-        {/* 
+{/*         
         <Box
           sx={{
             py: { xs: 4, md: 6 },
