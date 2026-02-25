@@ -202,7 +202,6 @@ export default function SelectedMethod({
 
 
       if (response.success) {
-        // alert('تم ✅');
         router.push('/curricula');
         onClose();
       } else {

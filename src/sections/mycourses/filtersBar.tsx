@@ -7,6 +7,7 @@
 
 import React, { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Box,
   Button,
@@ -14,8 +15,6 @@ import {
   Container,
   Typography,
 } from "@mui/material";
-
-import { useRouter, useSearchParams } from "next/navigation";
 
 const FiltersBar = () => {
   const router = useRouter();

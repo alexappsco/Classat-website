@@ -27,9 +27,16 @@ export default async function Page() {
   const response = await getData<ApiResponse<CourseCategoriesResponse>>(
     endpoints.courseCategory.get
   );
+  const livesResponse = await getData<ApiResponse<CourseCategoriesResponse>>(
+    endpoints.courseCategory.get
+  );
 
   const categories =
     (response?.data as CourseCategoriesResponse)?.items ?? [];
+  const liveLists =
+    (response?.data as CourseCategoriesResponse)?.items ?? [];
+
+
 
   return <Courses categories={categories} />;
 }

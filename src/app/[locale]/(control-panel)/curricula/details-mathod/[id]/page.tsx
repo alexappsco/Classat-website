@@ -21,14 +21,29 @@ type ApiResponse = {
 
 interface Props {
   params: Promise<{ id: string }>; // Only id in params
-  searchParams: Promise<{ subjectId?: string }>; // subjectId comes from searchParams
+  searchParams: Promise<
+  Record<'subjectId' | 'page' | 'limit' | 'StartDate' | 'EndDate', string | undefined>
+  // { subjectId?: string }
+  >; // subjectId comes from searchParams
+
+
 }
 
 // ===== Page Component =====
 export default async function Page({ params, searchParams }: Props) {
-  // Get both params and searchParams
-  const { id } = await params;
-  const { subjectId } = await searchParams;
+    const { id } = await params;
+    const { subjectId } = await searchParams;
+
+  let { page, limit, StartDate, EndDate } = await searchParams;
+  page = page || '1';
+  limit = limit || '5';
+
+  const urlSearchParams = new URLSearchParams({
+    SkipCount: `${(Number(page) - 1) * Number(limit)}`,
+    MaxResultCount: limit,
+    StartDate: StartDate || '',
+    EndDate: EndDate || '',
+  });
 
   if (!id) throw new Error('Teacher ID is required');
 
@@ -39,7 +54,7 @@ export default async function Page({ params, searchParams }: Props) {
   // 2. Fetch student appointments
   let studentAppointments = null;
   try {
-    const appointments = await getData<any>(`/students/teacher/${id}/appointments`);
+    const appointments = await getData<any>(`/students/teacher/${id}/appointments?${urlSearchParams}`);
     if (response.success && response.data) {
       studentAppointments = appointments.data?.items || appointments.data;
     }
@@ -81,6 +96,7 @@ export default async function Page({ params, searchParams }: Props) {
       id={id}
       lessonList={lessonList}
       paymentList={paymentList}
+      subjectId={subjectId || ''}
     />
   );
 }

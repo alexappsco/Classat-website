@@ -1,29 +1,24 @@
 'use client';
 
 import * as React from 'react';
-import { Box, Button, Grid, Stack, Typography } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { endpoints } from 'src/utils/endpoints';
+import { getData } from 'src/utils/crud-fetch-api';
+import { Box, Button, Typography } from '@mui/material';
+import { useSettingsContext } from 'src/components/settings';
+import { LeftIcon } from 'src/components/carousel/arrow-icons';
 
 import Hero from './Hero';
-import Categories from './categories';
-import MiniSessions from './MiniSessions';
-import { SESSIONS } from './data/sessions';
-import CustomPagination from './CustomPagination';
-import SessionsSection from './sessions/SessionsSection';
-import LiveSessionsSection from './live-sessions/LiveSessionSection';
 import CategoriesClasse from './categories';
-import { useTranslations } from 'next-intl';
-import { useSettingsContext } from 'src/components/settings';
-import { useRouter } from 'next/dist/client/components/navigation';
-import { LeftIcon } from 'src/components/carousel/arrow-icons';
-import StudentCardSimple from './teacherCard/nextSecion';
-import StatisticsStudentsCard from './teacherCard/nextSecion';
-// import PrettyLiveBroadcastsCard from '../liveBroadcasts/prettyLiveBroadcastsCard';
-// import SectionHeader from '../landing/section-header/SectionHeader';
-// import InstructorsSection from '../landing/top-instructor/TopInstructorsSection';
-import InstructorsSections from './TopInstructorsSection';
-import InstructorsSection from './sections/top-instructor/TopInstructorsSection';
-import LessonsSection from '../nextlessons/lessonsSection';
 import NextLessonsPreview from './nextLessonsPreview';
+import LiveSessionsSection from './live-sessions/LiveSessionSection';
+import InstructorsSection from './sections/top-instructor/TopInstructorsSection';
+import RecoarLessonsSection, {
+  StudentLesson,
+} from './recoardlessons/RecoarLessonsSection';
+
 type EducationGrade = { id: string; name: string };
 
 type SubjectItem = {
@@ -33,108 +28,41 @@ type SubjectItem = {
   educationSubjectLogo: string;
 };
 
-// ===== Props =====
 type CoursesProps = {
   educationGrade?: EducationGrade;
   subjects: SubjectItem[];
 };
+
 export default function Courses({ educationGrade, subjects }: CoursesProps) {
-  const studentsData = [
-    {
-      img: '/favicon/teacher1.png',
-      name: 'أحمد علي',
-      studentClass: 'الصف الخامس الابتدائي',
-      language: 'اللغة الإنجليزية',
-      country: ' المنهج المصري',
-      date: '13/11/2025',
-      time: '3:00 م',
-      href:'/curricula/details-mathod/[id]'
-    },
-    {
-      img: '/favicon/teacher1.png',
-      name: 'لينا محمد',
-      studentClass: 'الصف الرابع الابتدائي',
-      language: 'اللغة العربية',
-      country: ' المنهج الإماراتي',
-      date: '12/11/2025',
-      time: '2:00 م',
-      href:'/curricula/details-mathod/[id]'
-
-    },
-    {
-      img: '/favicon/teacher1.png',
-      name: 'أحمد علي',
-      studentClass: 'الصف الخامس الابتدائي',
-      language: 'اللغة الإنجليزية',
-      country: ' المنهج المصري',
-      date: '13/11/2025',
-      time: '3:00 م',
-      href:'/curricula/details-mathod/[id]'
-
-    },
-    {
-      img: '/favicon/teacher1.png',
-      name: 'أحمد علي',
-      studentClass: 'الصف الخامس الابتدائي',
-      language: 'اللغة الإنجليزية',
-      country: ' المنهج المصري',
-      date: '13/11/2025',
-      time: '3:00 م',
-      href:'/curricula/details-mathod/[id]'
-
-    },
-  ];
-  const fakeLiveBroadcasts = [
-    {
-      image: '/favicon/teacher.png',
-      title: 'شرح قوانين حل المعادلات',
-      date: 222,
-      // time: 2222,
-      category: 'الرياضيات ',
-      icon: '/favicon/proicons_math.svg',
-      limt: '20',
-      name: 'أحمد علي',
-      avatar: '/favicon/mana.png',
-    },
-    {
-      image: '/favicon/teacher.png',
-      title: 'شرح قوانين حل المعادلات',
-      date: 222,
-      // time: 2222,
-      category: 'الرياضيات ',
-      icon: '/favicon/proicons_math.svg',
-      limt: '20',
-      name: 'أحمد علي',
-      avatar: '/favicon/mana.png',
-    },
-    {
-      image: '/favicon/teacher.png',
-      title: 'شرح قوانين حل المعادلات',
-      date: 222,
-      // time: 2222,
-      category: 'الرياضيات ',
-      icon: '/favicon/proicons_math.svg',
-      limt: '20',
-      name: 'أحمد علي',
-      avatar: '/favicon/mana.png',
-    },
-    {
-      image: '/favicon/teacher.png',
-      title: 'شرح قوانين حل المعادلات',
-      date: 222,
-      // time: 2222,
-      category: 'الرياضيات ',
-      icon: '/favicon/proicons_math.svg',
-      limt: '20',
-      name: 'أحمد علي',
-      avatar: '/favicon/mana.png',
-    },
-  ];
   const t = useTranslations();
-
   const settings = useSettingsContext();
-
   const router = useRouter();
+
+  // ===== State =====
+  const [recordedLessons, setRecordedLessons] = useState<StudentLesson[]>([]);
+  const [loadingLessons, setLoadingLessons] = useState(true);
+
+  // ===== Fetch Recorded Lessons =====
+  useEffect(() => {
+    const fetchLessons = async () => {
+      try {
+        const response = await getData<{
+          items: StudentLesson[];
+        }>(endpoints.studentEducationLesson.get);
+
+          const lessons = (response.data as { items: StudentLesson[] })?.items ?? [];
+
+        setRecordedLessons(lessons);
+      } catch (error) {
+        console.error('Error fetching recorded lessons:', error);
+      } finally {
+        setLoadingLessons(false);
+      }
+    };
+
+    fetchLessons();
+  }, []);
+
   return (
     <>
       <Box sx={{ position: 'relative' }}>
@@ -151,104 +79,92 @@ export default function Courses({ educationGrade, subjects }: CoursesProps) {
             maxWidth: 1300,
           }}
         >
-          <CategoriesClasse
-            // educationGrade={educationGrade}
-            subjects={subjects}
-          />
+          <CategoriesClasse subjects={subjects} />
         </Box>
       </Box>
 
       <Box sx={{ pt: 16 }}>
+        {/* ===== Next Lessons ===== */}
         <Box
           sx={{
             py: { xs: 4, md: 6 },
             px: { xs: 4, md: 6 },
             direction: 'ltr',
-            mx: { md: '0', xs: '0', lg: '2%', sx: 'auto', xl: '8%' },
+            mx: { md: '0', xs: '0', lg: '2%', xl: '8%' },
           }}
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              دروسك القادمة
+              الدروس القادمة
             </Typography>
+
             <Button
               color="info"
               sx={{ lineHeight: 1 }}
               onClick={() => router.push('/nextlessons')}
             >
               الكل
-              <span>
-                <LeftIcon />
-              </span>
+              <LeftIcon />
             </Button>
           </Box>
-         <NextLessonsPreview />
+
+          <NextLessonsPreview />
         </Box>
 
+        {/* ===== Live Sessions ===== */}
         <LiveSessionsSection />
-{/*         
+{/*
+
+        {/* ===== Top Teachers + Recorded Lessons ===== */}
         <Box
           sx={{
             py: { xs: 4, md: 6 },
             px: { xs: 4, md: 6 },
             direction: 'ltr',
-            mx: { md: '0', xs: '0', lg: '8%', sx: 'auto' },
+            mx: { md: '0', xs: '0', lg: '2%', xl: '8%' },
           }}
         >
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
-            <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              {t('Nav.live_broadcasts')}
-            </Typography>
-            <Button
-              color="info"
-              sx={{ lineHeight: 1 }}
-              onClick={() => router.push('/dashboard/live_broadcasts')}
-            >
-              الكل
-              <span>
-                <LeftIcon />
-              </span>
-            </Button>
-          </Box>
-          <PrettyLiveBroadcastsCard
-            cards={fakeLiveBroadcasts}
-            gridSize={{ xs: 12, sm: 6, md: 3 }}
-          />
-        </Box> */}
-        <Box
-          sx={{
-            py: { xs: 4, md: 6 },
-            px: { xs: 4, md: 6 },
-            direction: 'ltr',
-            mx: { md: '0', xs: '0', lg: '2%', sx: '0', xl: '8%' },
-          }}
-        >
+          {/* Top Teachers */}
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              المعلميين الأعلى تقييمًا
+              المعلمين الأعلى تقييمًا
             </Typography>
+
             <Button
               color="info"
               sx={{ lineHeight: 1 }}
               onClick={() => router.push('/curricula/topTeacher')}
             >
               الكل
-              <span>
-                <LeftIcon />
-              </span>
+              <LeftIcon />
             </Button>
           </Box>
-
           <InstructorsSection />
-          {/* <InstructorsSections /> */}
+
+          {/* Recorded Lessons */}
+         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+              الدروس المسجلة
+            </Typography>
+
+            <Button
+              color="info"
+              sx={{ lineHeight: 1 }}
+              onClick={() => router.push('/recoardlessons')}
+            >
+              الكل
+              <LeftIcon />
+            </Button>
+          </Box>
+          {loadingLessons ? (
+            <Typography>جاري تحميل الدروس...</Typography>
+          ) : (
+            <RecoarLessonsSection
+              lessons={recordedLessons}
+              limit={4}
+            />
+          )}
         </Box>
-        {/* <MiniSessions title="استئناف التعلم" sessions={SESSIONS.sessionsData} />
-
-        <SessionsSection title="موصى به لك" sessions={SESSIONS.RECOMMENDED_SESSIONS} />
-
-        <SessionsSection title="الأعلى تقييماً" sessions={SESSIONS.TOP_RATED_SESSIONS} />
-
-        <CustomPagination /> */}
       </Box>
     </>
   );

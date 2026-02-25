@@ -1,9 +1,15 @@
-"use client";
-import { text, primary } from 'src/theme/palette';
-import { useResponsive } from 'src/hooks/use-responsive';
-import { Box, Grid, Stack, Button, Container, Typography, Select, MenuItem, Card } from '@mui/material';
+'use client';
 
-// Helper function to convert English day names to Arabic
+import { useSnackbar } from 'notistack';
+import { text } from 'src/theme/palette';
+import { useMemo, useState } from 'react';
+import { endpoints } from 'src/utils/endpoints';
+import { postData } from 'src/utils/crud-fetch-api';
+import { Box, Card, Stack, Button, Container, Typography } from '@mui/material';
+
+// ===== Helpers =====
+
+// Convert English day names to Arabic
 const getArabicDayName = (dayOfWeek: string): string => {
   const dayMap: Record<string, string> = {
     Sunday: 'الأحد',
@@ -17,7 +23,7 @@ const getArabicDayName = (dayOfWeek: string): string => {
   return dayMap[dayOfWeek] || dayOfWeek;
 };
 
-// Helper function to format date from ISO (2026-02-09) to DD/MM
+// Format date from ISO (2026-02-09) → DD/MM
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   const day = String(date.getDate()).padStart(2, '0');
@@ -25,78 +31,219 @@ const formatDate = (dateString: string): string => {
   return `${day}/${month}`;
 };
 
-// Helper function to convert 24-hour time to Arabic format
+// Convert date to ISO format for API (2026-03-01T00:00:00.000Z)
+const formatDateForAPI = (dateString: string): string => {
+  return new Date(dateString).toISOString();
+};
+
+// Convert 24h time to Arabic format
 const formatTimeToArabic = (time24: string): string => {
-  const [hours, minutes] = time24.split(':');
-  const hour = parseInt(hours, 10);
-  const minute = minutes || '00';
+  const [hours, minutes = '00'] = time24.split(':');
+  const hour = Number(hours);
 
-  if (hour === 0) {
-    return `12:${minute} صباحاً`;
-  } else if (hour < 12) {
-    return `${hour}:${minute} صباحاً`;
-  } else if (hour === 12) {
-    return `12:${minute} ظهراً`;
-  } else {
-    const hour12 = hour - 12;
-    return `${hour12}:${minute} مساء`;
-  }
+  if (hour === 0) return `12:${minutes} صباحاً`;
+  if (hour < 12) return `${hour}:${minutes} صباحاً`;
+  if (hour === 12) return `12:${minutes} ظهراً`;
+  return `${hour - 12}:${minutes} مساء`;
 };
 
-// Helper function to format time slot (startTime - endTime)
-const formatTimeSlot = (startTime: string, endTime: string): string => {
-  const start = formatTimeToArabic(startTime);
-  const end = formatTimeToArabic(endTime);
-  return `${start} - ${end}`;
-};
-interface Props{
-  title:string;
-  studentAppointments:any
+// Format time slot
+const formatTimeSlot = (startTime: string, endTime: string): string =>
+  `${formatTimeToArabic(startTime)} - ${formatTimeToArabic(endTime)}`;
+
+// ===== Types =====
+
+interface TimeSlot {
+  id: string;
+  startTime: string;
+  endTime: string;
 }
-export default function LiveSectionTimeDetails({title:_,studentAppointments}:Props) {
+
+interface Appointment {
+  dayOfWeek: string;
+  date: string;
+  timeSlots: TimeSlot[];
+}
+
+interface Props {
+  title: string;
+  studentAppointments: Appointment[] | null;
+  paymentList: any[] | null;
+  teacherId: string;
+  educationApproachTypeStageGradeSubjectId: string;
+}
+
+// Session model with ID from API
+interface SelectedSession {
+  id: string;
+  day: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+}
+
+// ===== Component =====
+
+export default function LiveSectionTimeDetails({
+  title: _,
+  studentAppointments,
+  paymentList,
+  teacherId,
+  educationApproachTypeStageGradeSubjectId,
+}: Props) {
+  const { enqueueSnackbar } = useSnackbar();
   const primaryTextColor = text.primary;
   const paragraphTextColor = text.paragraph;
-  // const mainColor = primary.main;
-  // const smDown = useResponsive('down', 'sm');
 
-  // Transform the API data to match the display format
-  const availableSlots = (studentAppointments || []).map((appointment: any) => ({
-    dayLabel: getArabicDayName(appointment.dayOfWeek),
-    dateLabel: formatDate(appointment.date),
-    times: appointment.timeSlots.map((slot: any) =>
-      formatTimeSlot(slot.startTime, slot.endTime)
-    ),
-    timeSlots: appointment.timeSlots, // Keep original for potential use
-  }));
+  // State for selected sessions
+  const [selectedSessions, setSelectedSessions] = useState<SelectedSession[]>([]);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Transform API data → UI format
+  const availableSlots = useMemo(() => {
+    if (!studentAppointments?.length) return [];
+
+    return studentAppointments.map((appointment) => ({
+      dayLabel: getArabicDayName(appointment.dayOfWeek),
+      dateLabel: formatDate(appointment.date),
+      dayOfWeek: appointment.dayOfWeek,
+      date: appointment.date,
+      times: appointment.timeSlots.map((slot) => ({
+        id: slot.id,
+        startTime: slot.startTime,
+        endTime: slot.endTime,
+        formattedTime: formatTimeSlot(slot.startTime, slot.endTime),
+      })),
+    }));
+  }, [studentAppointments]);
+
+  // Check if a session is selected by its ID
+  const isSessionSelected = (id: string) => {
+    return selectedSessions.some((session) => session.id === id);
+  };
+
+  // Toggle session selection
+  const toggleSession = (id: string, dayOfWeek: string, date: string, startTime: string, endTime: string) => {
+    setSelectedSessions((prev) => {
+      const isSelected = prev.some((session) => session.id === id);
+
+      if (isSelected) {
+        // Remove session by ID
+        return prev.filter((session) => session.id !== id);
+      } else {
+        // Add session with all details including ID
+        return [
+          ...prev,
+          {
+            id,
+            day: dayOfWeek,
+            date,
+            startTime,
+            endTime,
+          },
+        ];
+      }
+    });
+  };
+
+  // Handle Buy Now - open payment modal if sessions are selected
+  const handleBuyNow = () => {
+    if (selectedSessions.length === 0) {
+      enqueueSnackbar('يرجى اختيار موعد واحد على الأقل', { variant: 'warning' });
+      return;
+    }
+
+    setIsPaymentModalOpen(true);
+  };
+
+  // Handle payment confirmation - UPDATED to match the exact API format
+  const handleConfirmPayment = async (paymentMethodId: string) => {
+    if (!paymentMethodId) {
+      enqueueSnackbar('يرجى اختيار وسيلة دفع', { variant: 'warning' });
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // Convert selected sessions to the format expected by the API
+      const sessionsForApi = selectedSessions.map((session) => ({
+        sessionDate: formatDateForAPI(session.date), // Convert date to ISO format
+        teacherTimeSlotId: session.id, // Use the ID from the time slot
+      }));
+
+      // Prepare request body matching the exact API format
+      const requestBody = {
+        paymentMethodId: paymentMethodId,
+        itemType: 'TeacherEducationApproachGrade', // Using EducationalLesson as per your example
+        educationApproachTypeStageGradeSubjectId: educationApproachTypeStageGradeSubjectId,
+        teacherId: teacherId,
+        sessions: sessionsForApi,
+      };
+
+      console.log('Request Body:', requestBody); // For debugging
+
+      const response = await postData(endpoints.payment.post_single_item, requestBody);
+
+      if (response.success || response.status === 204) {
+        enqueueSnackbar('تم شراء الحصص بنجاح', { variant: 'success' });
+        setIsPaymentModalOpen(false);
+        setSelectedSessions([]); // Clear selected sessions after successful purchase
+        // You might want to redirect or refresh the page
+      } else {
+        enqueueSnackbar(response.error || 'فشلت عملية الدفع', { variant: 'error' });
+      }
+    } catch (error) {
+      console.error('Payment error:', error);
+      enqueueSnackbar('حدث خطأ غير متوقع', { variant: 'error' });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Calculate total price (you'll need to get the price from your data)
+  const calculateTotalPrice = () => {
+    // Implement this based on your pricing logic
+    // For example, if each session has a price:
+    // return selectedSessions.reduce((total, session) => total + (session.price || 0), 0);
+    return 0; // Placeholder - replace with actual price calculation
+  };
+
   return (
     <Box>
       <Container>
-
-
-        {/* عنوان قسم جدول المواعيد */}
-        <Box  sx={{ mb: 3 }}>
-          <Typography
-            variant="h6"
-            sx={{ fontWeight: 700, color: primaryTextColor, mb: 1 }}
-          >
+        {/* Section Title */}
+        <Box sx={{ mb: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Typography variant="h6" sx={{ fontWeight: 700, color: primaryTextColor }}>
             جدول المواعيد المتاحة
           </Typography>
+
+          {/* Selected count and Buy Now button */}
+          {selectedSessions.length > 0 && (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Typography sx={{ color: primaryTextColor }}>
+                تم اختيار {selectedSessions.length} حصة
+              </Typography>
+              <Button
+                variant="contained"
+                onClick={handleBuyNow}
+                sx={{
+                  borderRadius: '50px',
+                  backgroundColor: '#28A8DD',
+                  '&:hover': { backgroundColor: '#1D8FBF' },
+                }}
+              >
+                شراء المحدد
+              </Button>
+            </Box>
+          )}
         </Box>
 
-        {/* جدول المواعيد المتاحة */}
-        <Box
-          sx={{
-            overflowX: 'auto',
-            pb: 2,
-          }}
-
-        >
+        {/* Schedule */}
+        <Box sx={{ overflowX: 'auto', pb: 2 }}>
           {availableSlots.length > 0 ? (
-            <Stack
-              direction={{xs:'column',md:'row'}}
-              spacing={2}
-            >
-              {availableSlots.map((day: any, index: number) => (
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+              {availableSlots.map((day, index) => (
                 <Card
                   key={index}
                   sx={{
@@ -104,22 +251,19 @@ export default function LiveSectionTimeDetails({title:_,studentAppointments}:Pro
                     borderRadius: 4,
                     backgroundColor: '#E5F7FF',
                     p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'stretch',
                     boxShadow: '0 4px 10px rgba(0,0,0,0.08)',
                   }}
                 >
-                  {/* عنوان اليوم والتاريخ */}
+                  {/* Day & Date */}
                   <Box
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       mb: 2,
-                      color: primaryTextColor,
                       fontWeight: 700,
                       fontSize: 14,
+                      color: primaryTextColor,
                     }}
                   >
                     <Box
@@ -129,7 +273,7 @@ export default function LiveSectionTimeDetails({title:_,studentAppointments}:Pro
                         borderRadius: '6px',
                         border: '2px solid #4BA9D8',
                         position: 'relative',
-                        mr: 1
+                        mr: 1,
                       }}
                     >
                       <Box
@@ -145,28 +289,43 @@ export default function LiveSectionTimeDetails({title:_,studentAppointments}:Pro
                         }}
                       />
                     </Box>
+
                     <Typography sx={{ fontWeight: 700, fontSize: 14 }}>
-                      {day.dateLabel ? `${day.dayLabel} ${day.dateLabel}` : day.dayLabel}
+                      {`${day.dayLabel} ${day.dateLabel}`}
                     </Typography>
                   </Box>
 
-                  {/* الأوقات */}
+                  {/* Time Slots */}
                   <Stack spacing={1}>
-                    {day.times.map((time: string, idx: number) => (
-                      <Button
-                        key={idx}
-                        variant="contained"
-                        fullWidth
-                        sx={{
-                          borderRadius: '999px',
-                          backgroundColor: '#28A8DD',
-                          '&:hover': { backgroundColor: '#1D8FBF' },
-                          py: 0.5,
-                        }}
-                      >
-                        {time}
-                      </Button>
-                    ))}
+                    {day.times.map((time, idx) => {
+                      const isSelected = isSessionSelected(time.id);
+
+                      return (
+                        <Button
+                          key={time.id}
+                          variant="contained"
+                          fullWidth
+                          onClick={() => toggleSession(
+                            time.id,
+                            day.dayOfWeek,
+                            day.date,
+                            time.startTime,
+                            time.endTime
+                          )}
+                          sx={{
+                            borderRadius: '999px',
+                            backgroundColor: isSelected ? '#4CAF50' : '#28A8DD',
+                            py: 0.5,
+                            '&:hover': {
+                              backgroundColor: isSelected ? '#45a049' : '#1D8FBF',
+                            },
+                          }}
+                        >
+                          {time.formattedTime}
+                          {isSelected && ' ✓'}
+                        </Button>
+                      );
+                    })}
                   </Stack>
                 </Card>
               ))}
@@ -179,7 +338,121 @@ export default function LiveSectionTimeDetails({title:_,studentAppointments}:Pro
             </Box>
           )}
         </Box>
+
+        {/* Payment Modal */}
+        <PaymentModal
+          open={isPaymentModalOpen}
+          onClose={() => setIsPaymentModalOpen(false)}
+          onConfirm={handleConfirmPayment}
+          paymentList={paymentList}
+          totalPrice={calculateTotalPrice()}
+          selectedSessionsCount={selectedSessions.length}
+          isSubmitting={isSubmitting}
+        />
       </Container>
     </Box>
   );
 }
+
+// Payment Modal Component
+function PaymentModal({
+  open,
+  onClose,
+  onConfirm,
+  paymentList,
+  totalPrice,
+  selectedSessionsCount,
+  isSubmitting,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onConfirm: (paymentMethodId: string) => Promise<void>;
+  paymentList: any[] | null;
+  totalPrice: number;
+  selectedSessionsCount: number;
+  isSubmitting: boolean;
+}) {
+  const [selectedMethod, setSelectedMethod] = useState('');
+
+  return (
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth dir="rtl">
+      <DialogTitle sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+        إتمام شراء الحصص
+      </DialogTitle>
+      <DialogContent>
+        <Box sx={{ mb: 3, p: 2, bgcolor: '#f5f5f5', borderRadius: 2 }}>
+          <Typography variant="subtitle1" fontWeight="bold">
+            عدد الحصص المحددة: {selectedSessionsCount}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            الإجمالي: {totalPrice} درهم
+          </Typography>
+        </Box>
+
+        <Typography variant="h6" sx={{ mb: 2, fontSize: '1.1rem' }}>
+          اختر وسيلة الدفع
+        </Typography>
+
+        <FormControl component="fieldset" sx={{ width: '100%' }}>
+          <RadioGroup value={selectedMethod} onChange={(e) => setSelectedMethod(e.target.value)}>
+            {paymentList?.map((method) => (
+              <Card
+                key={method.id}
+                sx={{
+                  mb: 1.5,
+                  p: 1,
+                  border: selectedMethod === method.id ? '2px solid #00bcd4' : '1px solid #e0e0e0',
+                  borderRadius: 2,
+                  cursor: 'pointer',
+                  '&:hover': { borderColor: '#00bcd4' },
+                }}
+                onClick={() => setSelectedMethod(method.id)}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Radio checked={selectedMethod === method.id} color="primary" />
+                    <Typography>{method.name}</Typography>
+                  </Box>
+                  {method.logo && (
+                    <Box sx={{ width: 50, height: 30 }}>
+                      <img
+                        src={method.logo}
+                        alt={method.name}
+                        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+                      />
+                    </Box>
+                  )}
+                </Box>
+              </Card>
+            ))}
+          </RadioGroup>
+        </FormControl>
+      </DialogContent>
+      <DialogActions sx={{ p: 3, pt: 0 }}>
+        <Button onClick={onClose} variant="outlined" sx={{ borderRadius: '50px', px: 3 }} disabled={isSubmitting}>
+          إلغاء
+        </Button>
+        <Button
+          onClick={() => onConfirm(selectedMethod)}
+          variant="contained"
+          sx={{ borderRadius: '50px', px: 3, bgcolor: '#56b0d3' }}
+          disabled={isSubmitting || !selectedMethod}
+        >
+          {isSubmitting ? <CircularProgress size={24} color="inherit" /> : 'تأكيد الشراء'}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+// Import missing MUI components
+import {
+  Radio,
+  Dialog,
+  RadioGroup,
+  DialogTitle,
+  FormControl,
+  DialogContent,
+  DialogActions,
+  CircularProgress,
+} from '@mui/material';
