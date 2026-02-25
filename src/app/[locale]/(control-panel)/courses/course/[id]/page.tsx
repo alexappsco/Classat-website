@@ -1,9 +1,9 @@
 
 
 
-import CourseDetailsView from 'src/sections/course-details/views';
-import { getData } from 'src/utils/crud-fetch-api';
 import { endpoints } from 'src/utils/endpoints';
+import { getData } from 'src/utils/crud-fetch-api';
+import CourseDetailsView from 'src/sections/course-details/views';
 
 // ===== Types =====
 type CourseResponse = {
@@ -57,7 +57,7 @@ export default async function Page({ params }: Props) {
   if (!courseResponse?.data) {
     throw new Error('Course data not found');
   }
-  console.log(courseResponse)
+  console.log(" Course Response:",courseResponse)
 
   return <CourseDetailsView course={courseResponse.data} />;
 }

@@ -1,15 +1,15 @@
 'use client';
 
-import * as React from 'react';
 import Link from 'next/link';
+import * as React from 'react';
+import { text } from 'src/theme/palette';
+import { endpoints } from 'src/utils/endpoints';
+import { getData } from 'src/utils/crud-fetch-api';
+import { LeftIcon } from 'src/components/carousel/arrow-icons';
 import { Box, Grid, Stack, Button, Container, Typography } from '@mui/material';
 
-import { text } from 'src/theme/palette';
-import { LeftIcon } from 'src/components/carousel/arrow-icons';
-
 import MyCoursesCard from '../mycourses/mycoursecard';
-import { getData } from 'src/utils/crud-fetch-api';
-import { endpoints } from 'src/utils/endpoints';
+import { paths } from 'src/routes/paths';
 
 type Course = {
   id: string;
@@ -88,6 +88,7 @@ export default function MyCoursesPreview() {
                 barStatus={Number(course.progressPercentage)}
                 status={`تم انجاز ${course.progressPercentage}% من الكورس`}
                 statusText={course.status}
+                link={paths.controlPanel.mycourses.single(course.id)}
               />
             </Grid>
           ))}

@@ -136,6 +136,8 @@
 
 import { text, shadow, warning } from 'src/theme/palette';
 import { Box, Card, Stack, Divider, Typography } from '@mui/material';
+import { paths } from 'src/routes/paths';
+import { useRouter } from 'next/navigation';
 
 export interface MyCoursesCardProps {
   image: string;
@@ -144,6 +146,7 @@ export interface MyCoursesCardProps {
   status: string;
   statusText: number | string;
   barStatus: number;
+  link?: string;
 }
 
 export default function MyCoursesCard({
@@ -153,11 +156,12 @@ export default function MyCoursesCard({
   status,
   statusText,
   barStatus,
+  link,
 }: MyCoursesCardProps) {
 
   const orangeColor = warning.main;
   const orangeBg = '#FFF6E4';
-
+  const router = useRouter();
   const safeProgress = Math.min(
     Math.max(barStatus || 0, 0),
     100
@@ -173,6 +177,7 @@ export default function MyCoursesCard({
         flexDirection: 'column',
         p: '20px 16px 16px',
       }}
+      onClick={() => {router.push(link || '') }}
     >
       {/* Image */}
       <Box
