@@ -133,6 +133,8 @@ type Props = {
 };
 
 export default function MyCoursesSection({ courses }: Props) {
+  console.log("courses bxxf", courses)
+
   const primaryTextColor = text.primary;
   const paragraphTextColor = text.paragraph;
   const mainColor = primary.main;
@@ -158,6 +160,8 @@ export default function MyCoursesSection({ courses }: Props) {
                 barStatus={Number(course.progressPercentage)}
                 status={`تم انجاز ${course.progressPercentage}% من الكورس`}
                 statusText= {course.status}
+                link={course.courseId || ''}
+
               />
             </Grid>
           ))}

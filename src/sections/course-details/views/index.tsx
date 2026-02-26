@@ -120,7 +120,7 @@ export default function CourseDetailsView({ course }: Props) {
             price={course.price}
           />
 
-          <CourseInfo 
+          <CourseInfo
           durationInHours= {course.durationInHours}
           numberOfLessons= {course.numberOfLessons}
           averageRating= {course.averageRating}

@@ -116,10 +116,11 @@ export const paths = {
       list: '/delivery-fees'
     },
      mycourses: {
-      list: '/mycourses'
+      list: '/mycourses',
+      single: (id: string) => `/mycourses/${id}`,
     },
     nextlessons:{
       list: '/nextlessons'
-    }
+    },
   },
-};
+  };
