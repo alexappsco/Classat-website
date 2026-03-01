@@ -10,14 +10,22 @@ import InstructorsSection from '../top-instructor/TopInstructorsSection';
 import Hero from '../Hero';
 import TimerCard from 'src/components/timer/TimerShow';
 
-export default function LiveSesions() {
+type LiveSesionsProps = {
+  paymentList?: any;
+  liveSubject?: any[];
+  title?: string;
+
+};
+
+export default function LiveSesions({ paymentList, title = "بثوث مباشرة الان",liveSubject }: LiveSesionsProps) {
   // const [selectedCategory, setSelectedCategory] = React.useState('مباشرة الآن');
 
   return (
     <>
       <Box sx={{ position: 'relative' }}>
         {/* <Hero /> */}
-        <TimerCard subtitle='بث "تطوير تطبيقات الويب باستخدام React" يبدأ قريبًا' />
+        {/* <TimerCard subtitle='بث "تطوير تطبيقات الويب باستخدام React" يبدأ قريبًا' /> */}
+        <TimerCard  />
 
         {/* 
         <Box
@@ -32,7 +40,7 @@ export default function LiveSesions() {
             minWidth: { xs: 300, sm: 360, md: 400 },
           }}
         >
-          <Categories selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+          <Categories />
         </Box> */}
       </Box>
 
@@ -47,8 +55,8 @@ export default function LiveSesions() {
       ) : (
       )} */}
       <>
-        <LiveSessionsSection title="بثوث مباشرة الان" />
-        <LiveSessionsSection title="بثوث مباشرة قادمة" />
+        <LiveSessionsSection paymentList={paymentList } title={title} liveSubject={liveSubject} />
+        {/* <LiveSessionsSection title="بثوث مباشرة قادمة" /> */}
       </>
     </>
   );
