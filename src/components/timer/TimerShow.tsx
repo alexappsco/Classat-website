@@ -10,7 +10,8 @@ interface TimerCardProps {
 
 export default function TimerCard({
   subtitle,
-  title = "العد التنازلي للبث القادم"
+  // title = "العد التنازلي للبث القادم"
+  title = "قائمة البثوث"
 }: TimerCardProps) {
 
 
@@ -71,7 +72,7 @@ export default function TimerCard({
           }}
         >
           <TimerHeader title={title} subtitle={subtitle} />
-          <TimerDisplay />
+          {/* <TimerDisplay /> */}
         </Box>
       </Box>
     </Box>

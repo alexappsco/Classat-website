@@ -215,5 +215,12 @@ Lives:{
 },
 studentEducationLesson:{
   get:"/students/education-lessons"
-}
+},
+liveCourse:{
+  get: "/students/live-session-courses"
+},
+liveSubjects:{
+  get: "/students/live-session-subjects"
+},
+
 };

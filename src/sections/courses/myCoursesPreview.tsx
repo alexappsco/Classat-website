@@ -78,9 +78,9 @@ export default function MyCoursesPreview() {
         </Grid>
 
         {/* Courses Grid */}
-        <Grid container spacing={4}>
+        <Grid container spacing={4} >
           {courses.map((course) => (
-            <Grid item xs={12} sm={6} md={3} key={course.id}>
+            <Grid item xs={12} sm={6} md={4} key={course.id}>
               <MyCoursesCard
                 image={course.coverImage}
                 title={course.courseTitle}

@@ -97,7 +97,7 @@ export default function LiveSectionDetails({title}:{title: string}) {
               md={3} // Four cards per row on desktop
               key={index}
             >
-              <LiveSessionCard {...session} />
+              <LiveSessionCard  liveCourse={session as any} />
             </Grid>
           ))}
         </Grid>
