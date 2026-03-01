@@ -3,13 +3,13 @@
 import Link from 'next/link';
 import * as React from 'react';
 import { text } from 'src/theme/palette';
+import { paths } from 'src/routes/paths';
 import { endpoints } from 'src/utils/endpoints';
 import { getData } from 'src/utils/crud-fetch-api';
 import { LeftIcon } from 'src/components/carousel/arrow-icons';
 import { Box, Grid, Stack, Button, Container, Typography } from '@mui/material';
 
 import MyCoursesCard from '../mycourses/mycoursecard';
-import { paths } from 'src/routes/paths';
 
 type Course = {
   id: string;
@@ -18,6 +18,8 @@ type Course = {
   teacherName: string;
   progressPercentage: number;
   status: string;
+  courseId: string;
+
 };
 
 export default function MyCoursesPreview() {
@@ -42,6 +44,7 @@ export default function MyCoursesPreview() {
 
     fetchCourses();
   }, []);
+  console.log("fetch courses", courses)
 
   if (loading) return null;
   if (!courses.length) return null;
@@ -88,7 +91,7 @@ export default function MyCoursesPreview() {
                 barStatus={Number(course.progressPercentage)}
                 status={`تم انجاز ${course.progressPercentage}% من الكورس`}
                 statusText={course.status}
-                link={paths.controlPanel.mycourses.single(course.id)}
+                link={paths.controlPanel.mycourses.single(course.courseId)}
               />
             </Grid>
           ))}

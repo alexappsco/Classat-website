@@ -104,7 +104,7 @@ export default function CourseActions({ teacherId, courseId }: Props) {
             backgroundColor: 'rgba(84, 176, 215, 0.04)',
           }
         }}
-        onClick={addToCart}  
+        onClick={addToCart}
       >
         أضف إلى السلة
       </Button>
