@@ -216,6 +216,14 @@ Lives:{
 studentEducationLesson:{
   get:"/students/education-lessons"
 },
+CourseEnroll:{
+  get:"/students/courses",
+  details: (courseId: string) => `/students/courses/${courseId}`,
+  getCourses_Sections: (courseId: string) => `/students/courses/${courseId}/sections`,
+  getCourses_Section_Sessions: (sectionId: string) => `/students/courses/sections/${sectionId}/sessions`,
+  getCourssesLesson: (lessonId: string) => `/students/courses/lessons/${lessonId}`,
+  markWatched: (lessonId: string) => `/students/courses/lessons/${lessonId}/mark-watched`,
+},
 liveCourse:{
   get: "/students/live-session-courses"
 },

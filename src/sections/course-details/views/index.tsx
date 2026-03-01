@@ -120,7 +120,7 @@ export default function CourseDetailsView({ course }: Props) {
             price={course.price}
           />
 
-          <CourseInfo 
+          <CourseInfo
           durationInHours= {course.durationInHours}
           numberOfLessons= {course.numberOfLessons}
           averageRating= {course.averageRating}
@@ -140,7 +140,6 @@ export default function CourseDetailsView({ course }: Props) {
           {/* <CourseInstructor teacherName={course.teacherName} teacherImageUrl={course.teacherImageUrl} /> */}
           {/* <CourseReviews courseId={course.courseId} /> */}
         </Grid>
-
         {/* Right column - Media and sidebar */}
         <Grid item xs={12} lg={5} order={{ xs: 1, lg: 2 }}>
           <CourseMedia coverImageUrl={course.coverImageUrl} />
