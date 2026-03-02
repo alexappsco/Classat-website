@@ -51,6 +51,11 @@ export default async function Page({ params }: Props) {
     endpoints.courseCategory.getCourse(courseId),
   );
 
+    let paymentList: any[] = [];
+      const paymentResponse = await getData<any>(
+        endpoints.payment.get,  // What is this endpoint?
+      );
+      paymentList = paymentResponse?.data?.items || [];
   console.log('Course Data from API:', res);
 
   const courseResponse = res as ApiResponse<CourseResponse>;
@@ -59,5 +64,7 @@ export default async function Page({ params }: Props) {
   }
   console.log(" Course Response:",courseResponse)
 
-  return <CourseDetailsView course={courseResponse.data} />;
+  return <CourseDetailsView course={courseResponse.data}
+    paymentList={paymentList}
+  />;
 }
