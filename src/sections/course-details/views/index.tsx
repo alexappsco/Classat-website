@@ -98,9 +98,11 @@ export type Course = {
 
 type Props = {
   course: Course;
+  paymentList: any[];
+
 };
 
-export default function CourseDetailsView({ course }: Props) {
+export default function CourseDetailsView({ course, paymentList }: Props) {
   return (
     <Container
       sx={{
@@ -129,6 +131,9 @@ export default function CourseDetailsView({ course }: Props) {
           <CourseActions
           teacherId={course.teacherId}
           courseId={course.courseId}
+          paymentList={paymentList}
+          course={course}
+
           />
           <CourseCurriculum sections={course.sections} />
 

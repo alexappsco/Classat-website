@@ -20,7 +20,7 @@ export const paths = {
   controlPanel: {
     main: '/',
     profile: {
-      viewProfileEdit: '/edit-profile'
+      viewProfileEdit: '/profile'
     },
     categories: {
       list: '/categories',
@@ -67,12 +67,6 @@ export const paths = {
         list: '/marketings/notifications',
         new: '/marketings/notifications/new',
       },
-    },
-    workArea: {
-      list: '/work-area',
-      single: (id: string) => `/work-area/${id}`,
-      new: '/work-area/new',
-      edit: (id: string) => `/work-area/${id}`,
     },
     users: {
       root: '/users',
@@ -122,5 +116,6 @@ export const paths = {
     nextlessons:{
       list: '/nextlessons'
     },
+
   },
   };

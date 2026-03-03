@@ -56,9 +56,9 @@ import Categories from './categories';
 import MiniSessions from './MiniSessions';
 import { SESSIONS } from './data/sessions';
 import CustomPagination from './CustomPagination';
+import MyCoursesPreview from './myCoursesPreview';
 import SessionsSection from './sessions/SessionsSection';
 import LiveSessionsSection from './live-sessions/LiveSessionSection';
-import MyCoursesPreview from './myCoursesPreview';
 
 // ===== Types =====
 type CourseCategory = {

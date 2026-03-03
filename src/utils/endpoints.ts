@@ -173,8 +173,8 @@ education_lesson: {
   // },
   courseCategory: {
   get: '/shared/course-categories',
-  getCourses: (categoryId: string) =>
-    `/students/teacher/courses?CourseCategoryId=${categoryId}`,
+  getCourses:
+    `/students/teacher/courses`,
   getCourse:(courseId: string) =>
     `/students/teacher/course/${courseId}`,
 },

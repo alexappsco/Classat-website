@@ -81,7 +81,7 @@ import RecommendedSessionCard from './SessionsSectionCard';
 interface SessionsSectionProps {
   title: string;
   buttonText?: string;
-  sessions: any[]; 
+  sessions: any[];
   hideButton?: boolean;
 }
 
