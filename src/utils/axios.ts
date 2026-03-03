@@ -232,5 +232,8 @@ export const endpoints = {
   },
   post_payment: '/shared/payment-methods',
   get_payment: '/shared/payment-methods',
+  liveCourse:{
+  get: "/students/live-session-courses"
+},
 
 };
