@@ -132,6 +132,7 @@ export default function CourseDetailsView({ course, paymentList }: Props) {
           teacherId={course.teacherId}
           courseId={course.courseId}
           paymentList={paymentList}
+          course={course}
 
           />
           <CourseCurriculum sections={course.sections} />

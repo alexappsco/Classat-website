@@ -1,305 +1,27 @@
-// // "use client";
 
-// // import { Icon } from '@iconify/react';
-// // import { enqueueSnackbar } from 'notistack';
-// // import { endpoints } from 'src/utils/endpoints';
-// // import { postData } from 'src/utils/crud-fetch-api';
-// // import { Box, Stack, Button, IconButton } from '@mui/material';
-
-// // type Props = {
-// //   teacherId: string;
-// //   courseId: string;
-// //   paymentList: any[];
-
-// // };
-
-// // export default function CourseActions({ teacherId, courseId, paymentList }: Props) {
-
-// //   // ===== Add To Cart Function =====
-// //  const addToCart = async () => {
-// //   const res = await postData(endpoints.cart.addToCart, {
-// //     itemType: '4',
-// //     teacherId: teacherId,
-// //     courseId: courseId,
-// //   });
-
-// //   if (res.success) {
-// //     enqueueSnackbar('تم الاضافة للسلة بنجاح', {
-// //       variant: 'success',
-// //     });
-// //   } else {
-// //     enqueueSnackbar(
-// //       res.error || 'حدث خطأ ما',
-// //       { variant: 'error' }
-// //     );
-// //   }
-// // };
-
-
-// //   return (
-// //     <Box sx={{ mb: 4 }}>
-// //       {/* Main action buttons row */}
-// //       <Stack direction="row" spacing={2} alignItems="center">
-
-// //         {/* Purchase */}
-// //         <Button
-// //           variant="contained"
-// //           sx={{
-// //             width: '207px',
-// //             height: '50px',
-// //             borderRadius: '25px',
-// //             padding: '16px 24px',
-// //             fontSize: "20px",
-// //             fontWeight: "400",
-// //             backgroundColor: '#54B0D7',
-// //             '&:hover': {
-// //               backgroundColor: '#3A8FB8',
-// //             }
-// //           }}
-// //           onClick={() => {}}
-// //         >
-// //           شراء الكورس
-// //         </Button>
-
-// //         {/* Wishlist */}
-// //         <IconButton
-// //           sx={{
-// //             width: '50px',
-// //             height: '50px',
-// //             borderRadius: '25px',
-// //             border: '1px solid #54B0D7',
-// //             color: '#54B0D7',
-// //             '&:hover': {
-// //               backgroundColor: 'rgba(84, 176, 215, 0.1)',
-// //             }
-// //           }}
-// //         >
-// //           <Icon
-// //             icon="mdi:heart-outline"
-// //             width={24}
-// //             height={24}
-// //             color='#153A52'
-// //           />
-// //         </IconButton>
-
-// //       </Stack>
-
-// //       {/* Add to cart */}
-// //       <Button
-// //         variant="outlined"
-// //         size="large"
-// //         startIcon={<Icon icon="mdi:cart-outline" width={20} />}
-// //         sx={{
-// //           width: '273px',
-// //           height: '50px',
-// //           borderRadius: '25px',
-// //           padding: '16px 24px',
-// //           fontSize: "20px",
-// //           fontWeight: "400",
-// //           lineHeight: "22px",
-// //           gap: '8px',
-// //           border: '1px solid #54B0D7',
-// //           color: '#637381',
-// //           mt: 2,
-// //           '&:hover': {
-// //             borderColor: '#3A8FB8',
-// //             backgroundColor: 'rgba(84, 176, 215, 0.04)',
-// //           }
-// //         }}
-// //         onClick={addToCart}
-// //       >
-// //         أضف إلى السلة
-// //       </Button>
-// //     </Box>
-// //   );
-// // }
-// "use client";
-
-// import { Icon } from '@iconify/react';
-// import { enqueueSnackbar } from 'notistack';
-// import { useState } from 'react';
-// import { endpoints } from 'src/utils/endpoints';
-// import { postData } from 'src/utils/crud-fetch-api';
-// import { Box, Stack, Button, IconButton, CircularProgress } from '@mui/material';
-
-// type Props = {
-//   teacherId: string;
-//   courseId: string;
-//   paymentList: any[];
-// };
-
-// export default function CourseActions({ teacherId, courseId, paymentList }: Props) {
-//   const [isPurchasing, setIsPurchasing] = useState(false);
-
-//   // ===== Add To Cart Function =====
-//   const addToCart = async () => {
-//     const res = await postData(endpoints.cart.addToCart, {
-//       itemType: '4', // Course type
-//       teacherId: teacherId,
-//       courseId: courseId,
-//     });
-
-//     if (res.success) {
-//       enqueueSnackbar('تم الاضافة للسلة بنجاح', {
-//         variant: 'success',
-//       });
-//     } else {
-//       enqueueSnackbar(res.error || 'حدث خطأ ما', {
-//         variant: 'error'
-//       });
-//     }
-//   };
-
-//   // ===== Buy Course Function =====
-//   const buyCourse = async () => {
-//     if (!paymentList || paymentList.length === 0) {
-//       enqueueSnackbar('لا توجد وسائل دفع متاحة', { variant: 'warning' });
-//       return;
-//     }
-
-//     setIsPurchasing(true);
-//     try {
-//       // Using the first payment method as default (similar to Flutter implementation)
-//       const defaultPaymentMethod = paymentList[0]?.id;
-
-//       if (!defaultPaymentMethod) {
-//         enqueueSnackbar('يرجى اختيار وسيلة دفع', { variant: 'warning' });
-//         return;
-//       }
-
-//       // Direct checkout for course - matching Flutter's DirectCheckoutParams.addCourse
-//       const checkoutRes = await postData(endpoints.payment.post_single_item, {
-//         paymentMethodId: defaultPaymentMethod,
-//         itemType: 'Course', // Course type matching Flutter's CartItemTypeEnum.course
-//         courseId: courseId,
-//         teacherId: teacherId,
-//       });
-
-//       if (checkoutRes.success || checkoutRes.status === 204) {
-//         enqueueSnackbar('تم شراء الكورس بنجاح', {
-//           variant: 'success'
-//         });
-//         // You might want to redirect to success page or refresh the page
-//         // router.push('/payment/success');
-//       } else {
-//         enqueueSnackbar(checkoutRes.error || 'فشلت عملية الدفع', {
-//           variant: 'error'
-//         });
-//       }
-//     } catch (error) {
-//       enqueueSnackbar('حدث خطأ غير متوقع', {
-//         variant: 'error'
-//       });
-//     } finally {
-//       setIsPurchasing(false);
-//     }
-//   };
-
-//   return (
-//     <Box sx={{ mb: 4 }}>
-//       {/* Main action buttons row */}
-//       <Stack direction="row" spacing={2} alignItems="center">
-
-//         {/* Purchase Button */}
-//         <Button
-//           variant="contained"
-//           sx={{
-//             width: '207px',
-//             height: '50px',
-//             borderRadius: '25px',
-//             padding: '16px 24px',
-//             fontSize: "20px",
-//             fontWeight: "400",
-//             backgroundColor: '#54B0D7',
-//             '&:hover': {
-//               backgroundColor: '#3A8FB8',
-//             }
-//           }}
-//           onClick={buyCourse}
-//           disabled={isPurchasing}
-//         >
-//           {isPurchasing ? (
-//             <CircularProgress size={24} color="inherit" />
-//           ) : (
-//             'شراء الكورس'
-//           )}
-//         </Button>
-
-//         {/* Wishlist */}
-//         <IconButton
-//           sx={{
-//             width: '50px',
-//             height: '50px',
-//             borderRadius: '25px',
-//             border: '1px solid #54B0D7',
-//             color: '#54B0D7',
-//             '&:hover': {
-//               backgroundColor: 'rgba(84, 176, 215, 0.1)',
-//             }
-//           }}
-//         >
-//           <Icon
-//             icon="mdi:heart-outline"
-//             width={24}
-//             height={24}
-//             color='#153A52'
-//           />
-//         </IconButton>
-
-//       </Stack>
-
-//       {/* Add to cart */}
-//       <Button
-//         variant="outlined"
-//         size="large"
-//         startIcon={<Icon icon="mdi:cart-outline" width={20} />}
-//         sx={{
-//           width: '273px',
-//           height: '50px',
-//           borderRadius: '25px',
-//           padding: '16px 24px',
-//           fontSize: "20px",
-//           fontWeight: "400",
-//           lineHeight: "22px",
-//           gap: '8px',
-//           border: '1px solid #54B0D7',
-//           color: '#637381',
-//           mt: 2,
-//           '&:hover': {
-//             borderColor: '#3A8FB8',
-//             backgroundColor: 'rgba(84, 176, 215, 0.04)',
-//           }
-//         }}
-//         onClick={addToCart}
-//       >
-//         أضف إلى السلة
-//       </Button>
-//     </Box>
-//   );
-// }
 "use client";
 
 import { Icon } from '@iconify/react';
-import { enqueueSnackbar, useSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
 import { useState, useEffect } from 'react';
+import { primary } from 'src/theme/palette';
 import { endpoints } from 'src/utils/endpoints';
 import { postData } from 'src/utils/crud-fetch-api';
-import { primary } from 'src/theme/palette';
 import {
   Box,
+  Card,
   Stack,
+  Radio,
   Button,
-  IconButton,
   Dialog,
+  Divider,
+  IconButton,
+  Typography,
+  RadioGroup,
   DialogTitle,
+  FormControl,
   DialogContent,
   DialogActions,
-  Typography,
-  Divider,
-  FormControl,
-  RadioGroup,
-  Radio,
-  Card,
   CircularProgress,
 } from '@mui/material';
 
@@ -307,6 +29,8 @@ type Props = {
   teacherId: string;
   courseId: string;
   paymentList: any[];
+  course: any;
+
 };
 
 // Payment Modal Component for Course
@@ -316,6 +40,7 @@ function CoursePaymentModal({
   courseData,
   paymentList,
   teacherId,
+  course,
 }: {
   open: boolean;
   onClose: () => void;
@@ -326,7 +51,10 @@ function CoursePaymentModal({
   };
   paymentList: any[];
   teacherId: string;
+  course: any;
+
 }) {
+  console.log("courseData", courseData)
   const [selectedMethod, setSelectedMethod] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -449,7 +177,7 @@ function CoursePaymentModal({
         <Box sx={{ mb: 2 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
             <Typography color="text.secondary">سعر الكورس</Typography>
-            <Typography>{subtotal.toFixed(2)} درهم</Typography>
+            <Typography>درهم {course.price.toFixed(2)}</Typography>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
             <Typography color="text.secondary">ضريبة القيمة المضافة (15%)</Typography>
@@ -491,9 +219,8 @@ function CoursePaymentModal({
   );
 }
 
-export default function CourseActions({ teacherId, courseId, paymentList }: Props) {
-  console.log("courseId", courseId)
-  
+export default function CourseActions({ teacherId, courseId, paymentList ,course}: Props) {
+
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [courseDetails, setCourseDetails] = useState<{ title: string; price: number }>({
@@ -501,30 +228,6 @@ export default function CourseActions({ teacherId, courseId, paymentList }: Prop
     price: 0,
   });
   const { enqueueSnackbar } = useSnackbar();
-
-  // Fetch course details to get title and price
-  useEffect(() => {
-    const fetchCourseDetails = async () => {
-      try {
-        // You need to implement this API endpoint to get course details
-        // This is just an example - adjust based on your actual API
-        const response = await fetch(endpoints.CourseEnroll.details(courseId));
-        const data = await response.json();
-        if (data.success) {
-          setCourseDetails({
-            title: data.data.title || 'الكورس',
-            price: data.data.price || 0,
-          });
-        }
-      } catch (error) {
-        console.error('Error fetching course details:', error);
-      }
-    };
-
-    if (courseId) {
-      fetchCourseDetails();
-    }
-  }, [courseId]);
 
   // ===== Add To Cart Function =====
   const addToCart = async () => {
@@ -558,7 +261,7 @@ export default function CourseActions({ teacherId, courseId, paymentList }: Prop
     <>
       <Box sx={{ mb: 4 }}>
         {/* Main action buttons row */}
-        <Stack direction="row" spacing={2} alignItems="center">
+        <Stack direction="row" spacing={2} alignItems="center" >
 
           {/* Purchase Button */}
           <Button
@@ -584,30 +287,6 @@ export default function CourseActions({ teacherId, courseId, paymentList }: Prop
               'شراء الكورس'
             )}
           </Button>
-
-          {/* Wishlist */}
-          <IconButton
-            sx={{
-              width: '50px',
-              height: '50px',
-              borderRadius: '25px',
-              border: '1px solid #54B0D7',
-              color: '#54B0D7',
-              '&:hover': {
-                backgroundColor: 'rgba(84, 176, 215, 0.1)',
-              }
-            }}
-          >
-            <Icon
-              icon="mdi:heart-outline"
-              width={24}
-              height={24}
-              color='#153A52'
-            />
-          </IconButton>
-
-        </Stack>
-
         {/* Add to cart */}
         <Button
           variant="outlined"
@@ -634,6 +313,7 @@ export default function CourseActions({ teacherId, courseId, paymentList }: Prop
         >
           أضف إلى السلة
         </Button>
+        </Stack>
       </Box>
 
       {/* Payment Modal */}
@@ -647,6 +327,7 @@ export default function CourseActions({ teacherId, courseId, paymentList }: Prop
         }}
         paymentList={paymentList}
         teacherId={teacherId}
+        course={course}
       />
     </>
   );

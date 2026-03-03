@@ -1,9 +1,89 @@
 
 
 
+// import All from 'src/sections/courses/all';
+// import { endpoints } from 'src/utils/endpoints';
+// import { getData } from 'src/utils/crud-fetch-api';
+
+// // ===== Types =====
+// type CourseCategory = {
+//   id: string;
+//   name: string;
+//   logo?: string;
+// };
+
+// type CourseCategoriesResponse = {
+//   totalCount: number;
+//   items: CourseCategory[];
+// };
+
+// type ApiResponse<T> = {
+//   success: boolean;
+//   data: T;
+// };
+
+// type CoursesResponse = {
+//   totalCount: number;
+//   items: any[];
+// };
+
+// interface Props {
+//   searchParams: Promise<
+//     Record<
+//       | 'CourseCategoryId'| string, // Allow other string keys
+//       string | undefined
+//     >
+//   >;
+// }
+
+
+// export default async function Page({ searchParams }: Props) {
+//   const params = await searchParams;
+//   const courseCategoryId = params?.CourseCategoryId;
+
+//   // ===== Categories =====
+//   const categoriesRes = await getData<ApiResponse<CourseCategoriesResponse>>(
+//     `${endpoints.courseCategory.get}?Name=${params?.Name || ''}`
+
+//   );
+
+//   const categories =
+//     (categoriesRes?.data as CourseCategoriesResponse)?.items ?? [];
+
+//   let sessions: any[] = [];
+
+//   // ===== Courses By Category =====
+//   // if (CourseCategoryId) {
+//     const coursesRes = await getData(
+//       `/students/teacher/courses?CourseCategoryId =${params.CourseCategoryId}`,
+//     );
+
+//     console.log("coursesRes", coursesRes)
+//    const items =
+//   (coursesRes?.data as CoursesResponse)?.items ?? [];
+
+
+//     // ===== Mapping to Card Shape =====
+//     sessions = items.map((course: any) => ({
+//       id: course.courseId,
+//       image: course.coverImageUrl,
+//       category: course.categoryName,
+//       title: course.title,
+//       instructor: course.teacherName,
+//       rate: course.averageRating,
+//       price: course.price,
+//       lessons: course.numberOfLessons,
+//       lessonstime: `${course.durationInHours} ساعة`,
+//     }));
+
+//     console.log("sessions", sessions)
+//   // ===== Send to All =====
+//   return <All categories={categories} sessions={sessions} />;
+// }
+
 import All from 'src/sections/courses/all';
-import { getData } from 'src/utils/crud-fetch-api';
 import { endpoints } from 'src/utils/endpoints';
+import { getData } from 'src/utils/crud-fetch-api';
 
 // ===== Types =====
 type CourseCategory = {
@@ -27,52 +107,49 @@ type CoursesResponse = {
   items: any[];
 };
 
-type Props = {
-  searchParams: Promise<{
-    categoryId?: string;
-  }>;
-};
-
+interface Props {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}
 
 export default async function Page({ searchParams }: Props) {
   const params = await searchParams;
-  const categoryId = params?.categoryId;
 
-  // ===== Categories =====
+  // Ensure this matches the key used in your router.push (categoryId)
+  const categoryId = params?.categoryId || '';
+
+  // 1. Fetch Categories for the Top Bar
   const categoriesRes = await getData<ApiResponse<CourseCategoriesResponse>>(
-    endpoints.courseCategory.get
+    `${endpoints.courseCategory.get}?Name=${params?.Name || ''}`
   );
 
-  const categories =
-    (categoriesRes?.data as CourseCategoriesResponse)?.items ?? [];
+  const categories = (categoriesRes?.data as CourseCategoriesResponse)?.items ?? [];
 
-  let sessions: any[] = [];
+  // 2. Fetch Courses
+  // If categoryId is empty, it should fetch all courses (depending on your API behavior)
+  const coursesUrl = categoryId
+    ? `/students/teacher/courses?CourseCategoryId=${categoryId}`
+    : `/students/teacher/courses`;
 
-  // ===== Courses By Category =====
-  if (categoryId) {
-    const coursesRes = await getData(
-      endpoints.courseCategory.getCourses(categoryId),
-    );
-
-   const items =
-  (coursesRes?.data as CoursesResponse)?.items ?? [];
+    const coursesRes = await getData(coursesUrl);
+    console.log("coursesUrl", coursesRes)
 
 
-    // ===== Mapping to Card Shape =====
-    sessions = items.map((course: any) => ({
-      id: course.courseId,
-      image: course.coverImageUrl,
-      category: course.categoryName,
-      title: course.title,
-      instructor: course.teacherName,
-      rate: course.averageRating,
-      price: course.price,
-      lessons: course.numberOfLessons,
-      lessonstime: `${course.durationInHours} ساعة`,
-    }));
-  }
+  const items = (coursesRes?.data as CoursesResponse)?.items ?? [];
 
-  // ===== Send to All =====
+
+  // 3. Mapping to Card Shape
+  const sessions = items.map((course: any) => ({
+    id: course.courseId,
+    image: course.coverImageUrl,
+    category: course.categoryName,
+    title: course.title,
+    instructor: course.teacherName,
+    rate: course.averageRating,
+    price: course.price,
+    lessons: course.numberOfLessons,
+    lessonstime: `${course.durationInHours} ساعة`,
+  }));
+  console.log("sessions", sessions);
+
   return <All categories={categories} sessions={sessions} />;
 }
-

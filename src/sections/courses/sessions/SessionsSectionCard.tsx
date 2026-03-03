@@ -34,19 +34,18 @@ export default function SessionsSectionCard({
   const orangeColor = warning.main;
   const orangeBg = '#FFF6E4';
   const router = useRouter();
+  const [liked, setLiked] = useState(false);
 
-const [liked, setLiked] = useState(false);
+  const handleHeartClick = () => {
+    setLiked(!liked); // toggle
+  };
 
-const handleHeartClick = () => {
-  setLiked(!liked); // toggle
-};
-
-const handleCardClick = () => {
-  router.push(`/ar/courses/course/${id}`);
-};
+  const handleCardClick = () => {
+    router.push(`/ar/courses/course/${id}`);
+  };
   return (
     <Card
-    onClick={handleCardClick}
+      onClick={handleCardClick}
       sx={{
         borderRadius: 2,
         boxShadow: shadow.main,
@@ -66,11 +65,11 @@ const handleCardClick = () => {
           borderRadius: '8px',
         }}
       >
-         <Box
+        <Box
           onClick={(e) => {
-    e.stopPropagation();
-    handleHeartClick();
-  }}
+            e.stopPropagation();
+            handleHeartClick();
+          }}
           sx={{
             position: 'absolute',
             top: 12,
@@ -138,7 +137,7 @@ const handleCardClick = () => {
               gap: '4px',
             }}
           >
-            <Star width={16} height={16}/> {rate}
+            <Star width={16} height={16} /> {rate}
           </Typography>
         </Stack>
 
