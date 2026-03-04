@@ -8,6 +8,7 @@ import { LeftIcon } from 'src/components/carousel/arrow-icons';
 import { Box, Grid, Stack, Button, Container, Typography } from '@mui/material';
 
 import MyCoursesCard from '../mycourses/mycoursecard';
+import { useRouter } from 'next/navigation';
 
 type MyCoursesPreviewProps = {
   all_courses: Course[];
@@ -15,6 +16,7 @@ type MyCoursesPreviewProps = {
 
 export default function MyCoursesPreview({ all_courses }: MyCoursesPreviewProps) {
   console.log(all_courses);
+  const router = useRouter();
   // عرض أول 4 كورسـات فقط
   const displayCourses = React.useMemo(() => {
     return Array.isArray(all_courses) ? all_courses.slice(0, 4) : [];
@@ -23,7 +25,7 @@ export default function MyCoursesPreview({ all_courses }: MyCoursesPreviewProps)
   if (!displayCourses.length) return null;
 
   return (
-    <Box sx={{ py: { xs: 6, md: 8 }, bgcolor: 'background.neutral' }}>
+    <Box sx={{ py: { xs: 6, md: 8 } }}>
       <Container maxWidth="xl"> {/* تكبير الحاوية لتناسب 4 كروت بشكل مريح */}
 
         {/* Header */}
@@ -39,7 +41,7 @@ export default function MyCoursesPreview({ all_courses }: MyCoursesPreviewProps)
 
           <Button
             component={Link}
-            href="/all-courses"
+            href="/courses/all"
             color="primary"
             variant="soft"
             endIcon={<LeftIcon  />}
@@ -68,6 +70,7 @@ export default function MyCoursesPreview({ all_courses }: MyCoursesPreviewProps)
             <Grid item xs={12} sm={6} md={4} lg={3} key={course.courseId}>
               <MyCoursesCard
                 image={course.coverImageUrl}
+                percentage={course.progressPercentage || 0}
                 title={course.title}
                 instructor={course.teacherName}
                 isEnrolled={course.isEnrolled} // تمرير الـ boolean من الداتا
@@ -76,6 +79,7 @@ export default function MyCoursesPreview({ all_courses }: MyCoursesPreviewProps)
                 link={paths.controlPanel.mycourses.single(course.courseId)}
                 onAddToCart={() => console.log('Added to cart', course.courseId)}
                 onBuyNow={() => console.log('Buy now', course.courseId)}
+                courseId={course.courseId}
               />
             </Grid>
           ))}

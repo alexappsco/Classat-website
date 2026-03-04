@@ -102,7 +102,7 @@ export default function Courses({ categories, getAllCourses, getCoursesEnrolled 
       </Box>
 
       <Box sx={{ pt: 16 }}>
-        <MiniSessions title="استئناف التعلم" sessions={getCoursesEnrolled} />
+        <MiniSessions title="استئناف التعلم " sessions={getCoursesEnrolled} />
           <MyCoursesPreview all_courses={getAllCourses} />
         <SessionsSection
           title="موصى به لك"

@@ -18,4 +18,6 @@ export interface Course {
   categoryId: string;
   categoryName: string;
   isEnrolled: boolean;
+  progressPercentage: number;
+
 }

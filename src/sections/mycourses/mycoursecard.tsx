@@ -1,10 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Box, Card, Stack, Divider, Typography, Avatar, LinearProgress, Button, alpha } from '@mui/material';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { shadow } from 'src/theme/palette';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { Box, Card, Stack, alpha, Avatar, Button, Divider, Typography } from '@mui/material';
 
 interface Props {
   image: string;
@@ -16,17 +15,21 @@ interface Props {
   link: string;
   onAddToCart: () => void;
   onBuyNow: () => void;
+  percentage: number;
+  courseId: string;
 }
 export default function MyCoursesCard({
   image,
   title,
   instructor,
+  percentage,
   // barStatus,
   isEnrolled,
   link,
   onAddToCart,
   onBuyNow,
-}:Props) {
+  courseId
+}: Props) {
   const router = useRouter();
   // const safeProgress = Math.min(Math.max(barStatus || 0, 0), 100);
 
@@ -46,6 +49,7 @@ export default function MyCoursesCard({
           boxShadow: (theme) => `0 12px 24px -4px ${alpha(theme.palette.common.black, 0.1)}`,
         },
       }}
+      onClick={() => isEnrolled ? router.push(`/mycourses/${courseId}`) : router.push(`/courses/course/${courseId}`)}
     >
       {/* الصورة */}
       <Box sx={{ position: 'relative', pt: '60%', overflow: 'hidden', borderRadius: 2 }}>
@@ -67,14 +71,6 @@ export default function MyCoursesCard({
           <Typography variant="caption" sx={{ color: 'text.secondary', fontWeight: 600 }}>{instructor}</Typography>
         </Stack>
 
-        {/* شريط التقدم يظهر فقط إذا كان مشتركاً */}
-        {/* {isEnrolled && (
-          <Stack spacing={0.5}>
-            <LinearProgress variant="determinate" value={safeProgress} sx={{ height: 4, borderRadius: 5, bgcolor: alpha('#22C55E', 0.1), '& .MuiLinearProgress-bar': { bgcolor: '#22C55E' } }} />
-            <Typography variant="caption" sx={{ textAlign: 'end', color: 'text.disabled' }}>{safeProgress}%</Typography>
-          </Stack>
-        )} */}
-
         <Box sx={{ flexGrow: 1 }} />
         <Divider sx={{ borderStyle: 'dashed' }} />
 
@@ -87,7 +83,7 @@ export default function MyCoursesCard({
               variant="contained"
               color="success"
               startIcon={<PlayArrowIcon />}
-              onClick={() => link && router.push(link)}
+              onClick={() => router.push(`courses/course/${courseId}`)}
               sx={{ borderRadius: 1.5, fontWeight: 700 }}
             >
               استئناف التعلم

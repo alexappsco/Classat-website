@@ -241,7 +241,8 @@ export default function AccountPopover() {
   const OPTIONS = [
     {
       label: t('Pages.ContactUs.title'),
-      linkTo: paths.controlPanel.contactUs.list,
+      // linkTo: paths.controlPanel.contactUs.list,
+      linkTo: '/contact-us',
       icon: '/favicon/das/call.svg',
     },
 

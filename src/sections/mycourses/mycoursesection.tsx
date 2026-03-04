@@ -154,14 +154,17 @@ export default function MyCoursesSection({ courses }: Props) {
               key={index}
             >
               <MyCoursesCard
+                isEnrolled={course.isEnrolled}
+                onAddToCart={() => {}}
+                onBuyNow={() => {}}
                 image={course.coverImage}
                 title={course.courseTitle}
                 instructor={course.teacherName}
-                barStatus={Number(course.progressPercentage)}
+                percentage={course.progressPercentage}
                 status={`تم انجاز ${course.progressPercentage}% من الكورس`}
-                statusText= {course.status}
+                // statusText= {course.status}
                 link={course.courseId || ''}
-
+                courseId={course.courseId}
               />
             </Grid>
           ))}
