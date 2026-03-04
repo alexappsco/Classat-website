@@ -8,8 +8,10 @@ import Categories from './categories';
 import MiniSessions from './MiniSessions';
 import { SESSIONS } from './data/sessions';
 import CustomPagination from './CustomPagination';
+import MyCoursesPreview from './myCoursesPreview';
 import SessionsSection from './sessions/SessionsSection';
 import LiveSessionsSection from './live-sessions/LiveSessionSection';
+<<<<<<< HEAD
 import MyCoursesPreview from './myCoursesPreview';
 import LiveSessionCard from './live-sessions/LiveSessionCard';
 import { ILiveCourse } from 'src/types/liveCourse';
@@ -18,6 +20,11 @@ import { getData } from 'src/utils/crud-fetch-api';
 import { useRouter } from 'next/navigation';
 import { LeftIcon } from 'src/components/carousel/arrow-icons';
 import { useTranslations } from 'next-intl';
+=======
+import { Course } from 'src/types/course';
+import { get } from 'lodash';
+import { CoursesEnrolled } from 'src/types/course-enrolled';
+>>>>>>> ed9856ed790d0554f05835354b694cee55574b42
 
 // ===== Types =====
 type CourseCategory = {
@@ -26,6 +33,7 @@ type CourseCategory = {
   logo?: string;
 };
 
+<<<<<<< HEAD
 // type Props = {
 // };
 
@@ -81,6 +89,19 @@ export default function Courses({ categories, liveCourse }: Props) {
   React.useEffect(() => {
     refreshData();
   }, []);
+=======
+type Props = {
+  categories: CourseCategory[];
+  getAllCourses: Course[];
+  getCoursesEnrolled: CoursesEnrolled[];
+
+};
+
+export default function Courses({ categories, getAllCourses, getCoursesEnrolled }: Props) {
+  console.log("getAllCourses", getAllCourses);
+  console.log("getCoursesEnrolled", getCoursesEnrolled);
+
+>>>>>>> ed9856ed790d0554f05835354b694cee55574b42
   return (
     <>
       <Box sx={{ position: 'relative' }}>
@@ -102,8 +123,13 @@ export default function Courses({ categories, liveCourse }: Props) {
       </Box>
 
       <Box sx={{ pt: 16 }}>
+<<<<<<< HEAD
         <MiniSessions title="استئناف التعلم" sessions={SESSIONS.sessionsData} />
         <MyCoursesPreview />
+=======
+        <MiniSessions title="استئناف التعلم " sessions={getCoursesEnrolled} />
+          <MyCoursesPreview all_courses={getAllCourses} />
+>>>>>>> ed9856ed790d0554f05835354b694cee55574b42
         <SessionsSection
           title="موصى به لك"
           sessions={SESSIONS.RECOMMENDED_SESSIONS}

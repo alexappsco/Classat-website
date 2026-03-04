@@ -1,13 +1,5 @@
-import { endpoints } from 'src/utils/endpoints';
+// import HomeView from 'src/sections/home/views/list-view';
 import { getTranslations } from 'next-intl/server';
-import { getData } from 'src/utils/crud-fetch-api';
-import { NoPermissionView } from 'src/sections/error';
-import { FetchTags } from 'src/actions/config-actions';
-import { DEFAULT_LIMIT } from 'src/components/constant';
-import HomeView from 'src/sections/home/views/list-view';
-import { Reports, SettingData, SalesRevenue, PurchasedProduct } from 'src/types/home';
-import Loading from 'src/app/loading';
-import Header from 'src/layouts/dashboard/header';
 import { LandingPage } from 'src/sections/landing/LandingPage';
 
 // ----------------------------------------------------------------------

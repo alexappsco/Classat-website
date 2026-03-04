@@ -649,7 +649,7 @@ export default function CourseCurriculum({ sections }: Props) {
                     )}
 
                     {/* ===== Toggle button ===== */}
-                    <Box
+                    {/* <Box
                       onClick={() =>
                         setActiveVideo(
                           activeVideo === lesson.secsionId
@@ -668,7 +668,7 @@ export default function CourseCurriculum({ sections }: Props) {
                       {activeVideo === lesson.secsionId
                         ? "إخفاء الفيديو"
                         : "تشغيل الفيديو"}
-                    </Box>
+                    </Box> */}
                   </Box>
                 ))}
               </Box>

@@ -152,13 +152,11 @@ export default function All({ categories, sessions }: Props) {
 
       <Box>
         <SearchBar />
-
-      <SessionsSection
-  title="جميع الكورسات"
-  sessions={sessions}
-  hideButton
-/>
-
+        <SessionsSection
+          title="جميع الكورسات"
+          sessions={sessions}
+          hideButton
+        />
         <CustomPagination />
       </Box>
     </>
