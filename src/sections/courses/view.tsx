@@ -59,6 +59,9 @@ import CustomPagination from './CustomPagination';
 import MyCoursesPreview from './myCoursesPreview';
 import SessionsSection from './sessions/SessionsSection';
 import LiveSessionsSection from './live-sessions/LiveSessionSection';
+import { Course } from 'src/types/course';
+import { get } from 'lodash';
+import { CoursesEnrolled } from 'src/types/course-enrolled';
 
 // ===== Types =====
 type CourseCategory = {
@@ -69,9 +72,15 @@ type CourseCategory = {
 
 type Props = {
   categories: CourseCategory[];
+  getAllCourses: Course[];
+  getCoursesEnrolled: CoursesEnrolled[];
+
 };
 
-export default function Courses({ categories }: Props) {
+export default function Courses({ categories, getAllCourses, getCoursesEnrolled }: Props) {
+  console.log("getAllCourses", getAllCourses);
+  console.log("getCoursesEnrolled", getCoursesEnrolled);
+
   return (
     <>
       <Box sx={{ position: 'relative' }}>
@@ -93,8 +102,8 @@ export default function Courses({ categories }: Props) {
       </Box>
 
       <Box sx={{ pt: 16 }}>
-        <MiniSessions title="استئناف التعلم" sessions={SESSIONS.sessionsData} />
-          <MyCoursesPreview/>
+        <MiniSessions title="استئناف التعلم " sessions={getCoursesEnrolled} />
+          <MyCoursesPreview all_courses={getAllCourses} />
         <SessionsSection
           title="موصى به لك"
           sessions={SESSIONS.RECOMMENDED_SESSIONS}

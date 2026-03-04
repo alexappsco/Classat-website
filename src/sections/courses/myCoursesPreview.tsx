@@ -2,96 +2,84 @@
 
 import Link from 'next/link';
 import * as React from 'react';
-import { text } from 'src/theme/palette';
 import { paths } from 'src/routes/paths';
-import { endpoints } from 'src/utils/endpoints';
-import { getData } from 'src/utils/crud-fetch-api';
+import { Course } from 'src/types/course';
 import { LeftIcon } from 'src/components/carousel/arrow-icons';
 import { Box, Grid, Stack, Button, Container, Typography } from '@mui/material';
 
 import MyCoursesCard from '../mycourses/mycoursecard';
+import { useRouter } from 'next/navigation';
 
-type Course = {
-  id: string;
-  coverImage: string;
-  courseTitle: string;
-  teacherName: string;
-  progressPercentage: number;
-  status: string;
-  courseId: string;
-
+type MyCoursesPreviewProps = {
+  all_courses: Course[];
 };
 
-export default function MyCoursesPreview() {
-  const [courses, setCourses] = React.useState<Course[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  const primaryTextColor = text.primary;
+export default function MyCoursesPreview({ all_courses }: MyCoursesPreviewProps) {
+  console.log(all_courses);
+  const router = useRouter();
+  // عرض أول 4 كورسـات فقط
+  const displayCourses = React.useMemo(() => {
+    return Array.isArray(all_courses) ? all_courses.slice(0, 4) : [];
+  }, [all_courses]);
 
-  React.useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const response = await getData(endpoints.studentCourse.getCourses);
-
-        const items: Course[] = (response as any)?.data?.items ?? [];
-
-        setCourses(items.slice(0, 4));
-      } catch (error) {
-        console.error('Error fetching courses:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCourses();
-  }, []);
-  console.log("fetch courses", courses)
-
-  if (loading) return null;
-  if (!courses.length) return null;
+  if (!displayCourses.length) return null;
 
   return (
-    <Box sx={{ py: { xs: 8, md: 5 }, px: { xs: 4, md: 6 } }}>
-      <Container>
+    <Box sx={{ py: { xs: 6, md: 8 } }}>
+      <Container maxWidth="xl"> {/* تكبير الحاوية لتناسب 4 كروت بشكل مريح */}
+
         {/* Header */}
-        <Grid
-          container
+        <Stack
+          direction="row"
           alignItems="center"
           justifyContent="space-between"
           sx={{ mb: 4 }}
         >
-          <Grid item xs={12} sm={8} md={9}>
-            <Stack spacing={0.5}>
-              <Typography
-                variant="h3"
-                sx={{ fontWeight: 400, color: primaryTextColor }}
-              >
-                دوراتي
-              </Typography>
-            </Stack>
-          </Grid>
+          <Typography variant="h3" sx={{ fontWeight: 700 }}>
+            جميع الكورسات
+          </Typography>
 
-          <Link href="/mycourses">
-            <Button color="info" sx={{ lineHeight: 1 }}>
-              الكل
-              <span>
-                <LeftIcon />
-              </span>
-            </Button>
-          </Link>
-        </Grid>
+          <Button
+            component={Link}
+            href="/courses/all"
+            color="primary"
+            variant="soft"
+            endIcon={<LeftIcon  />}
+          >
+            عرض الكل
+          </Button>
+        </Stack>
 
-        {/* Courses Grid */}
-        <Grid container spacing={4} >
-          {courses.map((course) => (
-            <Grid item xs={12} sm={6} md={4} key={course.id}>
+        {/* Courses Grid - 4 Columns on Desktop */}
+        {/* <Grid container spacing={3}>
+          {displayCourses.map((course) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={course.courseId}>
               <MyCoursesCard
-                image={course.coverImage}
-                title={course.courseTitle}
+                image={course.coverImageUrl}
+                title={course.title}
                 instructor={course.teacherName}
-                barStatus={Number(course.progressPercentage)}
-                status={`تم انجاز ${course.progressPercentage}% من الكورس`}
-                statusText={course.status}
+                barStatus={0}
+                status="لم يتم البدء بعد"
                 link={paths.controlPanel.mycourses.single(course.courseId)}
+              />
+            </Grid>
+          ))}
+        </Grid> */}
+        <Grid container spacing={3}>
+          {displayCourses.map((course) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={course.courseId}>
+              <MyCoursesCard
+                image={course.coverImageUrl}
+                percentage={course.progressPercentage || 0}
+                title={course.title}
+                instructor={course.teacherName}
+                isEnrolled={course.isEnrolled} // تمرير الـ boolean من الداتا
+                // barStatus={course.progressPercentage || 0}
+                status={course.isEnrolled ? "مستمر" : "متاح للشراء"}
+                link={paths.controlPanel.mycourses.single(course.courseId)}
+                onAddToCart={() => console.log('Added to cart', course.courseId)}
+                onBuyNow={() => console.log('Buy now', course.courseId)}
+                courseId={course.courseId}
               />
             </Grid>
           ))}

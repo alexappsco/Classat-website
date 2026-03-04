@@ -22,92 +22,8 @@ export const paths = {
     profile: {
       viewProfileEdit: '/profile'
     },
-    categories: {
-      list: '/categories',
-      single: (id: string) => `/categories/${id}`,
-    },
-    subCategories: {
-      list: '/sub-categories',
-      single: (id: string) => `/sub-categories/${id}`,
-    },
-    products: {
-      list: '/products',
-      single: (id: string) => `/products/${id}`,
-      new: '/products/new',
-      details: (id: string) => `/products/details/${id}`,
-    },
-    orders: {
-      list: '/orders',
-      single: (id: string) => `/orders/${id}`,
-    },
-    returnOrders: {
-      list: '/orders/return-orders',
-      single: (id: string) => `/orders/return-orders/${id}`,
-    },
-    units: {
-      list: '/products/units',
-    },
-    marketings: {
-      root: '/marketings',
-      offers: {
-        list: '/marketings/offers',
-        new: '/marketings/offers/new',
-        edit: (id: string) => `/marketings/offers/${id}`,
-      },
-      banners: {
-        list: '/marketings/banners',
-        single: (id: string) => `/marketings/banners/${id}`,
-        new: '/marketings/banners/new',
-      },
-      barcodeDiscount: {
-        list: '/marketings/coupons',
-        new: '/marketings/coupons/new',
-      },
-      notifications: {
-        list: '/marketings/notifications',
-        new: '/marketings/notifications/new',
-      },
-    },
-    users: {
-      root: '/users',
-      drivers: {
-        list: '/users/drivers',
-        driverOrders: (id: string) => `/users/drivers/orders/${id}`,
-        edit: (id: string) => `/users/drivers/edit/${id}`,
-        single: (id: string) => `/users/drivers/${id}`,
-      },
-      clients: {
-        list: '/users/clients',
-        edit: (id: string) => `/users/clients/edit/${id}`,
-        single: (id: string) => `/users/clients/${id}`,
-      },
-      employee: {
-        list: '/users/employee',
-        edit: (id: string) => `/users/employee/edit/${id}`,
-        register: '/users/employee/register',
-        single: (id: string) => `/users/employees/${id}`,
-      },
-    },
-    policy: {
-      root: '/policy',
-      PrivacyPolicy: {
-        list: '/policy/privacy-policy', // Matches your privacy policy path
-      },
-      ReturnPolicy: {
-        list: '/policy/return-policy', // Matches your return policy path
-      },
-    },
-    contactUs: {
-      list: '/contact-us',
-    },
     technicalSupport: {
       list: '/technical-support',
-    },
-    reports: {
-      list: '/reports',
-    },
-    deliveryFees: {
-      list: '/delivery-fees'
     },
      mycourses: {
       list: '/mycourses',
@@ -116,6 +32,10 @@ export const paths = {
     nextlessons:{
       list: '/nextlessons'
     },
+    all_courses:{
+      list: (categoryId: string) => `/courses/all/${categoryId}`,
+    }
+
 
   },
   };

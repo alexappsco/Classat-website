@@ -1,10 +1,25 @@
 'use client';
 
+import { endpoints } from 'src/utils/endpoints';
+import PeopleIcon from '@mui/icons-material/People';
 import React, { useRef, useState, useEffect } from 'react';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import { getData, postData } from 'src/utils/crud-fetch-api';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import {
+  CourseLesson,
+  sectionsNumber,
+  sessionSection,
+  CourseEnrolledDetails
+} from 'src/types/course_enrolled';
 import {
   Box,
   Grid,
   List,
+  Chip,
+  Fade,
   Paper,
   Avatar,
   Rating,
@@ -17,37 +32,16 @@ import {
   ListItemText,
   ListItemButton,
   AccordionSummary,
-  AccordionDetails,
-  Chip,
-  Fade
+  AccordionDetails
 } from '@mui/material';
 
-import PeopleIcon from '@mui/icons-material/People';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 
-import { endpoints } from 'src/utils/endpoints';
-import { getData, postData } from 'src/utils/crud-fetch-api';
-import {
-  CourseLesson,
-  sectionsNumber,
-  sessionSection,
-  CourseEnrolledDetails
-} from 'src/types/course_enrolled';
-
-interface SessionsResponse {
-  totalCount: number;
-  items: sessionSection[];
-}
 interface Props {
   course: CourseEnrolledDetails;
   sections: sectionsNumber[];
 }
 
 export default function CourseDetailsEnrolledView({ course, sections }: Props) {
-  console.log("course", course)
   const [lessonsMap, setLessonsMap] = useState<Record<string, CourseLesson[]>>({});
   const [activeLesson, setActiveLesson] = useState<CourseLesson | null>(null);
   const markedAsWatchedRef = useRef<Set<string>>(new Set());
