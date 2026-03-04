@@ -9,9 +9,10 @@ export interface ILiveSubject {
   teacherName: string;
   teacherId: string;
   teacherImagePath: string;
+  courseCategory: string;
   educationSubject: string;
   educationSubjectImagePath: string;
   coverImagePath: string;
-  status: 'Scheduled' | 'Completed' | 'Cancelled'; // ممكن تزود حالات تانية لو موجودة
+  status: 'Scheduled' | 'Completed' | 'Cancelled'; // ممكن تزود حالات تنية لو موجودة
   isEnrolled: boolean;
 }

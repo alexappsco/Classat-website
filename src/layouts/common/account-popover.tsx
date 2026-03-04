@@ -190,6 +190,7 @@ type StudentProfile = {
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  // const user = getCurrentUser();
   const user = getCurrentUser();
   const router = useRouter();
   const t = useTranslations();
@@ -199,6 +200,11 @@ export default function AccountPopover() {
   const popover = usePopover();
 
   const [learningPreference, setLearningPreference] = useState<string | null>(null);
+
+
+
+
+
 
   // ---------------- Fetch Student Profile ----------------
 

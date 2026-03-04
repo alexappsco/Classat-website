@@ -180,7 +180,7 @@ export default function LiveSessionsSection({ title, paymentList, liveSubject }:
           </Grid>
 
           {/* Action Button (Left side in RTL) */}
-          <Button
+          {/* <Button
             variant="contained"
             size="medium"
             sx={{
@@ -193,7 +193,7 @@ export default function LiveSessionsSection({ title, paymentList, liveSubject }:
             endIcon={'>'}
           >
             اكتشف المزيد
-          </Button>
+          </Button> */}
           {/* <Grid
             item
             xs={12}

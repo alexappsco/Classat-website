@@ -38,5 +38,5 @@ export default async function Page() {
 
 
 
-  return <Courses categories={categories} />;
+  return <Courses  categories={categories} />;
 }
