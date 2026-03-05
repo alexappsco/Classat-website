@@ -74,10 +74,11 @@ type Props = {
   categories: CourseCategory[];
   getAllCourses: Course[];
   getCoursesEnrolled: CoursesEnrolled[];
+  paymentList: any[];
 
 };
 
-export default function Courses({ categories, getAllCourses, getCoursesEnrolled }: Props) {
+export default function Courses({ categories, getAllCourses, getCoursesEnrolled, paymentList }: Props) {
   console.log("getAllCourses", getAllCourses);
   console.log("getCoursesEnrolled", getCoursesEnrolled);
 
@@ -103,8 +104,8 @@ export default function Courses({ categories, getAllCourses, getCoursesEnrolled 
 
       <Box sx={{ pt: 16 }}>
         <MiniSessions title="استئناف التعلم " sessions={getCoursesEnrolled} />
-          <MyCoursesPreview all_courses={getAllCourses} />
-        <SessionsSection
+          <MyCoursesPreview all_courses={getAllCourses} paymentList={paymentList} />
+        {/* <SessionsSection
           title="موصى به لك"
           sessions={SESSIONS.RECOMMENDED_SESSIONS}
         />
@@ -112,7 +113,7 @@ export default function Courses({ categories, getAllCourses, getCoursesEnrolled 
         <SessionsSection
           title="الأعلى تقييماً"
           sessions={SESSIONS.TOP_RATED_SESSIONS}
-        />
+        /> */}
 
         <LiveSessionsSection />
         <CustomPagination />

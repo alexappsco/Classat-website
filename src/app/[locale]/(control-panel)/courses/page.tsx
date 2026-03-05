@@ -53,5 +53,11 @@ export default async function Page() {
   const categories =
     (response?.data as CourseCategoriesResponse)?.items ?? [];
 
-  return <Courses categories={categories} getAllCourses={courses} getCoursesEnrolled={CoursesEnrolled} />;
+      let paymentList: any[] = [];
+        const paymentResponse = await getData<any>(
+          endpoints.payment.get,  // What is this endpoint?
+        );
+        paymentList = paymentResponse?.data?.items || [];
+
+  return <Courses categories={categories} getAllCourses={courses} getCoursesEnrolled={CoursesEnrolled} paymentList={paymentList} />;
 }

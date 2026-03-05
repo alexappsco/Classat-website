@@ -136,20 +136,15 @@ export default async function Page({ searchParams }: Props) {
 
   const items = (coursesRes?.data as CoursesResponse)?.items ?? [];
 
+  console.log("courses master", items)
 
   // 3. Mapping to Card Shape
-  const sessions = items.map((course: any) => ({
-    id: course.courseId,
-    image: course.coverImageUrl,
-    category: course.categoryName,
-    title: course.title,
-    instructor: course.teacherName,
-    rate: course.averageRating,
-    price: course.price,
-    lessons: course.numberOfLessons,
-    lessonstime: `${course.durationInHours} ساعة`,
-  }));
-  console.log("sessions", sessions);
 
-  return <All categories={categories} sessions={sessions} />;
+  let paymentList: any[] = [];
+    const paymentResponse = await getData<any>(
+      endpoints.payment.get,  // What is this endpoint?
+    );
+    paymentList = paymentResponse?.data?.items || [];
+
+  return <All categories={categories} sessions={items} paymentList={paymentList} />;
 }

@@ -11,7 +11,6 @@ export default function Favorites() {
   return (
      <>
         {/* <SearchBar /> */}
-        sss
         <SessionsSection sessions={SESSIONS.TOP_RATED_SESSIONS} />
         <CustomPagination />
     </>
