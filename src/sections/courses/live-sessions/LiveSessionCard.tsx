@@ -125,10 +125,12 @@ function PaymentModal({ open, onClose, lesson, paymentList, teacherId, onSuccess
   const { enqueueSnackbar } = useSnackbar();
 
   // Calculate VAT and totals
-  const VAT_PERCENTAGE = 0.15; // 15%
+  // const VAT_PERCENTAGE = 0.15; // 15%
   const subtotal = lesson.coursePrice || lesson.price || 0;
-  const vatAmount = subtotal * VAT_PERCENTAGE;
-  const total = subtotal + vatAmount;
+  const vatAmount = lesson.price * (lesson?.taxRate || 0);
+  const platformProfit = lesson.price * (lesson?.platformProfitPercentage || 0);
+  // const total = subtotal + vatAmount;
+  const total = lesson.priceAfterTaxAndProfit;
 
   // Set first payment method as default when modal opens
   useEffect(() => {
@@ -245,14 +247,18 @@ function PaymentModal({ open, onClose, lesson, paymentList, teacherId, onSuccess
             <Typography>{subtotal.toFixed(2)} درهم</Typography>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-            <Typography color="text.secondary">ضريبة القيمة المضافة (15%)</Typography>
+            <Typography color="text.secondary">ضريبة القيمة المضافة ({lesson?.taxRate || 0}%)</Typography>
             <Typography>{vatAmount.toFixed(2)} درهم</Typography>
           </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+              <Typography color="text.secondary">ربح المنصة ({lesson?.platformProfitPercentage || 0}%)</Typography>
+              <Typography>{platformProfit.toFixed(2)} درهم</Typography>
+            </Box>
           <Divider sx={{ my: 1.5 }} />
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Typography variant="h6" fontWeight="bold">الإجمالي</Typography>
             <Typography variant="h5" color="primary" fontWeight="bold">
-              {total.toFixed(2)} درهم
+              {total ? total.toFixed(2) : '0.00'} درهم
             </Typography>
           </Box>
         </Box>

@@ -29,6 +29,10 @@ export const paths = {
       list: '/mycourses',
       single: (id: string) => `/mycourses/${id}`,
     },
+     mylivecourses: {
+      list: '/courses/myLive',
+      single: (id: string) => `/courses/myLive/${id}`,
+    },
     nextlessons:{
       list: '/nextlessons'
     },

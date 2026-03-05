@@ -14,6 +14,9 @@ export interface CartItem {
     discount: number;
     total: number;
     totalAfterDiscount: number;
+    platformProfitPercentage: number;
+    taxRate: number;
+    platformProfit: number;
   }
 
   export interface CartData {

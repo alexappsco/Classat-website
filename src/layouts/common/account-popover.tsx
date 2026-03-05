@@ -242,28 +242,34 @@ export default function AccountPopover() {
     router.push(path);
   };
 
-  // ---------------- OPTIONS ----------------
+  // ---------------- Build OPTIONS Array ----------------
 
-  const OPTIONS = [
-    {
-      label: t('Pages.ContactUs.title'),
-      // linkTo: paths.controlPanel.contactUs.list,
-      linkTo: '/contact-us',
-      icon: '/favicon/das/call.svg',
-    },
-
-    learningPreference === 'Courses'
-      ? {
+    const conditionalOptions = learningPreference === 'Courses'
+    ? [
+        {
           label: 'دوراتي',
           linkTo: paths.controlPanel.mycourses.list,
           icon: '/favicon/das/laptop.svg',
-        }
-      : {
+        },
+        {
+          label: 'بثوثي',
+          linkTo: paths.controlPanel.mylivecourses.list,
+          icon: '/favicon/das/laptop.svg',
+        },
+      ]
+    : [
+        {
           label: 'دروسي القادمة',
           linkTo: paths.controlPanel.nextlessons.list,
-           icon: '/favicon/das/laptop.svg',
+          icon: '/favicon/das/laptop.svg',
         },
-
+      ];
+  const baseOptions = [
+    {
+      label: t('Pages.ContactUs.title'),
+      linkTo: '/contact-us',
+      icon: '/favicon/das/call.svg',
+    },
     {
       label: t('Pages.Support.title'),
       linkTo: paths.controlPanel.technicalSupport.list,
@@ -285,6 +291,10 @@ export default function AccountPopover() {
       icon: '/favicon/das/setting.svg',
     },
   ];
+
+
+
+  const OPTIONS = [ ...conditionalOptions,...baseOptions];
 
   if (!learningPreference) return null;
 

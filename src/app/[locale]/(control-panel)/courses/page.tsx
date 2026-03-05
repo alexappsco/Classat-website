@@ -53,11 +53,5 @@ export default async function Page() {
   const categories =
     (response?.data as CourseCategoriesResponse)?.items ?? [];
 
-<<<<<<< HEAD
-
-
-  return <Courses  categories={categories} />;
-=======
   return <Courses categories={categories} getAllCourses={courses} getCoursesEnrolled={CoursesEnrolled} />;
->>>>>>> ed9856ed790d0554f05835354b694cee55574b42
 }
