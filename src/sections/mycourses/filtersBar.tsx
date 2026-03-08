@@ -41,12 +41,12 @@ const FiltersBar = () => {
     "قيد التقدم (4)",
     "مكتمله (2)",
   ];
-
   return (
     <Box sx={{ pt: { xs: 9, md: 13 }, px: { xs: 2, md: 6 }, }}>
       <Container>
           <Typography mt='20' variant='h4'>دوراتي</Typography>
         {/* Search */}
+        ccc
         <Box
           display="flex"
           flexDirection={{ xs: "column", md: "row-reverse" }}

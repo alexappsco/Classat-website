@@ -632,7 +632,7 @@ export default function MyCoursesCard({
                 onClick={() => router.push(`/mycourses/${courseId}`)}
                 sx={{ borderRadius: 1.5, fontWeight: 700 }}
               >
-                استئناف التعلم
+                استئناف التعلم  
               </Button>
             ) : (
               <Stack direction="row" spacing={1}>

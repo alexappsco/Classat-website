@@ -210,7 +210,6 @@ export default function MiniSessionsWithHeader({
                     flexShrink: 0,
                   }}
                 />
-
                 {/* Content Section */}
                 <Stack spacing={0.5} flexGrow={1} sx={{ minWidth: 0 }}>
                   <Typography
