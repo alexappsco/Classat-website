@@ -77,9 +77,6 @@ export default function SessionsSectionCard({
     setLiked(!liked);
   };
 
-  const handleCardClick = () => {
-    router.push(`/courses/course/${courseId}`);
-  };
 
   const handleBuyNowClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent card click
@@ -125,7 +122,7 @@ export default function SessionsSectionCard({
   return (
     <>
       <Card
-        onClick={handleCardClick}
+        onClick={() => {!isEnrolled && router.push(`/courses/course/${courseId}`)}}
         sx={{
           borderRadius: 2,
           boxShadow: shadow.main,
@@ -133,7 +130,7 @@ export default function SessionsSectionCard({
           display: 'flex',
           flexDirection: 'column',
           p: '20px 16px 16px',
-          cursor: "pointer",
+          // cursor: "pointer",
           position: 'relative',
         }}
       >

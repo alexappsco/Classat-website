@@ -63,7 +63,6 @@ export default function SessionsSectionCard({
         />
       </Box>
 
-      
       <Stack spacing={1.5} sx={{ py: 2, flexGrow: 1 }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography
@@ -80,7 +79,7 @@ export default function SessionsSectionCard({
             {category}
           </Typography>
 
-         
+
           <Typography
             variant="caption"
             sx={{
@@ -109,13 +108,13 @@ export default function SessionsSectionCard({
           alignItems="center"
           sx={{ py: 1, color: theme.palette.text.secondary }}
         >
-          
+
           <Stack direction="row" spacing={0.5} alignItems="center">
             <Book width={16} height={16} />
             <Typography variant="body2">{lessons}</Typography>
           </Stack>
 
-          
+
           <Stack direction="row" spacing={0.5} alignItems="center">
             <Clock width={16} height={16} />
             <Typography variant="body2">{lessonstime}</Typography>
@@ -123,7 +122,7 @@ export default function SessionsSectionCard({
         </Stack>
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-         
+
           <Stack direction="row" alignItems="center" gap={1}>
             <Image src="/assets/landing-page/live-sessions/instructors/instructor.png" />
             <Typography variant="body2" sx={{ color: text.primary, fontWeight: 500 }}>
@@ -131,9 +130,9 @@ export default function SessionsSectionCard({
             </Typography>
           </Stack>
 
-          
+
           <Stack direction="row" alignItems="center" gap={1}>
-            
+
             {oldPrice && (
               <Typography
                 variant="body2"
@@ -147,7 +146,7 @@ export default function SessionsSectionCard({
               </Typography>
             )}
 
-           
+
             <Typography
               variant="body2"
               sx={{

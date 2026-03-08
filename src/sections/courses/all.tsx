@@ -127,10 +127,13 @@ type Props = {
   categories: CourseCategory[];
   sessions: any[];
   paymentList: any[];
+  totalCount: number;
+  currentPage: number;
+  pageSize: number;
 };
 
 
-export default function All({ categories, sessions, paymentList }: Props) {
+export default function All({ categories, sessions, paymentList, totalCount, currentPage, pageSize }: Props) {
   return (
     <>
       <Box sx={{ position: 'relative' }}>
@@ -152,7 +155,7 @@ export default function All({ categories, sessions, paymentList }: Props) {
       </Box>
 
       <Box>
-        <SearchBar />
+        {/* <SearchBar /> */}
         <SessionsSection
           title="جميع الكورسات"
           sessions={sessions}
