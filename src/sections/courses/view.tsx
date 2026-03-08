@@ -78,10 +78,7 @@ type Props = {
 
 };
 
-export default function Courses({ categories, getAllCourses, getCoursesEnrolled, paymentList }: Props) {
-  console.log("getAllCourses", getAllCourses);
-  console.log("getCoursesEnrolled", getCoursesEnrolled);
-
+export default function Courses({ categories, getAllCourses, getCoursesEnrolled, paymentList,}: Props) {
   return (
     <>
       <Box sx={{ position: 'relative' }}>

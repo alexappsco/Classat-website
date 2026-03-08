@@ -51,6 +51,7 @@ export default function SessionsSectionCard({
         p: '20px 16px 16px',
       }}
     >
+      
       {/* Image */}
       <Box
         sx={{

@@ -8,6 +8,7 @@ import { LeftIcon } from 'src/components/carousel/arrow-icons';
 import { Box, Grid, Stack, Button, Container, Typography } from '@mui/material';
 
 import RecommendedSessionCard from './SessionsSectionCard';
+import SearchBar from '../SearchBar';
 
 interface SessionsSectionProps {
   title: string;
@@ -33,6 +34,9 @@ export default function SessionsSection({
   return (
     <Box sx={{ py: { xs: 8, md: 5 }, px: { xs: 4, md: 6 }, direction: 'ltr' }}>
       <Container>
+        <Box sx={{ width: '100%' }}>
+          <SearchBar />
+        </Box>
         {/* Header */}
         <Grid container alignItems="center" justifyContent="space-between" sx={{ mb: 4 }}>
           <Grid item xs={12} sm={8} md={9}>
@@ -53,14 +57,6 @@ export default function SessionsSection({
               </Button>
             </Link>
           )}
-          {/*
-                    <Button
-                      component={Link}
-                      href="/courses/all"
-                      color="primary"
-                      variant="soft"
-                      endIcon={<LeftIcon />}
-                    > */}
         </Grid>
 
         {/* Grid */}
