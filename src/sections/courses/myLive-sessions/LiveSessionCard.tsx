@@ -18,31 +18,15 @@ import {
   Button,
   Dialog,
   Divider,
-  ListItem,
-  Accordion,
   Container,
-  IconButton,
   Typography,
-  RadioGroup,
-  DialogTitle,
-  CardContent,
-  FormControl,
-  ListItemText,
-  DialogContent,
-  DialogActions,
-  AccordionDetails,
-  AccordionSummary,
-  CircularProgress,
   Chip,
   CardMedia,
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { postData } from 'src/utils/crud-fetch-api';
-import { endpoints } from 'src/utils/endpoints';
-import { useEffect, useState } from 'react';
-import { FetchTags } from 'src/actions/config-actions';
-import { invalidateTag } from 'src/actions/cache-invalidation';
-import { Icon } from '@iconify/react';
+
+import {  useState } from 'react';
+
 import { ILiveCourse } from 'src/types/liveCourse';
 
 interface LiveSessionCardProps {

@@ -126,10 +126,11 @@ type CourseCategory = {
 type Props = {
   categories: CourseCategory[];
   sessions: any[];
+  paymentList: any[];
 };
 
 
-export default function All({ categories, sessions }: Props) {
+export default function All({ categories, sessions, paymentList }: Props) {
   return (
     <>
       <Box sx={{ position: 'relative' }}>
@@ -156,6 +157,7 @@ export default function All({ categories, sessions }: Props) {
           title="جميع الكورسات"
           sessions={sessions}
           hideButton
+          paymentList={paymentList}
         />
         <CustomPagination />
       </Box>

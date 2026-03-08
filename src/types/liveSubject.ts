@@ -13,6 +13,11 @@ export interface ILiveSubject {
   educationSubject: string;
   educationSubjectImagePath: string;
   coverImagePath: string;
-  status: 'Scheduled' | 'Completed' | 'Cancelled'; // ممكن تزود حالات تنية لو موجودة
+  // status: 'Scheduled' | 'Completed' | 'Cancelled'; // ممكن تزود حالات تنية لو موجودة
+  // isEnrolled: boolean;
+    status: string; // ممكن تزود حالات تانية لو موجودة
   isEnrolled: boolean;
+  platformProfitPercentage?: number;
+  taxRate?: number;
+  priceAfterTaxAndProfit?: number;
 }

@@ -36,7 +36,7 @@ type Props = {
   // studentAppointments: any;
   // lessonList: any[];
   // id: string;
-  paymentList?: any[];
+  // paymentList?: any[];
   // subjectId: string;
   title?: string;
   liveCourse?: ILiveCourse[];
@@ -44,6 +44,8 @@ type Props = {
   categories: CourseCategory[];
   getAllCourses: Course[];
   getCoursesEnrolled: CoursesEnrolled[];
+  // paymentLists: any[];
+
 };
 // export default function Courses({ categories, liveCourse }: Props) {
   
@@ -116,8 +118,8 @@ const [liveCourses, setLiveCourses] = React.useState<ILiveCourse[]>([]);
 
       <Box sx={{ pt: 16 }}>
         <MiniSessions title="استئناف التعلم " sessions={getCoursesEnrolled} />
-          <MyCoursesPreview all_courses={getAllCourses} />
-        <SessionsSection
+          <MyCoursesPreview all_courses={getAllCourses} paymentList={paymentList} />
+        {/* <SessionsSection
           title="موصى به لك"
           sessions={SESSIONS.RECOMMENDED_SESSIONS}
         />
@@ -125,7 +127,7 @@ const [liveCourses, setLiveCourses] = React.useState<ILiveCourse[]>([]);
         <SessionsSection
           title="الأعلى تقييماً"
           sessions={SESSIONS.TOP_RATED_SESSIONS}
-        />
+        /> */}
 
         {/* <LiveSessionsSection /> */}
         <Grid container spacing={4} justifyContent={'center'} p={4}>
