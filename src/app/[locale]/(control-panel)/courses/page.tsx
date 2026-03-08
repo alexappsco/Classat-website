@@ -59,5 +59,5 @@ export default async function Page() {
         );
         paymentList = paymentResponse?.data?.items || [];
 
-  return <Courses categories={categories} getAllCourses={courses} getCoursesEnrolled={CoursesEnrolled} paymentList={paymentList} />;
+  return <Courses categories={categories} getAllCourses={courses} getCoursesEnrolled={CoursesEnrolled}  />;
 }

@@ -11,6 +11,10 @@ export interface ILiveCourse {
   teacherImagePath: string;
   courseCategory: string;
   coverImagePath: string;
-  status: 'Scheduled' | 'Completed' | 'Cancelled'; // ممكن تزود حالات تانية لو موجودة
+  // status: 'Scheduled' | 'Completed' | 'Cancelled' | 'InProgress'; // ممكن تزود حالات تانية لو موجودة
+  status: string; // ممكن تزود حالات تانية لو موجودة
   isEnrolled: boolean;
+  platformProfitPercentage?: number;
+  taxRate?: number;
+  priceAfterTaxAndProfit?: number;
 }

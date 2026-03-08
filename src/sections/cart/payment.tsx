@@ -42,6 +42,9 @@ interface PaymentSummary {
   discount: number;
   total: number;
   totalAfterDiscount: number;
+  platformProfitPercentage: number;
+  taxRate: number;
+  platformProfit: number;
 }
 
 interface PaymentMethod {
@@ -210,8 +213,14 @@ const handlePaySubmit = async () => {
                 <Typography fontWeight={600}>{summary?.subTotal} درهم</Typography>
               </Box>
               <Box sx={summaryRowStyle}>
-                <Typography color="text.secondary">الضريبة</Typography>
+                <Typography color="text.secondary">الضريبة  {summary?.taxRate}٪</Typography>
+                {/* <Typography fontWeight={600}>{summary?.taxRate}٪</Typography> */}
                 <Typography fontWeight={600}>{summary?.vat} درهم</Typography>
+              </Box>
+              <Box sx={summaryRowStyle}>
+                <Typography color="text.secondary">ربح المنصة  {summary?.platformProfitPercentage}٪</Typography>
+                {/* <Typography fontWeight={600}>{summary?.taxRate}٪</Typography> */}
+                <Typography fontWeight={600}>{summary?.platformProfit} درهم</Typography>
               </Box>
               <Box sx={summaryRowStyle}>
                 <Typography color="text.secondary">الخصم</Typography>

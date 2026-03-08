@@ -6,6 +6,7 @@ import { useRouter } from 'next/dist/client/components/navigation';
 
 import LiveSessionCard from './LiveSessionCard'; // Assuming the card is imported
 import { LeftIcon } from 'src/components/carousel/arrow-icons';
+import { ILiveSubject } from 'src/types/liveSubject';
 
 const LIVE_SESSIONS = [
   {
@@ -45,8 +46,18 @@ const LIVE_SESSIONS = [
     attendees: '15 طالب',
   },
 ];
+type Props = {
+  // studentAppointments: any;
+  // lessonList: any[];
+  // id: string;
+  paymentList: any[];
+  // subjectId: string;
+  title: string;
+  liveCourse?: ILiveSubject[];
 
-export default function LiveSessionsSection() {
+};
+
+export default function LiveSessionsSection({ title, paymentList, liveCourse }: Props) {
   const primaryTextColor = text.primary;
   const paragraphTextColor = text.paragraph;
   const mainColor = primary.main;
@@ -93,7 +104,7 @@ export default function LiveSessionsSection() {
 
         {/* 2. Live Sessions Grid */}
         <Grid container spacing={4} justifyContent={'center'}>
-          {LIVE_SESSIONS.map((session, index) => (
+          {/* {liveCourse.map((session, index) => (
             <Grid
               item
               xs={12} // Full width on mobile
@@ -101,9 +112,38 @@ export default function LiveSessionsSection() {
               md={3} // Four cards per row on desktop
               key={index}
             >
-              <LiveSessionCard {...session} />
+              <LiveSessionCard
+                lessonList={session.lessonList}
+                teacher_id={session.teacher_id}
+                paymentList={session.paymentList}
+                key={liveCourse[0]?.id} 
+              {...session} />
             </Grid>
-          ))}
+          ))} */}
+          {liveCourse && liveCourse.length > 0 ? (
+            <Grid
+              item
+              xs={12} // Full width on mobile
+              sm={12} // Full width on small screens
+              md={12}
+              lg={12} // Four cards per row on desktop
+            >
+              <LiveSessionCard
+                lessonList={liveCourse}
+                teacher_id={liveCourse[0]?.teacherId || ''}
+                paymentList={paymentList}
+                key={liveCourse[0]?.id}
+              />
+            </Grid>
+          ) : (
+            <Grid item xs={12}>
+              <Box sx={{ p: 3, textAlign: 'center' }}>
+                <Typography variant="h6" color="text.secondary">
+                  لا توجد جلسات مباشرة متاحة
+                </Typography>
+              </Box>
+            </Grid>
+          )}
         </Grid>
       </Container>
     </Box>

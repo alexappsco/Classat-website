@@ -114,7 +114,8 @@ CourseEnroll:{
   markWatched: (lessonId: string) => `/students/courses/lessons/${lessonId}/mark-watched`,
 },
 liveCourse:{
-  get: "/students/live-session-courses"
+  get: "/students/live-session-courses",
+  getmyCourses: "/students/live-session-course-enrollments"
 },
 liveSubjects:{
   get: "/students/live-session-subjects"

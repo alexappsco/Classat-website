@@ -2,6 +2,7 @@ import LiveSesions from 'src/sections/courses/live-sessions/view';
 import { getData } from 'src/utils/crud-fetch-api';
 import { endpoints } from 'src/utils/endpoints';
 import { FetchTags } from 'src/actions/config-actions';
+import MyLiveSesions from 'src/sections/courses/myLive-sessions/view';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,7 +29,8 @@ export default async function Page({
 }: {
   searchParams: Promise<{
     courseCategoryId?: string;
-    Status ?: string;
+    EnrollmentStatus?: string;
+    LiveSessionStatus?: string;
         Date?: string;
 
   }>;
@@ -47,16 +49,20 @@ export default async function Page({
       query.append('CourseCategoryId', params.courseCategoryId || '');
     }
 
-    if (params.Status ) {
-      query.append('Status', params.Status  || '');
+    if (params.EnrollmentStatus) {
+      query.append('EnrollmentStatus', params.EnrollmentStatus || '');
+    }
+    if (params.LiveSessionStatus ) {
+      query.append('LiveSessionStatus', params.LiveSessionStatus|| '');
     }
     if (params.Date) {
       query.append('Date', params.Date || '');
     }
 
     const lessonsUrl = query.toString()
-      ? `${endpoints.liveCourse.get}?${query.toString()}`
-      : endpoints.liveCourse.get;
+      ? `${endpoints.liveCourse.getmyCourses}?${query.toString()}`
+      : endpoints.liveCourse.getmyCourses ;
+      console.log('Live Sessions URL:', lessonsUrl);
 
     // ✅ Fetch Live Sessions (always fresh + tagged)
     lessonsRes = await getData<any>(lessonsUrl, {
@@ -65,11 +71,11 @@ export default async function Page({
     });
 
     // ✅ Fetch Payments (always fresh + tagged)
-    const paymentResponse = await getData<any>(endpoints.payment.get, {
-      cache: 'no-store',
-      tags: [FetchTags.PaymentMethod],
-    });
-    paymentList = paymentResponse?.data?.items || [];
+    // const paymentResponse = await getData<any>(endpoints.payment.get, {
+    //   cache: 'no-store',
+    //   tags: [FetchTags.PaymentMethod],
+    // });
+    // paymentList = paymentResponse?.data?.items || [];
   } catch (error) {
     paymentList = [];
   }
@@ -91,13 +97,13 @@ export default async function Page({
       ? lessonsRes.data.items 
       : [];
       
-
+console.log('Live Sessions data:', liveSubjectItems);
   return (
-    <LiveSesions
-      paymentList={paymentList}
+    <MyLiveSesions
+      // paymentList={paymentList}
       liveCourse={liveSubjectItems}
       categories={categories}
-      title="Live Sessions"
+      title="My Live Sessions"
     />
   );
 }

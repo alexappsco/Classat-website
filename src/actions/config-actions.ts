@@ -4,6 +4,8 @@ export const enum FetchTags {
   ProductsList = 'PRODUCTS_LIST',
   OrderList = 'ORDER_LIST',
   PaymentMethod = 'PAYMENT_METHOD',
+  LiveCourse = 'LIVE_COURSE',
+  LiveSubject = 'LIVE_SUBJECT',
   BannersList = 'BANNERS_LIST',
   BarcodeDiscount = 'DISCOUNT_LIST',
   OffersList = 'OFFERS_LIST',

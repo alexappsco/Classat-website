@@ -5,10 +5,10 @@
     "Categories": {
       "title": "الأقسام | ثمار كلاسات"
     },
-    "Cart":{
+    "Cart": {
       "title": "السلة |  كلاسات"
     },
-    "Payment":{
+    "Payment": {
       "title": "الدفع |  كلاسات"
     },
     "SubCategories": {
@@ -45,7 +45,7 @@
       "title": "الجلسات القادمة  | ثمار كلاسات"
     },
     "mycourses": {
-      "title":"كورساتي"
+      "title": "كورساتي"
     },
     "Support": {
       "title": "الدعم الفني | ثمار كلاسات"
@@ -359,7 +359,6 @@
       "sales_by_day": "المبيعات حسب اليوم",
       "edit_free_shipping_vat": "تعديل الشحن المجاني وضريبةالقيمة المضافة"
     },
-
     "Categories": {
       "categories_title": "الأقسام الرئيسية",
       "subcategories_title": "الأقسام الفرعية",
@@ -689,7 +688,7 @@
       "title_ar": "العنوان بالعربية",
       "title_en": "العنوان بالانجليزية"
     },
-    "Cart":{
+    "Cart": {
       "title": "السلة",
       "confirm_delete_item": "تأكيد حذف العنصر",
       "item": "العنصر",
@@ -813,8 +812,7 @@
       "PermissionActivate": "يجب تفعيل صلاحية الاعدادات"
     },
     "terms": {
-      "title":"الشروط والاحكام"
-
+      "title": "الشروط والاحكام"
     },
     "DeliveryFees": {
       "add_delivery_fee": "إضافة رسوم توصيل",
@@ -887,7 +885,9 @@
     "donot_code": "ليس لديك رمز؟",
     "resend_code": "إعادة إرسال الرمز",
     "resending": "جاري الإرسال",
-    "second": "ثانية"
+    "second": "ثانية",
+    "live_broadcast": "البث المباشر",
+    "all": "الكل"
   },
   "Button": {
     "creat_account": "إنشاء حساب",

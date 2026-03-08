@@ -16,13 +16,12 @@ type Props = {
   // studentAppointments: any;
   // lessonList: any[];
   // id: string;
-  paymentList: any[];
   // subjectId: string;
   title: string;
   liveCourse?: ILiveCourse[];
 
 };
-export default function LiveSessionsSection({ title, paymentList, liveCourse }: Props) {
+export default function LiveSessionsSection({ title, liveCourse }: Props) {
   const primaryTextColor = text.primary;
   const paragraphTextColor = text.paragraph;
   const mainColor = primary.main;
@@ -58,8 +57,7 @@ export default function LiveSessionsSection({ title, paymentList, liveCourse }: 
             >
               <LiveSessionCard 
                 lessonList={liveCourse} 
-                teacher_id={liveCourse[0]?.teacherId || ''} 
-                paymentList={paymentList} 
+                // teacher_id={liveCourse[0]?.teacherId || ''} 
                 key={liveCourse[0]?.id} 
               />
             </Grid>
