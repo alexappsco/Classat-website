@@ -15,16 +15,14 @@ import Hero from '../Hero';
 import { useTranslations } from 'next-intl';
 
 type LiveSesionsProps = {
-  paymentList?: any;
-  liveCourse?: any[];
+  liveSubject?: any[];
   title?: string;
   categories?: any[];
 };
 
-export default function LiveSesions({
-  paymentList,
-  title = 'بثوث مباشرة الان',
-  liveCourse,
+export default function MyLiveSesions({
+  title = ('Label.My_Live_Sessions'),
+  liveSubject,
   categories,
 }: LiveSesionsProps) {
   const router = useRouter();
@@ -33,12 +31,15 @@ export default function LiveSesions({
 
 
   // ✅ States
-  const [selectedCategory, setSelectedCategory] = React.useState(
-    searchParams.get('courseCategoryId') || ''
-  );
+  // const [selectedCategory, setSelectedCategory] = React.useState(
+  //   searchParams.get('courseCategoryId') || ''
+  // );
 
   const [selectedStatus, setSelectedStatus] = React.useState(
-    searchParams.get('Status') || ''
+    searchParams.get('LiveSessionStatus') || ''
+  );
+  const [selectedEnrollmentStatus, setSelectedEnrollmentStatus] = React.useState(
+    searchParams.get('EnrollmentStatus') || ''
   );
   const [selectedDate, setSelectedDate] = React.useState<Dayjs | null>(
     searchParams.get('Date') ? dayjs(searchParams.get('Date')) : null
@@ -46,18 +47,22 @@ export default function LiveSesions({
 
   // ✅ تحديث الـ URL
   const handleFilterChange = (
-    category: string,
-    status: string,
-    date: Dayjs | null
+    // category: string,
+    LiveSessionStatus: string,
+    date: Dayjs | null,
+    EnrollmentStatus: string
   ) => {
     const params = new URLSearchParams();
 
-    if (category) {
-      params.set('CourseCategoryId', category);
-    }
+    // if (category) {
+    //   params.set('CourseCategoryId', category);
+    // }
 
-    if (status) {
-      params.set('Status', status);
+    if (LiveSessionStatus) {
+      params.set('LiveSessionStatus', LiveSessionStatus);
+    }
+    if (EnrollmentStatus) {
+      params.set('EnrollmentStatus', EnrollmentStatus);
     }
 
     if (date) {
@@ -99,14 +104,14 @@ export default function LiveSesions({
               sx={{
                 display: 'grid',
                 gridTemplateColumns: {
-                  xs: '1fr',
-                  md: '1fr 1fr 1fr',
+                  xs: '1fr 1fr',
+                  md: '1fr 1fr 1fr ',
                 },
                 gap: 3,
               }}
             >
               {/* Category */}
-              <FormControl fullWidth>
+              {/* <FormControl fullWidth>
                 <InputLabel>التصنيف</InputLabel>
                 <Select
                   value={selectedCategory}
@@ -115,7 +120,7 @@ export default function LiveSesions({
                   onChange={(e) => {
                     const value = e.target.value;
                     setSelectedCategory(value);
-                    handleFilterChange(value, selectedStatus, selectedDate);
+                    handleFilterChange(value, selectedStatus, selectedDate, selectedEnrollmentStatus);
                   }}
                 >
                   <MenuItem value="">كل التصنيفات</MenuItem>
@@ -125,7 +130,7 @@ export default function LiveSesions({
                     </MenuItem>
                   ))}
                 </Select>
-              </FormControl>
+              </FormControl> */}
 
               {/* Status */}
               <FormControl fullWidth>
@@ -137,7 +142,7 @@ export default function LiveSesions({
                   onChange={(e) => {
                     const value = e.target.value;
                     setSelectedStatus(value);
-                    handleFilterChange(selectedCategory, value, selectedDate);
+                    handleFilterChange( value, selectedDate, selectedEnrollmentStatus);
                   }}
                 >
              <MenuItem value="Scheduled">{t('Global.Label.Scheduled')}</MenuItem>
@@ -146,13 +151,31 @@ export default function LiveSesions({
                   <MenuItem value="Cancelled">{t('Global.Label.Cancelled')}</MenuItem>
                 </Select>
               </FormControl>
+              <FormControl fullWidth>
+                <InputLabel>الحالة</InputLabel>
+                <Select
+                  value={selectedEnrollmentStatus}
+                  label="الحالة"
+                  // startAdornment={<FlagIcon sx={{ mr: 1 }} />}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setSelectedEnrollmentStatus(value);
+                    handleFilterChange( selectedStatus, selectedDate, value);
+                  }}
+                >
+                  <MenuItem value="">كل الحالات</MenuItem>
+                  <MenuItem value="Active">Active</MenuItem>
+                  <MenuItem value="Completed">Completed</MenuItem>
+                  <MenuItem value="Cancelled">Cancelled</MenuItem>
+                </Select>
+              </FormControl>
 
               {/* Date */}
               <DatePicker
                 value={selectedDate}
                 onChange={(newValue) => {
                   setSelectedDate(newValue);
-                  handleFilterChange(selectedCategory, selectedStatus, newValue);
+                  handleFilterChange( selectedStatus, newValue, selectedEnrollmentStatus);
                 }}
               // slotProps={{
               //   textField: {
@@ -171,9 +194,9 @@ export default function LiveSesions({
 
       {/* ✅ Live Sessions */}
       <LiveSessionsSection
-        paymentList={paymentList}
-        title={title}
-        liveCourse={liveCourse}
+        title={t(title)}
+        liveSubject={liveSubject}
+        // liveCourse={liveSubject}
       />
     </>
   );

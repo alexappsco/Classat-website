@@ -1,4 +1,3 @@
-
 // import { m } from 'framer-motion';
 
 // import Stack from '@mui/material/Stack';
@@ -42,7 +41,6 @@
 //       console.error(error);
 //     }
 //   };
-
 
 //   const handleClickItem = (path: string) => {
 //     popover.onClose();
@@ -156,7 +154,6 @@
 //   );
 // }
 
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -201,11 +198,6 @@ export default function AccountPopover() {
 
   const [learningPreference, setLearningPreference] = useState<string | null>(null);
 
-
-
-
-
-
   // ---------------- Fetch Student Profile ----------------
 
   useEffect(() => {
@@ -244,36 +236,57 @@ export default function AccountPopover() {
 
   // ---------------- Build OPTIONS Array ----------------
 
-    const conditionalOptions = learningPreference === 'Courses'
-    ? [
-        {
-          label: 'دوراتي',
-          linkTo: paths.controlPanel.mycourses.list,
-          icon: '/favicon/das/laptop.svg',
-        },
-        {
-          label: 'بثوثي',
-          linkTo: paths.controlPanel.mylivecourses.list,
-          icon: '/favicon/das/laptop.svg',
-        },
-      ]
-    : [
-        {
-          label: 'دروسي القادمة',
-          linkTo: paths.controlPanel.nextlessons.list,
-          icon: '/favicon/das/laptop.svg',
-        },
-      ];
+  const conditionalOptions =
+    learningPreference === 'Courses'
+      ? [
+          {
+            label: t('Nav.main'),
+            linkTo: paths.controlPanel.mylivecourses,
+            icon: '/favicon/das/laptop.svg',
+          },
+          {
+            label: t('Nav.mycourse'),
+            linkTo: paths.controlPanel.mycourses.list,
+            icon: '/favicon/das/laptop.svg',
+          },
+          {
+            label: t('Nav.mylive'),
+            linkTo: paths.controlPanel.mylivecourses.list,
+            icon: '/favicon/das/laptop.svg',
+          },
+        ]
+      : [
+          {
+            label: t('Nav.main'),
+            linkTo: paths.controlPanel.mainCurricula,
+            icon: '/favicon/das/laptop.svg',
+          },
+          {
+            label: t('Nav.nextlessons'),
+            linkTo: paths.controlPanel.nextlessons.list,
+            icon: '/favicon/das/laptop.svg',
+          },
+          {
+            label: t('Nav.mylive'),
+            linkTo: paths.controlPanel.myliveSubject.list,
+            icon: '/favicon/das/laptop.svg',
+          },
+        ];
   const baseOptions = [
     {
       label: t('Pages.ContactUs.title'),
       linkTo: '/contact-us',
       icon: '/favicon/das/call.svg',
     },
+    // {
+    //   label: t('Pages.Support.title'),
+    //   linkTo: paths.controlPanel.technicalSupport.list,
+    //   icon: '/favicon/das/call.svg',
+    // },
     {
-      label: t('Pages.Support.title'),
-      linkTo: paths.controlPanel.technicalSupport.list,
-      icon: '/favicon/das/call.svg',
+      label: t('Nav.AboutUs'),
+      linkTo: '/aboutUs',
+      icon: '/favicon/das/!.svg',
     },
     {
       label: t('Pages.terms.title'),
@@ -286,15 +299,18 @@ export default function AccountPopover() {
       icon: '/favicon/das/!.svg',
     },
     {
+      label: t('Nav.CancellationPolicy'),
+      linkTo: '/cancellationPolicy',
+      icon: '/favicon/das/!.svg',
+    },
+    {
       label: t('Nav.setting'),
       linkTo: '/settings',
       icon: '/favicon/das/setting.svg',
     },
   ];
 
-
-
-  const OPTIONS = [ ...conditionalOptions,...baseOptions];
+  const OPTIONS = [...conditionalOptions, ...baseOptions];
 
   if (!learningPreference) return null;
 
@@ -332,18 +348,16 @@ export default function AccountPopover() {
       </IconButton>
 
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 200, p: 0 }}>
-
-        <Button sx={{ p: 1,display:'flex' }} onClick={() => handleClickItem('/profile')} >
-            <AcountInfo />
-
+        <Button sx={{ p: 1, display: 'flex' }} onClick={() => handleClickItem('/profile')}>
+          <AcountInfo />
         </Button>
 
         <Divider />
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <Stack >
+        <Stack>
           {OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>
+            <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo as string)}>
               <span style={{ marginLeft: '5px' }}>
                 <img src={option.icon} alt="" />
               </span>

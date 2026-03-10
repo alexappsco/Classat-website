@@ -19,6 +19,8 @@ export const paths = {
   // Control Panel
   controlPanel: {
     main: '/',
+    mainCourse: '/courses',
+    mainCurricula: '/curricula',
     profile: {
       viewProfileEdit: '/profile'
     },
@@ -32,6 +34,10 @@ export const paths = {
      mylivecourses: {
       list: '/courses/myLive',
       single: (id: string) => `/courses/myLive/${id}`,
+    },
+     myliveSubject: {
+      list: '/curricula/myLive',
+      single: (id: string) => `/curricula/myLive/${id}`,
     },
     nextlessons:{
       list: '/nextlessons'

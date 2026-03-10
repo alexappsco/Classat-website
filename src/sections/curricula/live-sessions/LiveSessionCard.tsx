@@ -1,6 +1,13 @@
+
+
+import Link from 'next/link';
 import Image from 'src/components/image';
 import { useTheme } from '@mui/material/styles';
 import { text, shadow, primary, warning } from 'src/theme/palette';
+import { ILiveSubject } from 'src/types/liveSubject';
+import { useTranslations } from 'next-intl';
+
+// Define the props type for the main component
 import {
   Box,
   Card,
@@ -29,174 +36,11 @@ import {
   Chip,
   CardMedia,
 } from '@mui/material';
-import { ILiveSubject } from 'src/types/liveSubject';
 import { useSnackbar } from 'notistack';
 import { postData } from 'src/utils/crud-fetch-api';
 import { endpoints } from 'src/utils/endpoints';
 import { useEffect, useState } from 'react';
-import { invalidateTag } from 'src/actions/cache-invalidation';
-import { FetchTags } from 'src/actions/config-actions';
-import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import { Icon } from '@iconify/react';
-
-
-// export default function LiveSessionCard({
-//   image,
-//   isLive,
-//   category,
-//   title,
-//   instructor,
-//   time,
-//   attendees,
-// }: LiveSessionCardProps) {
-//   const theme = useTheme();
-//   const redColor = '#B30505';
-//   const padgBg = '#FFE5E5';
-//   const orangeColor = warning.main;
-//   const orangeBg = '#FFF6E4';
-//   return (
-//     <Card
-//       sx={{
-//         borderRadius: 2,
-//         boxShadow: shadow.main,
-//         height: 1,
-//         // Ensure card content stacks correctly
-//         display: 'flex',
-//         flexDirection: 'column',
-//         p: '20px 16px 16px',
-//         // width: 'fit-content',
-//       }}
-//     >
-//       {/* 1. Image and Live Tag Area */}
-//       <Box
-//         sx={{
-//           position: 'relative',
-//           pt: '56.25%', // 16:9 Aspect Ratio
-//           overflow: 'hidden',
-//           borderRadius: '8px',
-//         }}
-//       >
-//         {/* Session Image */}
-//         <Box
-//           component="img"
-//           src={image}
-//           alt={title}
-//           sx={{
-//             position: 'absolute',
-//             top: 0,
-//             width: 1,
-//             height: 1,
-//             objectFit: 'cover',
-//             borderRadius: '8px',
-//           }}
-//           minWidth={'287px'}
-//         />
-
-//         {/* Live Tag (Chip) - Positioned Absolutely */}
-//         {isLive && (
-//           <Chip
-//             label="مباشر"
-//             size="small"
-//             sx={{
-//               position: 'absolute',
-//               top: 10,
-//               left: 10,
-//               bgcolor: padgBg, // Red for 'Live'
-//               color: redColor,
-//               fontWeight: 700,
-//               fontSize: theme.typography.pxToRem(12),
-//             }}
-//           />
-//         )}
-//       </Box>
-
-//       {/* 2. Content Area */}
-//       <Stack spacing={1.5} sx={{ py: 2, flexGrow: 1 }}>
-//         {/* Category Tag */}
-//         <Typography
-//           variant="caption"
-//           sx={{
-//             backgroundColor: orangeBg,
-//             color: orangeColor, // Orange color for the tag
-//             fontWeight: 600,
-//             fontSize: 14,
-//             borderRadius: '30px',
-//             padding: '14px',
-//             width: 'fit-content',
-//           }}
-//         >
-//           {category}
-//         </Typography>
-
-//         {/* Session Title */}
-//         <Typography
-//           variant="subtitle1"
-//           sx={{ fontWeight: 600, color: text.primary, minHeight: 40 }}
-//         >
-//           {title}
-//         </Typography>
-
-//         {/* Instructor Name and Avatar (Simple text for now) */}
-//         <Typography
-//           variant="body2"
-//           sx={{ color: text.primary }}
-//           display={'flex'}
-//           alignItems={'center'}
-//           gap={'10px'}
-//         >
-//           <Image src="/assets/landing-page/live-sessions/instructors/instructor.png" />
-//           {instructor}
-//         </Typography>
-
-//         <Divider sx={{ borderStyle: 'dashed' }} />
-
-//         {/* Metadata (Time and Attendees) */}
-//         <Stack direction="row" justifyContent="space-between" alignItems="center">
-//           {/* Time/Start Status */}
-//           <Stack direction="row" alignItems="center" spacing={0.5}>
-//             {/* Using a placeholder icon for simplicity */}
-//             {/* <AccessTimeIcon sx={{ width: 16, height: 16, color: theme.palette.text.secondary }} /> */}
-//             <Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>
-//               {time}
-//             </Typography>
-//           </Stack>
-
-//           {/* Attendees Count */}
-//           <Stack direction="row" alignItems="center" spacing={0.5}>
-//             {/* Using a placeholder icon for simplicity */}
-//             {/* <PeopleIcon sx={{ width: 16, height: 16, color: theme.palette.text.secondary }} /> */}
-//             <Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>
-//               {attendees}
-//             </Typography>
-//           </Stack>
-//         </Stack>
-//       </Stack>
-
-//       {/* 3. Join Button */}
-//       <Button
-//         variant="contained"
-//         size="medium"
-//         sx={{
-//           backgroundColor: primary.main,
-//           color: 'white',
-//           width: '90%',
-//           m: 'auto',
-//           borderTopLeftRadius: theme.spacing(4),
-//           borderTopRightRadius: theme.spacing(4),
-//           borderBottomLeftRadius: theme.spacing(4),
-//           borderBottomRightRadius: theme.spacing(4),
-//         }}
-//       >
-//         انضم الآن
-//       </Button>
-//     </Card>
-//   );
-// }
-
-
-
-
 
 interface LiveSessionCardProps {
   lessonList: ILiveSubject[];
@@ -213,7 +57,6 @@ interface PaymentModalProps {
   lesson: ILiveSubject & { coursePrice?: number; courseTitle?: string; lessonId?: string; courseId?: string };
   paymentList: any[];
   teacherId: string;
-  onSuccessPurchase?: () => void;
 }
 interface LiveSessionCardPropsItem {
   liveCourse: ILiveSubject;
@@ -255,7 +98,7 @@ export default function LiveSessionCard({ lessonList, teacher_id, paymentList }:
       <Container>
         <Grid container spacing={3}>
           {lessonList.map((lesson) => (
-            <Grid item xs={12} sm={6} md={6} lg={3} key={lesson.id}>
+            <Grid item xs={12} sm={6} md={4} lg={4} key={lesson.id}>
               <LiveSessionCards
                 liveCourse={lesson}
                 // onAddToCart={onAddToCart}
@@ -272,18 +115,16 @@ export default function LiveSessionCard({ lessonList, teacher_id, paymentList }:
 }
 
 // Payment Modal Component
-function PaymentModal({ open, onClose, lesson, paymentList, teacherId, onSuccessPurchase }: PaymentModalProps) {
+function PaymentModal({ open, onClose, lesson, paymentList, teacherId }: PaymentModalProps) {
   const [selectedMethod, setSelectedMethod] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
   // Calculate VAT and totals
-  // const VAT_PERCENTAGE = 0.15; // 15%
+  const VAT_PERCENTAGE = 0.15; // 15%
   const subtotal = lesson.coursePrice || lesson.price || 0;
-  const vatAmount = lesson.price * (lesson?.taxRate || 0);
-  const platformProfit = lesson.price * (lesson?.platformProfitPercentage || 0);
-  // const total = subtotal + vatAmount;
-  const total = lesson.priceAfterTaxAndProfit;
+  const vatAmount = subtotal * VAT_PERCENTAGE;
+  const total = subtotal + vatAmount;
 
   // Set first payment method as default when modal opens
   useEffect(() => {
@@ -310,15 +151,8 @@ function PaymentModal({ open, onClose, lesson, paymentList, teacherId, onSuccess
 
       if (checkoutRes.success || checkoutRes.status === 204) {
         enqueueSnackbar('تم شراء الدرس بنجاح', { variant: 'success' });
-        // Invalidate server cache for live courses so future navigations are fresh
-        try {
-          invalidateTag(FetchTags.LiveSubject);
-        } catch (e) {
-          // fail silently; UI will still update locally
-        }
-        // Locally update UI without full page reload
-        onSuccessPurchase?.();
         onClose();
+        // You might want to redirect to success page or refresh the page
       } else {
         enqueueSnackbar(checkoutRes.error || 'فشلت عملية الدفع', { variant: 'error' });
       }
@@ -400,18 +234,14 @@ function PaymentModal({ open, onClose, lesson, paymentList, teacherId, onSuccess
             <Typography>{subtotal.toFixed(2)} درهم</Typography>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-            <Typography color="text.secondary">ضريبة القيمة المضافة ({lesson?.taxRate || 0}%)</Typography>
+            <Typography color="text.secondary">ضريبة القيمة المضافة (15%)</Typography>
             <Typography>{vatAmount.toFixed(2)} درهم</Typography>
           </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-              <Typography color="text.secondary">ربح المنصة ({lesson?.platformProfitPercentage || 0}%)</Typography>
-              <Typography>{platformProfit.toFixed(2)} درهم</Typography>
-            </Box>
           <Divider sx={{ my: 1.5 }} />
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Typography variant="h6" fontWeight="bold">الإجمالي</Typography>
             <Typography variant="h5" color="primary" fontWeight="bold">
-              {total ? total.toFixed(2) : '0.00'} درهم
+              {total.toFixed(2)} درهم
             </Typography>
           </Box>
         </Box>
@@ -443,40 +273,26 @@ function PaymentModal({ open, onClose, lesson, paymentList, teacherId, onSuccess
   );
 }
 
- function LiveSessionCards({ liveCourse, onAddToCart, paymentList, teacherId }: LiveSessionCardPropsItem) {
-    const t = useTranslations();
-  
+
+
+
+function LiveSessionCards({ liveCourse, onAddToCart, paymentList, teacherId }: LiveSessionCardPropsItem) {
+  const t = useTranslations();
+
   const theme = useTheme();
   const redColor = '#B30505';
   const padgBg = '#FFE5E5';
   const orangeColor = warning.main;
   const orangeBg = '#FFF6E4';
-  const [subject, setSubject] = useState(liveCourse);
-   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const parseStart = () => {
+    if (!liveCourse.date || !liveCourse.time) return null;
 
-  const handleAddToCart = async () => {
-    setIsSubmitting(true);
-    await onAddToCart(subject.id || subject.id);
-    setIsSubmitting(false);
-  };
-
-  const handleBuyNow = () => {
-    setIsPaymentModalOpen(true);
-  };
-
-  const handlePurchaseSuccess = () => {
-    setSubject((prev) => ({ ...prev, isEnrolled: true }));
-  };
-
-    const parseStart = () => {
-    if (!subject.date || !subject.time) return null;
-
-    const dateOnly = subject.date.split('T')[0];
+    const dateOnly = liveCourse.date.split('T')[0];
 
     return new Date(`${dateOnly}T${liveCourse.time}Z`);
   };
   const startsAt = parseStart();
+
   const localDate = startsAt?.toLocaleDateString(undefined, {
     year: 'numeric',
     month: '2-digit',
@@ -488,105 +304,97 @@ function PaymentModal({ open, onClose, lesson, paymentList, teacherId, onSuccess
     minute: '2-digit',
     hour12: true, // لو عايز AM/PM
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+
+  const handleAddToCart = async () => {
+    setIsSubmitting(true);
+    await onAddToCart(liveCourse.id || liveCourse.id);
+    setIsSubmitting(false);
+  };
+
+  const handleBuyNow = () => {
+    setIsPaymentModalOpen(true);
+  };
+
   return (
     <>
-    <Card
-      sx={{
-        borderRadius: 2,
-        boxShadow: shadow.main,
-        height: 1,
-        // Ensure card content stacks correctly
-        display: 'flex',
-        flexDirection: 'column',
-        p: '20px 16px 16px',
-        // width: 'fit-content',
-      }}
-    >
-      {/* 1. Image and Live Tag Area */}
-      <Box
+
+      <Card
         sx={{
-          position: 'relative',
-          pt: '56.25%', // 16:9 Aspect Ratio
-          overflow: 'hidden',
-          borderRadius: '8px',
+          borderRadius: 2,
+          boxShadow: shadow.main,
+          height: '550px',
+          // Ensure card content stacks correctly
+          display: 'flex',
+          flexDirection: 'column',
+          p: '20px 16px 16px',
+
+          // width: 'fit-content',
         }}
       >
-        {/* Session Image */}
+        {/* 1. Image and Live Tag Area */}
         <Box
-          component="img"
-          src={liveCourse.coverImagePath}
-          alt={liveCourse.title}
           sx={{
-            position: 'absolute',
-            top: 0,
-            width: 1,
-            height: 1,
-            objectFit: 'cover',
+            position: 'relative',
+            // pt: '56.25%', // 16:9 Aspect Ratio
+            overflow: 'hidden',
             borderRadius: '8px',
           }}
-          minWidth={'287px'}
-        />
-
-        {/* Live Tag (Chip) - Positioned Absolutely */}
-        {liveCourse.status && (
-          <Chip
-            label="مباشر"
-            size="small"
-            sx={{
-              position: 'absolute',
-              top: 10,
-              left: 10,
-              bgcolor: padgBg, // Red for 'Live'
-              color: redColor,
-              fontWeight: 700,
-              fontSize: theme.typography.pxToRem(12),
-            }}
+        >
+          <CardMedia
+            component="img"
+            image={liveCourse.coverImagePath}
+            alt={liveCourse.title}
+            sx={{ height: 270, width: '100%', objectFit: 'fill' }}
           />
-        )}
-      </Box>
 
-      {/* 2. Content Area */}
-      <Stack spacing={1.5} sx={{ py: 2, flexGrow: 1 }}>
-        {/* Category Tag */}
-        <Typography
-          variant="caption"
-          sx={{
-            backgroundColor: orangeBg,
-            color: orangeColor, // Orange color for the tag
-            fontWeight: 600,
-            fontSize: 14,
-            borderRadius: '30px',
-            padding: '14px',
-            width: 'fit-content',
-          }}
-        >
-          <img src={liveCourse.educationSubjectImagePath} alt={liveCourse.educationSubject} width={20} height={20} /> {liveCourse.educationSubject}
-        </Typography>
+          {/* Live Tag (Chip) - Positioned Absolutely */}
+          {liveCourse.status && (
+            <Chip
+              label="مباشر"
+              size="small"
+              sx={{
+                position: 'absolute',
+                top: 10,
+                left: 10,
+                bgcolor: padgBg, // Red for 'Live'
+                color: redColor,
+                fontWeight: 700,
+                fontSize: theme.typography.pxToRem(12),
+              }}
+            />
+          )}
+        </Box>
 
-        {/* Session Title */}
-        <Typography
-          variant="subtitle1"
-          sx={{ fontWeight: 600, color: text.primary, minHeight: 40 }}
-        >
-          {liveCourse.title}
-        </Typography>
+        {/* 2. Content Area */}
+        <Stack spacing={1.5} sx={{ py: 2, flexGrow: 1 }}>
+          {/* Category Tag */}
+          <Typography
+            variant="caption"
+            sx={{
+              backgroundColor: orangeBg,
+              color: orangeColor, // Orange color for the tag
+              fontWeight: 600,
+              fontSize: 14,
+              borderRadius: '30px',
+              padding: '14px',
+              width: 'fit-content',
+            }}
+          >
+            <span style={{ margin: '0 3px' }}><img src={liveCourse.educationSubjectImagePath} alt={liveCourse.educationSubject} width={20} height={20} /></span>{liveCourse.educationSubject}
+          </Typography>
 
-        {/* Instructor Name and Avatar (Simple text for now) */}
-        <Typography
-          variant="body2"
-          sx={{ color: text.primary }}
-          display={'flex'}
-          alignItems={'center'}
-          gap={'10px'}
-        >
-          <Image src="/assets/landing-page/live-sessions/instructors/instructor.png" />
-          {liveCourse.educationSubject}
-        </Typography>
+          {/* Session Title */}
+          <Typography
+            variant="subtitle1"
+            sx={{ fontWeight: 600, color: text.primary, minHeight: 40 }}
+          >
+            {liveCourse.title}
+          </Typography>
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
-
-        {/* Metadata (Time and Attendees) */}
-     <Stack direction="row" justifyContent="space-between" alignItems="center">
+          {/* Instructor Name and Avatar (Simple text for now) */}
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Stack direction="row" alignItems="center" spacing={0.5}>
 
               <Typography
@@ -716,7 +524,7 @@ function PaymentModal({ open, onClose, lesson, paymentList, teacherId, onSuccess
                   },
                 }}
               >
-                {isSubmitting ? 'جاري الإضافة...' : <Typography variant="body2" sx={{ display: { md: 'none', lg: 'block', sm: 'none', xs: 'block' } }}>أضف إلى السلة</Typography>}
+                {isSubmitting ? 'جاري الإضافة...' : 'أضف إلى السلة'}
               </Button>
             </Stack>
 
@@ -729,7 +537,6 @@ function PaymentModal({ open, onClose, lesson, paymentList, teacherId, onSuccess
         lesson={liveCourse}
         paymentList={paymentList}
         teacherId={teacherId}
-        onSuccessPurchase={handlePurchaseSuccess}
       />
     </>
   );

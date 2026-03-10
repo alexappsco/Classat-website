@@ -1,11 +1,83 @@
 'use client';
 
-import { Container, Box, Grid, Typography, TextField, Button, Stack } from '@mui/material';
+import {
+  Container,
+  Box,
+  Grid,
+  Typography,
+  TextField,
+  Button,
+  Stack,
+  Snackbar,
+} from '@mui/material';
+import { useEffect, useState } from 'react';
 import { ICONS } from 'src/config-icons';
+import { getData, postData } from 'src/utils/crud-fetch-api';
+import { endpoints } from 'src/utils/endpoints';
+import { useSnackbar } from 'notistack';
+import { Send } from '@mui/icons-material';
 
 export default function ContactUsSection() {
+  const { enqueueSnackbar } = useSnackbar();
+  const [contactUs, setContactUs] = useState<any>(null);
+
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  useEffect(() => {
+    const fetchContactUs = async () => {
+      try {
+        const data = await getData(endpoints.ContactRequest.get);
+        setContactUs(data);
+      } catch (error) {
+        console.error('Error fetching contact us', error);
+      }
+    };
+
+    fetchContactUs();
+  }, []);
+  const handleSubmit = async () => {
+    try {
+      // Build query string since API expects parameters in query
+      const query = new URLSearchParams({
+        FullName: formData.fullName,
+        Email: formData.email,
+        Subject: formData.subject,
+        Message: formData.message,
+      });
+
+      const res = await postData(
+        `${endpoints.ContactRequest.post}?${query.toString()}`,
+        undefined // no body, parameters are in query
+      );
+
+      if (res.success) {
+        enqueueSnackbar('تم إرسال الرسالة بنجاح');
+        setFormData({
+          fullName: '',
+          email: '',
+          subject: '',
+          message: '',
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <Container sx={{ py: { xs: 6, md: 6 },mt:10 }}>
+    <Container sx={{ py: { xs: 6, md: 6 }, mt: 10 }}>
       {/* Outer white card to match big rounded box in the design */}
       <Box
         sx={{
@@ -33,12 +105,7 @@ export default function ContactUsSection() {
           </Typography>
         </Box>
 
-        <Grid
-          container
-          spacing={3}
-          justifyContent="center"
-          alignItems="flex-start"
-        >
+        <Grid container spacing={3} justifyContent="center" alignItems="flex-start">
           {/* Top info cards row (phone & email) */}
           <Grid item xs={12} md={6}>
             <Box
@@ -46,7 +113,7 @@ export default function ContactUsSection() {
                 bgcolor: '#E5F6FD',
                 borderRadius: 3,
                 p: 3,
-                height: '100%',
+                height: '100px',
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -68,9 +135,11 @@ export default function ContactUsSection() {
               </Box>
               <Box>
                 <Typography fontWeight={700}>رقم الهاتف</Typography>
-                <Typography color="text.secondary" fontSize={14}>
-                  +971567328923
-                </Typography>
+                {contactUs?.data.phones?.map((phone: string, index: number) => (
+                  <Typography key={index} color="text.secondary" fontSize={14}>
+                    {phone}
+                  </Typography>
+                ))}
               </Box>
             </Box>
           </Grid>
@@ -81,7 +150,7 @@ export default function ContactUsSection() {
                 bgcolor: '#E5F6FD',
                 borderRadius: 3,
                 p: 3,
-                height: '100%',
+                height: '100px',
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -103,8 +172,9 @@ export default function ContactUsSection() {
               </Box>
               <Box>
                 <Typography fontWeight={700}>البريد الإلكتروني</Typography>
-                <Typography color="text.secondary" fontSize={14} sx={{ wordBreak: 'break-all' }}>
-                  info@classat.com
+
+                <Typography color="text.secondary" fontSize={14}>
+                  {contactUs?.data.email}
                 </Typography>
               </Box>
             </Box>
@@ -138,6 +208,9 @@ export default function ContactUsSection() {
                   <TextField
                     fullWidth
                     placeholder="الاسم الكامل"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
                     size="medium"
                     InputProps={{ sx: { textAlign: 'right' } }}
                   />
@@ -150,8 +223,9 @@ export default function ContactUsSection() {
                   <TextField
                     fullWidth
                     placeholder="البريد الإلكتروني"
-                    size="medium"
-                    InputProps={{ sx: { textAlign: 'right' } }}
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                   />
                 </Grid>
 
@@ -162,8 +236,9 @@ export default function ContactUsSection() {
                   <TextField
                     fullWidth
                     placeholder="الموضوع"
-                    size="medium"
-                    InputProps={{ sx: { textAlign: 'right' } }}
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
                   />
                 </Grid>
 
@@ -174,10 +249,11 @@ export default function ContactUsSection() {
                   <TextField
                     fullWidth
                     placeholder="الرسالة"
-                    size="medium"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
                     multiline
                     minRows={4}
-                    InputProps={{ sx: { textAlign: 'right' } }}
                   />
                 </Grid>
               </Grid>
@@ -188,18 +264,25 @@ export default function ContactUsSection() {
           <Grid item xs={12}>
             <Button
               variant="contained"
+              onClick={handleSubmit}
               fullWidth
+              endIcon={<Send sx={{ transform: 'rotate(180deg)', mr: 1 }} />} // ليتناسب مع اتجاه العربي
               sx={{
-                mt: { xs: 1, md: 2 },
+                mt: 2,
                 bgcolor: '#3CA7D5',
-                '&:hover': { bgcolor: '#3798C2' },
-                borderRadius: 2.5,
-                py: 1.4,
-                fontWeight: 600,
-                fontSize: 15,
+                '&:hover': {
+                  bgcolor: '#3798C2',
+                  boxShadow: '0px 8px 15px rgba(60, 167, 213, 0.3)',
+                },
+                borderRadius: 3,
+                py: 1.8,
+                fontWeight: 700,
+                fontSize: 16,
+                textTransform: 'none',
+                transition: 'all 0.3s ease',
               }}
             >
-              إرسال
+              إرسال الرسالة
             </Button>
           </Grid>
         </Grid>

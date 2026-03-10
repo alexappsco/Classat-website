@@ -13,11 +13,8 @@ import { LeftIcon } from 'src/components/carousel/arrow-icons';
 import Hero from './Hero';
 import CategoriesClasse from './categories';
 import NextLessonsPreview from './nextLessonsPreview';
-import LiveSessionsSection from './live-sessions/LiveSessionSection';
 import InstructorsSection from './sections/top-instructor/TopInstructorsSection';
-import RecoarLessonsSection, {
-  StudentLesson,
-} from './recoardlessons/RecoarLessonsSection';
+import RecoarLessonsSection, { StudentLesson } from './recoardlessons/RecoarLessonsSection';
 import LiveSessionCard from './live-sessions/LiveSessionCard';
 import { ILiveSubject } from 'src/types/liveSubject';
 import EducationCourseCard from './education-course-card/education-course-card';
@@ -95,8 +92,6 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-
-
   };
   React.useEffect(() => {
     refreshData();
@@ -137,11 +132,7 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
               الدروس القادمة
             </Typography>
 
-            <Button
-              color="info"
-              sx={{ lineHeight: 1 }}
-              onClick={() => router.push('/nextlessons')}
-            >
+            <Button color="info" sx={{ lineHeight: 1 }} onClick={() => router.push('/nextlessons')}>
               الكل
               <LeftIcon />
             </Button>
@@ -151,70 +142,100 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
         </Box>
 
         {/* <LiveSessionsSection /> */}
-
-          <Container>
-        <Grid container spacing={4} justifyContent={'center'} p={4}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-              <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                {t('Nav.Courses')}
-              </Typography>
-              <Button
-                color="info"
-                sx={{ lineHeight: 1 }}
-                onClick={() => router.push('/curricula/all-courses')}
-              >
-                {t('Label.all')}
-                <LeftIcon />
-              </Button>
-            </Box>
-          {courses && courses.length > 0 ? (
-            // Use a container here to hold the items
-            <Grid container spacing={2}>
-              {courses.slice(0, 4).map((course: any) => (
-                <Grid
-                item
-                key={course.id || course.teacherId}
-                xs={12}    // Stacked on mobile
-                sm={6}     // 2 per row on small tablets
-                  md={4}     // 3 per row on medium screens
-                  lg={3}     // 4 per row on desktop (matches your goal)
-                >
-                  <EducationCourseCard course={course} />
-                </Grid>
-              ))}
-            </Grid>
-          ) : (
-            <Grid item xs={12}>
-              <Box sx={{ p: 3, textAlign: 'center' }}>
-                <Typography variant="h6" color="text.secondary">
-                  لا توجد جلسات مباشرة متاحة
-                </Typography>
-              </Box>
-            </Grid>
-          )}
-          </Grid>
-          </Container>
-          {/* ===== Live Sessions ===== */}
-          {/* <LiveSessionsSection /> */}
-          <Grid container spacing={4} justifyContent={'center'} p={4}>
+        <Box
+          justifyContent={'center'}
+          sx={{
+            py: { xs: 4, md: 6 },
+            px: { xs: 4, md: 6 },
+            mx: { md: '0', xs: '0', lg: '2%', xl: '8%' },
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
+              mb: 4,
+            }}
+          >
             <Container>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                  {t('Label.live_broadcast')}
-                </Typography>
-
-                <Button
-                  color="info"
-                  sx={{ lineHeight: 1 }}
-                  onClick={() => router.push('/curricula/live')}
+              <Grid container spacing={4} justifyContent={'center'} p={4}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                  }}
                 >
-                  {t('Label.all')}
-
-                  <LeftIcon />
-                </Button>
-              </Box>
+                  <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                    {t('Nav.Courses')}
+                  </Typography>
+                  <Button
+                    color="info"
+                    sx={{ lineHeight: 1 }}
+                    onClick={() => router.push('/curricula/live')}
+                  >
+                    {t('Label.all')}
+                    <LeftIcon />
+                  </Button>
+                </Box>
+                {courses && courses.length > 0 ? (
+                  // Use a container here to hold the items
+                  <Grid container spacing={2}>
+                    {courses.slice(0, 4).map((course: any) => (
+                      <Grid
+                        item
+                        key={course.id || course.teacherId}
+                        xs={12} // Stacked on mobile
+                        sm={6} // 2 per row on small tablets
+                        md={4} // 3 per row on medium screens
+                        lg={3} // 4 per row on desktop (matches your goal)
+                      >
+                        <EducationCourseCard course={course} />
+                      </Grid>
+                    ))}
+                  </Grid>
+                ) : (
+                  <Grid item xs={12}>
+                    <Box sx={{ p: 3, textAlign: 'center' }}>
+                      <Typography variant="h6" color="text.secondary">
+                        لا توجد جلسات مباشرة متاحة
+                      </Typography>
+                    </Box>
+                  </Grid>
+                )}
+              </Grid>
             </Container>
-            {liveCourses && liveCourses.length > 0 ? (
+            {/* ===== Live Sessions ===== */}
+            {/* <LiveSessionsSection /> */}
+            <Grid container spacing={4} justifyContent={'center'} p={4}>
+              <Container>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                  }}
+                >
+                  <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                    {t('Label.live_broadcast')}
+                  </Typography>
+
+                  <Button
+                    color="info"
+                    sx={{ lineHeight: 1 }}
+                    onClick={() => router.push('/curricula/live')}
+                  >
+                    {t('Label.all')}
+
+                    <LeftIcon />
+                  </Button>
+                </Box>
+              </Container>
+              {/* {liveCourses && liveCourses.length > 0 ? (
               <Grid
                 item
                 xs={12} // Full width on mobile
@@ -227,20 +248,35 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
                   teacher_id={liveCourses[0]?.teacherId || ''}
                   paymentList={paymentList}
                   key={liveCourses[0]?.id}
-
-                />
-              </Grid>
-            ) : (
-              <Grid item xs={12}>
-                <Box sx={{ p: 3, textAlign: 'center' }}>
-                  <Typography variant="h6" color="text.secondary">
-                    لا توجد جلسات مباشرة متاحة
-                  </Typography>
-                </Box>
-              </Grid>
-            )}
-          </Grid>
-
+                <LeftIcon />
+              </Button>
+            </Box> */}
+              {liveCourses && liveCourses.length > 0 ? (
+                <Grid
+                  item
+                  xs={12} // Full width on mobile
+                  sm={12} // Full width on small screens
+                  md={12}
+                  lg={12} // Four cards per row on desktop
+                >
+                  <LiveSessionCard
+                    lessonList={liveCourses}
+                    teacher_id={liveCourses[0]?.teacherId || ''}
+                    paymentList={paymentList}
+                    key={liveCourses[0]?.id}
+                  />
+                </Grid>
+              ) : (
+                <Grid item xs={12}>
+                  <Box sx={{ p: 3, textAlign: 'center' }}>
+                    <Typography variant="h6" color="text.secondary">
+                      لا توجد جلسات مباشرة متاحة
+                    </Typography>
+                  </Box>
+                </Grid>
+              )}
+            </Grid>
+          </Box>
 
           {/*
 
@@ -288,12 +324,10 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
             {loadingLessons ? (
               <Typography>جاري تحميل الدروس...</Typography>
             ) : (
-              <RecoarLessonsSection
-                lessons={recordedLessons}
-                limit={4}
-              />
+              <RecoarLessonsSection lessons={recordedLessons} limit={4} />
             )}
           </Box>
+        </Box>
       </Box>
     </>
   );

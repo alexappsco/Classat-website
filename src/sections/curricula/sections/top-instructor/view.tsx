@@ -6,7 +6,7 @@ import { Box } from '@mui/material';
 import Hero from '../Hero';
 import Categories from '../categories';
 import FiltersBar from '../FiltersBar';
-import LiveSessionsSection from '../live-sessions/LiveSessionSection';
+import LiveSessionsSection from '../../live-sessions/LiveSessionSection';
 import InstructorsSection from './TopInstructorsSection';
 import TeachersFilters from './filterTeacher';
 

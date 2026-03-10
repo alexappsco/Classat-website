@@ -73,12 +73,21 @@
     },
     "Terms": {
       "title": "الشروط والأحكام | ثمار كلاسات"
+    },
+    "AboutUs": {
+      "title": "من نحن | ثمار كلاسات"
+    },
+    "CancellationPolicySection": {
+      "title": "سياسة الإلغاء | ثمار كلاسات"
     }
   },
   "Nav": {
     "upcoming_sessions": "الجلسات القادمة",
     "live_broadcasts": "الدروس المباشرة",
     "main": "الرئيسية",
+    "mycourse": "دوراتي",
+    "mylive": "بثوثي",
+    "nextlessons": "دروسي القادمة",
     "curricula": "المناهج الدراسية",
     "Curricula": "المناهج الدراسية",
     "courses": "الدورات التدريبية",
@@ -112,7 +121,9 @@
     "Work-area": " مناطق العمل",
     "delivery-fees": "رسوم التوصيل",
     "setting": "الاعدادات",
-    "logout": "تسجيل الخروج"
+    "logout": "تسجيل الخروج",
+    "CancellationPolicy": "سياسة الالغاء",
+    "AboutUs": "من نحن"
   },
   "Global": {
     "title": "ثمار كلاسات",
@@ -211,7 +222,11 @@
       "new_password": "كلمة المرور الجديدة",
       "confirm_new_password": "تاكيد كلمة المرور الجديدة",
       "basic_data": "البيانات الأساسية",
-      "change_password": "تغيير كلمة المرور"
+      "change_password": "تغيير كلمة المرور",
+      "Cancelled": "ملغى",
+      "Completed": "مكتمل",
+      "InProgress": "قيد التنفيذ",
+      "Scheduled": "محجوز"
     },
     "Helper": {
       "drop_or_select": "قم بإسقاط الملفات هنا أو انقر <browse>تصفح</browse> من جهازك",
@@ -888,7 +903,8 @@
     "resending": "جاري الإرسال",
     "second": "ثانية",
     "live_broadcast": "البث المباشر",
-    "all": "الكل"
+    "all": "الكل",
+    "My_Live_Sessions": "بثوثي المباشرة"
   },
   "Button": {
     "creat_account": "إنشاء حساب",
