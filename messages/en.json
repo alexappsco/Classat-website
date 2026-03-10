@@ -8,10 +8,10 @@
     "editProfile": {
       "title": "Edit Profile | Classat"
     },
-    "Cart":{
+    "Cart": {
       "title": "Cart |  Classat"
     },
-    "Payment":{
+    "Payment": {
       "title": "Payment |  Classat"
     },
     "SubCategories": {
@@ -76,10 +76,19 @@
     },
     "mycourses": {
       "title": " UpcomingSessions  |  Classat"
+    },
+    "AboutUs": {
+      "title": "من نحن | ثمار كلاسات"
+    },
+    "CancellationPolicySection": {
+      "title": "Cancellation Policy | Classat"
     }
   },
   "Nav": {
     "main": "Main",
+    "mycourse": "My Courses",
+    "mylive": "My Live Sessions",
+    "nextlessons": "Next Lessons",
     "logout": "Logout",
     "upcoming_sessions": "Upcoming sessions",
     "live_broadcasts": "Live Broadcasts",
@@ -92,7 +101,7 @@
     "products": "Products",
     "orders": "Orders",
     "units": "Units",
-    "mycourses":"my Courses",
+    "mycourses": "my Courses",
     "return-orders": "Returned Orders",
     "Marketing": {
       "title": "Offers and Marketings",
@@ -114,7 +123,9 @@
     "contact-us": "Contact Us",
     "Work-area": "Works Area",
     "delivery-fees": "Delivery Fees",
-    "setting": "setting"
+    "setting": "setting",
+    "CancellationPolicy": "Cancellation Policy",
+    "AboutUs": "About Us"
   },
   "Global": {
     "title": "Classat",
@@ -214,7 +225,11 @@
       "new_password": "New Password",
       "confirm_new_password": "Confirm New Password",
       "basic_data": "Basic Data",
-      "change_password": "Change Password"
+      "change_password": "Change Password",
+      "Cancelled": "Cancelled",
+      "Completed": "Completed",
+      "InProgress": "In Progress",
+      "Scheduled": "Scheduled"
     },
     "Helper": {
       "drop_or_select": "Drop files here or click <browse>browse</browse> through your machine",
@@ -815,8 +830,7 @@
       "PermissionActivate": "Settings permission must be activated"
     },
     "terms": {
-      "title":"Terms & Conditions"
-
+      "title": "Terms & Conditions"
     },
     "DeliveryFees": {
       "add_delivery_fee": "Add Delivery Fee",
@@ -887,8 +901,8 @@
     "resending": "Sending",
     "second": "Second",
     "live_broadcast": "Live Broadcast",
-    "all": "All"
-
+    "all": "All",
+    "My_Live_Sessions": "My Live Sessions"
   },
   "Button": {
     "creat_account": "Create Account",

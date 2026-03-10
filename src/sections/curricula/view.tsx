@@ -13,7 +13,6 @@ import { LeftIcon } from 'src/components/carousel/arrow-icons';
 import Hero from './Hero';
 import CategoriesClasse from './categories';
 import NextLessonsPreview from './nextLessonsPreview';
-import LiveSessionsSection from './live-sessions/LiveSessionSection';
 import InstructorsSection from './sections/top-instructor/TopInstructorsSection';
 import RecoarLessonsSection, {
   StudentLesson,
@@ -148,9 +147,13 @@ export default function Courses({ educationGrade, subjects }: CoursesProps) {
 
         {/* ===== Live Sessions ===== */}
         {/* <LiveSessionsSection /> */}
-        <Grid container spacing={4} justifyContent={'center'} p={4}>
-          <Container>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+        <Box  justifyContent={'center'} sx={{ 
+                      py: { xs: 4, md: 6 },
+            px: { xs: 4, md: 6 },
+                        mx: { md: '0', xs: '0', lg: '2%', xl: '8%' },
+
+         }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' ,mb: 4 }}>
               <Typography variant="h4" sx={{ fontWeight: 700 }}>
                 {t('Label.live_broadcast')}
               </Typography>
@@ -165,7 +168,6 @@ export default function Courses({ educationGrade, subjects }: CoursesProps) {
                 <LeftIcon />
               </Button>
             </Box>
-          </Container>
           {liveCourses && liveCourses.length > 0 ? (
             <Grid
               item
@@ -191,7 +193,7 @@ export default function Courses({ educationGrade, subjects }: CoursesProps) {
               </Box>
             </Grid>
           )}
-        </Grid>
+        </Box>
 
 
         {/*
