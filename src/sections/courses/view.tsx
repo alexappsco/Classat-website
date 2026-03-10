@@ -48,7 +48,7 @@ type Props = {
 
 };
 // export default function Courses({ categories, liveCourse }: Props) {
-  
+
 // type Props = {
 
 
@@ -142,7 +142,7 @@ const [liveCourses, setLiveCourses] = React.useState<ILiveCourse[]>([]);
                 sx={{ lineHeight: 1 }}
                 onClick={() => router.push('/courses/live')}
               >
-                {t('Label.all')}  
+                {t('Label.all')}
 
                 <LeftIcon />
               </Button>

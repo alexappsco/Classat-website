@@ -82,16 +82,16 @@
 // }
 
 'use server';
-import Courses from 'src/sections/curricula/view';
-import { getData } from 'src/utils/crud-fetch-api';
-import { endpoints } from 'src/utils/endpoints';
-
 import type {
+  SubjectItem,
   StudentProfile,
   EducationGrade,
-  SubjectItem,
   SubjectsResponse,
 } from 'src/types/student';
+
+import { endpoints } from 'src/utils/endpoints';
+import Courses from 'src/sections/curricula/view';
+import { getData } from 'src/utils/crud-fetch-api';
 export default async function Page() {
   const studentResponse = await getData<StudentProfile>(
     endpoints.student.get
@@ -114,11 +114,16 @@ export default async function Page() {
       subjectsResponse = response.data;
     }
   }
+
+  const coursesResponse = await getData<any>(endpoints.EducationCourses.get);
+  const courses = coursesResponse?.data || [] as unknown as any[];
+  // xxyyzz
   const subjects: SubjectItem[] = subjectsResponse?.items ?? [];
   return (
     <Courses
       educationGrade={educationGrade}
       subjects={subjects}
+      courses={courses.items || []}
     />
   );
 }
