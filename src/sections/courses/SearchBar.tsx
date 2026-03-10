@@ -941,7 +941,7 @@ export default function CoursesFilter({ categories = [] }: CoursesFilterProps) {
     Number(searchParams.get('RatingTo')) || 5,
   ]);
 
-  const [debouncedSearch] = useDebounce(search, 500);
+  const [debouncedSearch] = useDebounce(search, 2000);
 
   // Update URL with new params
   const updateUrl = (updates: Record<string, string | null>) => {

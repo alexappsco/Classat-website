@@ -163,7 +163,7 @@ export default function InstructorProfileUI({ packagesData, studentAppointments,
 
           />
           <Tab
-            label="احجز جلسة خاصة"
+            label="احجز جلسة خاصة "
             value="session"
             sx={{ width: { xs: '65%', md: '17%' } }}
             icon={<img src="/favicon/Mask group.svg" alt="" />}
@@ -176,7 +176,7 @@ export default function InstructorProfileUI({ packagesData, studentAppointments,
           {tab === 'about' && <AboutSection />}
           {tab === 'courses' && <EducationalLessons lessonList={lessonList} teacher_id={id} paymentList={paymentList} />}
           {tab === 'packages' && <PackagesSection packages={packagesData} teacher_id={id} paymentList={paymentList} />}
-          {tab === 'live' && <LiveSectionDetails title="البث المباشر" />}
+          {/* {tab === 'live' && <LiveSectionDetails title="البث المباشر" />} */}
           {tab === 'session' && <LiveSectionTimeDetails title="جلسة خاصة" teacherId={id} educationApproachTypeStageGradeSubjectId={subjectId} studentAppointments={studentAppointments} paymentList={paymentList} />}
         </Box>
       </Card>
