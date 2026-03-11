@@ -44,7 +44,14 @@ export const paths = {
     },
     all_courses:{
       list: (categoryId: string) => `/courses/all/${categoryId}`,
-    }
+    },
+    Curricula: {
+      live: '/curricula/live',
+      nextlisson: '/curricula/nextlessons',
+    },
+    liveCourses: {
+      list: '/courses/live',
+    },
 
 
   },

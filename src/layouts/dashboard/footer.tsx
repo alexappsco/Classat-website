@@ -31,9 +31,11 @@ export default function Footer() {
     { title: 'المناهج الدراسية', href: '#' },
     { title: 'البث المباشر', href: '#' },
     { title: 'حجز جلسة فردية', href: '#' },
-    { title: 'سياسة الخصوصية', href: '#' },
-    { title: 'الشروط والأحكام', href: '#' },
-    { title: 'الدعم الفني', href: '#' },
+    { title: 'سياسة الخصوصية', href: '/policy' },
+    { title: 'الشروط والأحكام', href: '/terms' },
+    { title: 'من نحن', href: '/aboutUs' },
+
+    { title: 'الدعم الفني', href: '/contact-us' },
   ];
 
   // Helper component for column headers to apply consistent styling
@@ -221,7 +223,7 @@ export default function Footer() {
             sm={4}
             md={3}
             lg={4}
-            // sx={{ textAlign: { xs: 'right', sm: 'left', md: 'right' } }}
+          // sx={{ textAlign: { xs: 'right', sm: 'left', md: 'right' } }}
           >
             <FooterHeader title="حمّل تطبيقنا الآن وتعلّم في أي مكان!" />
             <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 2 }}>
