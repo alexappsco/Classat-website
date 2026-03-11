@@ -36,7 +36,6 @@ type CoursesProps = {
 };
 
 export default function Courses({ educationGrade, subjects, courses }: CoursesProps) {
-  console.log('Courses data:', courses);
 
   const t = useTranslations();
   const settings = useSettingsContext();
