@@ -211,5 +211,10 @@ EducationCourses:{
   */
   markWatched: (sessionId: string) => `/students/education-lessons/sessions/${sessionId}/mark-watched`,
 },
+packageSubscription: {
+  get: "/students/package-subscriptions",
+  getmyCourses: "/students/package-subscriptions/my-courses"
+},
+
 
 };
