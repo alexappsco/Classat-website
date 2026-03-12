@@ -298,8 +298,8 @@ export default function ProfileSection({ profile, countries }: Props) {
       alignItems: 'center',
       mt: 2,
       mb: 2,
-      px: 0, 
-      overflow: 'hidden', 
+      px: 0,
+      overflow: 'hidden',
     }}
   >
     <Stack direction="row" spacing={2}>
