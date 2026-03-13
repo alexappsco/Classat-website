@@ -155,13 +155,13 @@ export default function InstructorProfileUI({ packagesData, studentAppointments,
             sx={{ width: { xs: '50%', md: '17%' } }}
             icon={<img src="/favicon/Vector.svg" alt="" />}
           />
-          <Tab
+          {/* <Tab
             label="البث المباشر"
             value="live"
             sx={{ width: { xs: '50%', md: '17%' } }}
             icon={<img src="/favicon/live.svg" alt="" />}
 
-          />
+          /> */}
           <Tab
             label="احجز جلسة خاصة "
             value="session"

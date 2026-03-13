@@ -164,6 +164,7 @@
     "Label": {
       "name_ar": "الاسم بالعربية",
       "name_en": "الاسم بالإنجليزية",
+      "phone_Parent":"رقم ولي الأمر",
       "description_ar": "الوصف بالعربية",
       "description_en": "الوصف بالإنجليزية",
       "min_selection": "الحد الأدنى للاختيار",

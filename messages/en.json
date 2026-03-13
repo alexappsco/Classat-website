@@ -170,6 +170,7 @@
     "Label": {
       "name_ar": "Name in Arabic",
       "name_en": "Name in English",
+      "phone_Parent": "Parent Phone Number",
       "description_ar": "Description in Arabic",
       "description_en": "Description in English",
       "min_selection": "Min Selection",

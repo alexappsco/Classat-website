@@ -244,28 +244,29 @@
 // }
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import { enqueueSnackbar } from 'notistack';
+import { MuiTelInput } from 'mui-tel-input';
+import { endpoints } from 'src/utils/endpoints';
+import React, { useRef, useState } from 'react';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+// Utils & Endpoints
+import { getData, editData, postData } from 'src/utils/crud-fetch-api';
 import {
   Box,
   Stack,
-  Typography,
-  TextField,
   Button,
-  IconButton,
   Select,
-  MenuItem,
   Dialog,
+  MenuItem,
+  TextField,
+  Typography,
+  IconButton,
   DialogTitle,
   DialogContent,
   DialogActions,
   CircularProgress,
 } from '@mui/material';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import { enqueueSnackbar } from 'notistack';
 
-// Utils & Endpoints
-import { editData, postData, getData } from 'src/utils/crud-fetch-api';
-import { endpoints } from 'src/utils/endpoints';
 import SelectedMethod from '../selected-method/selectedMethod';
 
 const containerWidth = 480;
@@ -359,48 +360,80 @@ export default function ProfileSection({ profile: initialProfile, countries }: P
   };
 
   // 2. معالج زر "تعديل" الرئيسي
+  // const handleUpdateClick = async () => {
+  //   // أولوية التحقق: إذا تغير الإيميل أولاً
+  //   if (email !== originalEmail) {
+  //     try {
+  //       setIsLoading(true);
+  //       const res = await postData(endpoints.student.changeEmail, { newEmail: email });
+  //       if (res.success) {
+  //         setOtpType('email');
+  //         setOtpOpen(true);
+  //       } else {
+  //         enqueueSnackbar(res.error || 'فشل إرسال كود الإيميل', { variant: 'error' });
+  //       }
+  //     } catch (err) {
+  //       enqueueSnackbar('خطأ في الاتصال', { variant: 'error' });
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //     return;
+  //   }
+
+  //   // ثم التحقق من رقم الهاتف
+  //   if (phone !== originalPhone) {
+  //     try {
+  //       setIsLoading(true);
+  //       const res = await postData(endpoints.student.changePhone, { newPhoneNumber: phone });
+  //       if (res.success) {
+  //         setOtpType('phone');
+  //         setOtpOpen(true);
+  //       } else {
+  //         enqueueSnackbar(res.error || 'فشل إرسال كود الهاتف', { variant: 'error' });
+  //       }
+  //     } catch (err) {
+  //       enqueueSnackbar('خطأ في الاتصال', { variant: 'error' });
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //     return;
+  //   }
+
+  //   // إذا لم يتغير لا إيميل ولا هاتف، نحدث البيانات العادية فقط
+  //   await updateGeneralProfile();
+  // };
   const handleUpdateClick = async () => {
-    // أولوية التحقق: إذا تغير الإيميل أولاً
-    if (email !== originalEmail) {
-      try {
-        setIsLoading(true);
-        const res = await postData(endpoints.student.changeEmail, { newEmail: email });
-        if (res.success) {
-          setOtpType('email');
-          setOtpOpen(true);
-        } else {
-          enqueueSnackbar(res.error || 'فشل إرسال كود الإيميل', { variant: 'error' });
-        }
-      } catch (err) {
-        enqueueSnackbar('خطأ في الاتصال', { variant: 'error' });
-      } finally {
-        setIsLoading(false);
-      }
-      return;
-    }
+  // Clean the phone number one last time before sending
+  const cleanPhone = phone.replace(/\s+/g, '');
 
-    // ثم التحقق من رقم الهاتف
-    if (phone !== originalPhone) {
-      try {
-        setIsLoading(true);
-        const res = await postData(endpoints.student.changePhone, { newPhoneNumber: phone });
-        if (res.success) {
-          setOtpType('phone');
-          setOtpOpen(true);
-        } else {
-          enqueueSnackbar(res.error || 'فشل إرسال كود الهاتف', { variant: 'error' });
-        }
-      } catch (err) {
-        enqueueSnackbar('خطأ في الاتصال', { variant: 'error' });
-      } finally {
-        setIsLoading(false);
-      }
-      return;
-    }
+  if (email !== originalEmail) {
+    // ... email logic
+    return;
+  }
 
-    // إذا لم يتغير لا إيميل ولا هاتف، نحدث البيانات العادية فقط
-    await updateGeneralProfile();
-  };
+  if (cleanPhone !== originalPhone) {
+    try {
+      setIsLoading(true);
+      // Use cleanPhone here
+      const res = await postData(endpoints.student.changePhone, {
+        newPhoneNumber: cleanPhone
+      });
+      if (res.success) {
+        setOtpType('phone');
+        setOtpOpen(true);
+      } else {
+        enqueueSnackbar(res.error || 'فشل إرسال كود الهاتف', { variant: 'error' });
+      }
+    } catch (err) {
+      enqueueSnackbar('خطأ في الاتصال', { variant: 'error' });
+    } finally {
+      setIsLoading(false);
+    }
+    return;
+  }
+
+  await updateGeneralProfile();
+};
 
   // 3. تأكيد الـ OTP
   const handleConfirmOtp = async () => {
@@ -480,10 +513,34 @@ export default function ProfileSection({ profile: initialProfile, countries }: P
           </Box>
 
           {/* الهاتف */}
-          <Box>
+          {/* <Box>
             <Typography sx={{ fontSize: 14, mb: 1, color: "text.secondary" }}>رقم الهاتف</Typography>
             <TextField fullWidth value={phone} onChange={(e) => setPhone(e.target.value)} />
-          </Box>
+          </Box> */}
+          <Box>
+  <Typography sx={{ fontSize: 14, mb: 1, color: "text.secondary" }}>
+    رقم الهاتف
+  </Typography>
+  <MuiTelInput
+    fullWidth
+    value={phone}
+    onChange={(newValue) => {
+      // Remove spaces immediately to prevent the "space error" we saw earlier
+      const cleanValue = newValue.replace(/\s+/g, '');
+      setPhone(cleanValue);
+    }}
+    defaultCountry="AE" // Set default based on user's region
+    preferredCountries={['AE', 'SA', 'KW', 'QA', 'BH', 'OM', 'EG', 'JO', 'IQ']}
+    forceCallingCode
+    sx={{
+      direction: 'ltr',
+      '& .MuiInputBase-root': {
+        borderRadius: '8px',
+        bgcolor: '#FAFAFA'
+      }
+    }}
+  />
+</Box>
 
           {/* الدولة */}
           <Box>
