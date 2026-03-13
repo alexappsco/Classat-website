@@ -47,26 +47,7 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
 
   const [liveCourses, setLiveCourses] = React.useState<ILiveSubject[]>([]);
   const [paymentList, setPaymentList] = React.useState<any[]>([]);
-  // ===== Fetch Recorded Lessons =====
-  // useEffect(() => {
-  //   const fetchLessons = async () => {
-  //     try {
-  //       const response = await getData<{
-  //         items: StudentLesson[];
-  //       }>(endpoints.studentEducationLesson.get);
 
-  //         const lessons = (response.data as { items: StudentLesson[] })?.items ?? [];
-
-  //       setRecordedLessons(lessons);
-  //     } catch (error) {
-  //       console.error('Error fetching recorded lessons:', error);
-  //     } finally {
-  //       setLoadingLessons(false);
-  //     }
-  //   };
-
-  //   fetchLessons();
-  // }, []);
 
   const refreshData = async () => {
     try {

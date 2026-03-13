@@ -900,7 +900,11 @@
     "second": "ثانية",
     "live_broadcast": "البث المباشر",
     "all": "الكل",
-    "My_Live_Sessions": "بثوثي المباشرة"
+    "My_Live_Sessions": "بثوثي المباشرة",
+    "no_lessons_available": "لا توجد دروس متاحة",
+    "no_packages_available": "لا توجد باقات متاحة",
+    "no_live_available": "لا توجد يثوث متاحة",
+    "my_packages": "باقاتك"
   },
   "Button": {
     "creat_account": "إنشاء حساب",

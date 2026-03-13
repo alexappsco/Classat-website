@@ -902,7 +902,11 @@
     "second": "Second",
     "live_broadcast": "Live Broadcast",
     "all": "All",
-    "My_Live_Sessions": "My Live Sessions"
+    "My_Live_Sessions": "My Live Sessions",
+    "no_lessons_available": "No lessons available",
+    "no_packages_available": "No packages available",
+    "no_live_available": "No live broadcasts available",
+    "my_packages": "My Packages"
   },
   "Button": {
     "creat_account": "Create Account",

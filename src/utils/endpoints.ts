@@ -161,30 +161,6 @@ payment:{
   packageSubscriptions: (teacherId: string) => `/students/package-subscriptions?TeacherId=${teacherId}`,
   bookSessions: (packageSubscriptionId: string) => `/students/package-subscriptions/${packageSubscriptionId}/book-sessions`,
 },
-// studentEducationSession:{
-//   get: "/students/education-sessions"
-// },
-// Lives:{
-//   get: "/students/lives"
-// },
-// studentEducationLesson:{
-//   get:"/students/education-lessons"
-// },
-// CourseEnroll:{
-//   get:"/students/courses",
-//   details: (courseId: string) => `/students/courses/${courseId}`,
-//   getCourses_Sections: (courseId: string) => `/students/courses/${courseId}/sections`,
-//   getCourses_Section_Sessions: (sectionId: string) => `/students/courses/sections/${sectionId}/sessions`,
-//   getCourssesLesson: (lessonId: string) => `/students/courses/lessons/${lessonId}`,
-//   markWatched: (lessonId: string) => `/students/courses/lessons/${lessonId}/mark-watched`,
-// },
-// liveCourse:{
-//   get: "/students/live-session-courses",
-//   getmyCourses: "/students/live-session-course-enrollments"
-// },
-// liveSubjects:{
-//   get: "/students/live-session-subjects"
-// },
 EducationCourses:{
   get: "/students/education-lessons",
   getCourseByCourseId: (courseId: string) => `/students/education-lessons/${courseId}`,

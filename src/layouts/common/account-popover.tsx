@@ -271,6 +271,11 @@ export default function AccountPopover() {
             linkTo: paths.controlPanel.myliveSubject.list,
             icon: '/favicon/das/laptop.svg',
           },
+          {
+            label: t('Label.my_packages'),
+            linkTo: paths.controlPanel.myPackages,
+            icon: '/favicon/das/laptop.svg',
+          },
         ];
   const baseOptions = [
     {

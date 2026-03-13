@@ -27,22 +27,22 @@ export const paths = {
     technicalSupport: {
       list: '/technical-support',
     },
-     mycourses: {
+    mycourses: {
       list: '/mycourses',
       single: (id: string) => `/mycourses/${id}`,
     },
-     mylivecourses: {
+    mylivecourses: {
       list: '/courses/myLive',
       single: (id: string) => `/courses/myLive/${id}`,
     },
-     myliveSubject: {
+    myliveSubject: {
       list: '/curricula/myLive',
       single: (id: string) => `/curricula/myLive/${id}`,
     },
-    nextlessons:{
+    nextlessons: {
       list: '/nextlessons'
     },
-    all_courses:{
+    all_courses: {
       list: (categoryId: string) => `/courses/all/${categoryId}`,
     },
     Curricula: {
@@ -52,7 +52,8 @@ export const paths = {
     liveCourses: {
       list: '/courses/live',
     },
+    myPackages: '/curricula/myPackages',
 
 
   },
-  };
+};
