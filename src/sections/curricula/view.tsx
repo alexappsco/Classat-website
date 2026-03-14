@@ -19,6 +19,8 @@ import LiveSessionCard from './live-sessions/LiveSessionCard';
 import { ILiveSubject } from 'src/types/liveSubject';
 import EducationCourseCard from './education-course-card/education-course-card';
 import { paths } from 'src/routes/paths';
+import PackageCard from './myPackages/myPackagesCard';
+import { IPackageSubscription } from 'src/types/package';
 
 type EducationGrade = { id: string; name: string };
 
@@ -46,6 +48,7 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
   const [loadingLessons, setLoadingLessons] = useState(true);
 
   const [liveCourses, setLiveCourses] = React.useState<ILiveSubject[]>([]);
+  const [myPackages, setMyPackages] = React.useState<IPackageSubscription[]>([]);
   const [paymentList, setPaymentList] = React.useState<any[]>([]);
 
 
@@ -60,6 +63,14 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
         console.log('Live Sessions data:', lessonsRes.data.items);
       } else {
         setLiveCourses([]);
+      }
+      const myPackages = await getData<any>(`${endpoints.packageSubscription.get}?MaxResultCount=4`);
+      if (myPackages?.success && Array.isArray(myPackages?.data?.items)) {
+        // console.log('Lessons data:', lessonsRes.data.items);
+        setMyPackages(myPackages.data.items);
+        console.log('Live Sessions data:', myPackages.data.items);
+      } else {
+        setMyPackages([]);
       }
 
       const paymentResponse = await getData<any>(endpoints.payment.get);
@@ -151,12 +162,12 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
                 }}
               >
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                  {t('Nav.Courses')}
+                  {t('Nav.myRecordedLessons')}
                 </Typography>
                 <Button
                   color="info"
                   sx={{ lineHeight: 1 }}
-                  onClick={() => router.push('/curricula/live')}
+                  onClick={() => router.push(paths.controlPanel.Curricula.mycourses)}
                 >
                   {t('Label.all')}
                   <LeftIcon />
@@ -177,6 +188,52 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
                       <EducationCourseCard course={course} />
                     </Grid>
                   ))}
+                </Grid>
+              ) : (
+                <Grid item xs={12}>
+                  <Box sx={{ p: 3, textAlign: 'center' }}>
+                    <Typography variant="h6" color="text.secondary">
+                      لا توجد جلسات مباشرة متاحة
+                    </Typography>
+                  </Box>
+                </Grid>
+              )}
+            </Grid>
+          </Container>
+          <Container>
+            <Grid container spacing={4} justifyContent={'center'} p={4}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                }}
+              >
+                <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                  {t('Nav.myRecordedLessons')}
+                </Typography>
+                <Button
+                  color="info"
+                  sx={{ lineHeight: 1 }}
+                  onClick={() => router.push(paths.controlPanel.Curricula.myPackages)}
+                >
+                  {t('Label.all')}
+                  <LeftIcon />
+                </Button>
+              </Box>
+              {myPackages && myPackages.length > 0 ? (
+                // Use a container here to hold the items
+                <Grid container spacing={2}>
+                  <Grid
+                    item
+                    xs={12} // Stacked on mobile
+                    sm={12} // Full width on small screens
+                    md={12}
+                    lg={12} // 4 per row on d  esktop (matches your goal)
+                  >
+                    <PackageCard lessonList={myPackages} key={myPackages[0]?.subscriptionId} />
+                  </Grid>
                 </Grid>
               ) : (
                 <Grid item xs={12}>

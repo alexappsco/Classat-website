@@ -125,7 +125,9 @@
     "delivery-fees": "Delivery Fees",
     "setting": "setting",
     "CancellationPolicy": "Cancellation Policy",
-    "AboutUs": "About Us"
+    "AboutUs": "About Us",
+    "myRecordedLessons": "My Recorded Lessons"
+
   },
   "Global": {
     "title": "Classat",

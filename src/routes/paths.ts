@@ -40,7 +40,7 @@ export const paths = {
       single: (id: string) => `/curricula/myLive/${id}`,
     },
     nextlessons: {
-      list: '/nextlessons'
+      list: '/curricula/nextlessons/'
     },
     all_courses: {
       list: (categoryId: string) => `/courses/all/${categoryId}`,
@@ -48,11 +48,12 @@ export const paths = {
     Curricula: {
       live: '/curricula/live',
       nextlisson: '/curricula/nextlessons',
+      mycourses: '/curricula/all-courses',
+      myPackages: '/curricula/myPackages',
     },
     liveCourses: {
       list: '/courses/live',
     },
-    myPackages: '/curricula/myPackages',
 
 
   },

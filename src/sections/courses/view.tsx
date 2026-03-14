@@ -55,8 +55,7 @@ type Props = {
 // };
 
 export default function Courses({ categories, getAllCourses, getCoursesEnrolled }: Props) {
-  console.log("getAllCourses", getAllCourses);
-  console.log("getCoursesEnrolled", getCoursesEnrolled);
+
 const [liveCourses, setLiveCourses] = React.useState<ILiveCourse[]>([]);
   const [paymentList, setPaymentList] = React.useState<any[]>([]);
   const router = useRouter();

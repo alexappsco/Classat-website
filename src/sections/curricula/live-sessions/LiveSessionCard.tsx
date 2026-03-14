@@ -41,6 +41,8 @@ import { postData } from 'src/utils/crud-fetch-api';
 import { endpoints } from 'src/utils/endpoints';
 import { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
+import { invalidateTag } from 'src/actions/cache-invalidation';
+import { FetchTags } from 'src/actions/config-actions';
 
 interface LiveSessionCardProps {
   lessonList: ILiveSubject[];
@@ -57,6 +59,8 @@ interface PaymentModalProps {
   lesson: ILiveSubject & { coursePrice?: number; courseTitle?: string; lessonId?: string; courseId?: string };
   paymentList: any[];
   teacherId: string;
+    onSuccessPurchase?: () => void;
+
 }
 interface LiveSessionCardPropsItem {
   liveCourse: ILiveSubject;
@@ -115,7 +119,7 @@ export default function LiveSessionCard({ lessonList, teacher_id, paymentList }:
 }
 
 // Payment Modal Component
-function PaymentModal({ open, onClose, lesson, paymentList, teacherId }: PaymentModalProps) {
+function PaymentModal({ open, onClose, lesson, paymentList, teacherId,onSuccessPurchase }: PaymentModalProps) {
   const [selectedMethod, setSelectedMethod] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -150,8 +154,14 @@ function PaymentModal({ open, onClose, lesson, paymentList, teacherId }: Payment
       });
 
       if (checkoutRes.success || checkoutRes.status === 204) {
-        enqueueSnackbar('تم شراء الدرس بنجاح', { variant: 'success' });
-        onClose();
+        try {
+                 invalidateTag(FetchTags.LiveSubject);
+               } catch (e) {
+                 // fail silently; UI will still update locally
+               }
+               // Locally update UI without full page reload
+               onSuccessPurchase?.();
+               onClose();
         // You might want to redirect to success page or refresh the page
       } else {
         enqueueSnackbar(checkoutRes.error || 'فشلت عملية الدفع', { variant: 'error' });
@@ -278,6 +288,7 @@ function PaymentModal({ open, onClose, lesson, paymentList, teacherId }: Payment
 
 function LiveSessionCards({ liveCourse, onAddToCart, paymentList, teacherId }: LiveSessionCardPropsItem) {
   const t = useTranslations();
+  const [course, setCourse] = useState(liveCourse);
 
   const theme = useTheme();
   const redColor = '#B30505';
@@ -285,11 +296,11 @@ function LiveSessionCards({ liveCourse, onAddToCart, paymentList, teacherId }: L
   const orangeColor = warning.main;
   const orangeBg = '#FFF6E4';
   const parseStart = () => {
-    if (!liveCourse.date || !liveCourse.time) return null;
+    if (!course.date || !course.time) return null;
 
-    const dateOnly = liveCourse.date.split('T')[0];
+    const dateOnly = course.date.split('T')[0];
 
-    return new Date(`${dateOnly}T${liveCourse.time}Z`);
+    return new Date(`${dateOnly}T${course.time}Z`);
   };
   const startsAt = parseStart();
 
@@ -309,12 +320,15 @@ function LiveSessionCards({ liveCourse, onAddToCart, paymentList, teacherId }: L
 
   const handleAddToCart = async () => {
     setIsSubmitting(true);
-    await onAddToCart(liveCourse.id || liveCourse.id);
+    await onAddToCart(course.id || course.id);
     setIsSubmitting(false);
   };
 
   const handleBuyNow = () => {
     setIsPaymentModalOpen(true);
+  };
+    const handlePurchaseSuccess = () => {
+    setCourse((prev) => ({ ...prev, isEnrolled: true }));
   };
 
   return (
@@ -344,8 +358,8 @@ function LiveSessionCards({ liveCourse, onAddToCart, paymentList, teacherId }: L
         >
           <CardMedia
             component="img"
-            image={liveCourse.coverImagePath}
-            alt={liveCourse.title}
+            image={course.coverImagePath}
+            alt={course.title}
             sx={{ height: 270, width: '100%', objectFit: 'fill' }}
           />
 
@@ -382,7 +396,7 @@ function LiveSessionCards({ liveCourse, onAddToCart, paymentList, teacherId }: L
               width: 'fit-content',
             }}
           >
-            <span style={{ margin: '0 3px' }}><img src={liveCourse.educationSubjectImagePath} alt={liveCourse.educationSubject} width={20} height={20} /></span>{liveCourse.educationSubject}
+            <span style={{ margin: '0 3px' }}><img src={course.educationSubjectImagePath} alt={liveCourse.educationSubject} width={20} height={20} /></span>{liveCourse.educationSubject}
           </Typography>
 
           {/* Session Title */}
@@ -404,14 +418,14 @@ function LiveSessionCards({ liveCourse, onAddToCart, paymentList, teacherId }: L
                 alignItems={'center'}
                 gap={'10px'}
               >
-                <Image src={liveCourse.teacherImagePath} sx={{ width: 38, height: 38, borderRadius: '50%' }} />
-                {liveCourse.teacherName}
+                <Image src={course.teacherImagePath} sx={{ width: 38, height: 38, borderRadius: '50%' }} />
+                {course.teacherName}
               </Typography>
             </Stack>
             <Stack direction="row" alignItems="center" spacing={0.5}>
               <Typography sx={{ fontSize: '14px', color: '#666' }}>
 
-                <span style={{ color: '#666' }}>  {t('Label.time_period')} :</span>  {liveCourse.totalHours} {t('Label.hours')}  {liveCourse.totalMinutes} {t('Label.munite')}
+                <span style={{ color: '#666' }}>  {t('Label.time_period')} :</span>  {course.totalHours} {t('Label.hours')}  {liveCourse.totalMinutes} {t('Label.munite')}
 
               </Typography>
 
@@ -447,7 +461,7 @@ function LiveSessionCards({ liveCourse, onAddToCart, paymentList, teacherId }: L
             </Stack>
             <Stack direction="row" alignItems="center" spacing={0.5}>
               <Typography sx={{ fontSize: '14px', color: '#666' }}>
-                {liveCourse.price} <span style={{ color: '#666' }}> AED</span>
+                {course.price} <span style={{ color: '#666' }}> AED</span>
 
 
               </Typography>
@@ -458,7 +472,7 @@ function LiveSessionCards({ liveCourse, onAddToCart, paymentList, teacherId }: L
 
         {/* 3. Join Button */}
 
-        {liveCourse.isEnrolled ? (
+        {course.isEnrolled ? (
           <Link href="/ar/courses/instructor/">
             <Button
               variant="contained"
@@ -537,6 +551,8 @@ function LiveSessionCards({ liveCourse, onAddToCart, paymentList, teacherId }: L
         lesson={liveCourse}
         paymentList={paymentList}
         teacherId={teacherId}
+                onSuccessPurchase={handlePurchaseSuccess}
+
       />
     </>
   );

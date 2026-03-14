@@ -262,6 +262,11 @@ export default function AccountPopover() {
             icon: '/favicon/das/laptop.svg',
           },
           {
+            label: t('Nav.myRecordedLessons'),
+            linkTo: paths.controlPanel.Curricula.mycourses,
+            icon: '/favicon/das/laptop.svg',
+          },
+          {
             label: t('Nav.nextlessons'),
             linkTo: paths.controlPanel.nextlessons.list,
             icon: '/favicon/das/laptop.svg',
@@ -273,7 +278,7 @@ export default function AccountPopover() {
           },
           {
             label: t('Label.my_packages'),
-            linkTo: paths.controlPanel.myPackages,
+            linkTo: paths.controlPanel.Curricula.myPackages,
             icon: '/favicon/das/laptop.svg',
           },
         ];
