@@ -1,4 +1,4 @@
-name: Deploy to Ubuntu Server Production action
+name: Deploy to Ubuntu Server
 
 on:
   push:
@@ -19,6 +19,8 @@ jobs:
           node-version: '24'
 
       - name: Install dependencies
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
         run: |
           npm install -f
 
@@ -50,7 +52,6 @@ jobs:
             eval "$(ssh-agent -s)"
             cd /var/www/student
             git reset --hard HEAD
-            git fetch
             git checkout main
             git pull
             # Install or update NVM
@@ -64,6 +65,10 @@ jobs:
             # Setup Node.js environment
             echo "Setting up Node.js environment..."
             nvm use 24
+            # Ensure PM2 exists — if not, install it
+            if ! command -v pm2 &> /dev/null; then
+              npm install -g pm2
+            fi
 
             # Install dependencies and build
             echo "Installing dependencies..."
@@ -78,4 +83,3 @@ jobs:
 
             echo "Deployment completed successfully!"
           EOF
-          
