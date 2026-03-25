@@ -1,4 +1,4 @@
-name: Deploy to Ubuntu Server Production action
+name: Deploy to Ubuntu Server Production
 
 on:
   push:
@@ -8,74 +8,63 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: |
-          npm install -f
+        run: npm ci
 
       - name: Build Next.js app
-        run: |
-          npm run build
+        run: npm run build
 
-      - name: Deploy and Run Post-Build Commands on Server
+      - name: Transfer build to server
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
         run: |
-          # Setup SSH directory and keys
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-
-          # Add host to known hosts
           ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
 
-          # Connect to server and run deployment commands
+          # Transfer the build output to the server
+          rsync -az --delete \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            .next/ $SSH_USER@$SSH_HOST:/var/www/student/.next/
+
+          # Also sync package files in case dependencies changed
+          rsync -az \
+            package.json package-lock.json \
+            $SSH_USER@$SSH_HOST:/var/www/student/
+
+      - name: Restart app on server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
           ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << 'EOF'
             set -e
-            echo "Starting deployment process..."
-
-            # Source bashrc and setup SSH agent
-            source ~/.bashrc
-            eval "$(ssh-agent -s)"
             cd /var/www/student
-            git reset --hard HEAD
-            git fetch
-            git checkout main
-            git pull
-            # Install or update NVM
-            if ! command -v nvm &> /dev/null; then
-              echo "Installing NVM..."
-              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-              export NVM_DIR="$HOME/.nvm"
-              [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            fi
 
-            # Setup Node.js environment
-            echo "Setting up Node.js environment..."
-            nvm use 24
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm use 20
 
-            # Install dependencies and build
-            echo "Installing dependencies..."
-            npm install -f
+            # Only install production deps (fast, no build tools needed)
+            npm ci --omit=dev
 
-            echo "Building application..."
-            npm run build
-
-            # Restart PM2 service
-            echo "Restarting PM2 service..."
             pm2 restart student
-
             echo "Deployment completed successfully!"
           EOF
-          
