@@ -1,5 +1,4 @@
 name: Deploy to Ubuntu Server
-
 on:
   push:
     branches:
@@ -8,78 +7,70 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '24'
+          cache: 'pnpm'
 
       - name: Install dependencies
-        env:
-          NODE_OPTIONS: --max-old-space-size=4096
-        run: |
-          npm install -f
+        run: pnpm install --frozen-lockfile
 
       - name: Build Next.js app
-        run: |
-          npm run build
+        run: pnpm run build
 
-      - name: Deploy and Run Post-Build Commands on Server
+      - name: Copy build to server
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
         run: |
-          # Setup SSH directory and keys
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-
-          # Add host to known hosts
           ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
 
-          # Connect to server and run deployment commands
+          rsync -az --delete \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            .next \
+            public \
+            package.json \
+            pnpm-lock.yaml \
+            next.config.* \
+            $SSH_USER@$SSH_HOST:/var/www/student/
+
+      - name: Install production deps & restart PM2
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
           ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << 'EOF'
             set -e
-            echo "Starting deployment process..."
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-            # Source bashrc and setup SSH agent
-            source ~/.bashrc
-            eval "$(ssh-agent -s)"
             cd /var/www/student
-            git reset --hard HEAD
-            git checkout main
-            git pull
-            # Install or update NVM
-            if ! command -v nvm &> /dev/null; then
-              echo "Installing NVM..."
-              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-              export NVM_DIR="$HOME/.nvm"
-              [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+            if ! command -v pnpm &> /dev/null; then
+              npm install -g pnpm
             fi
 
-            # Setup Node.js environment
-            echo "Setting up Node.js environment..."
-            nvm use 24
-            # Ensure PM2 exists — if not, install it
-            if ! command -v pm2 &> /dev/null; then
-              npm install -g pm2
-            fi
+            echo "Installing production dependencies..."
+            pnpm install --prod --frozen-lockfile
 
-            # Install dependencies and build
-            echo "Installing dependencies..."
-            npm install -f
-
-            echo "Building application..."
-            npm run build
-
-            # Restart PM2 service
-            echo "Restarting PM2 service..."
-            pm2 restart student
+            echo "Restarting PM2..."
+            pm2 restart student || pm2 start npm --name "student" -- start
 
             echo "Deployment completed successfully!"
           EOF
