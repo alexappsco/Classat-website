@@ -161,6 +161,7 @@ payment:{
   packageSubscriptions: (teacherId: string) => `/students/package-subscriptions?TeacherId=${teacherId}`,
   bookSessions: (packageSubscriptionId: string) => `/students/package-subscriptions/${packageSubscriptionId}/book-sessions`,
 },
+cancelorder: '/students/booking/cancel',
 EducationCourses:{
   get: "/students/education-lessons",
   getCourseByCourseId: (courseId: string) => `/students/education-lessons/${courseId}`,

@@ -113,8 +113,8 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
         {/* ===== Next Lessons ===== */}
         <Box
           sx={{
-            py: { xs: 4, md: 6 },
-            px: { xs: 4, md: 6 },
+            py: { xs: 4, md: 6.5 },
+            px: { xs: 4, md: 6.5 },
             direction: 'ltr',
             mx: { md: '0', xs: '0', lg: '2%', xl: '8%' },
           }}
@@ -130,18 +130,21 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
             </Button>
           </Box>
 
+        <Container>
+
           <NextLessonsPreview />
+        </Container>
         </Box>
 
         {/* <LiveSessionsSection /> */}
-        <Box
+        {/* <Box
           justifyContent={'center'}
           sx={{
             py: { xs: 4, md: 6 },
             px: { xs: 4, md: 6 },
             mx: { md: '0', xs: '0', lg: '2%', xl: '8%' },
           }}
-        >
+        > */}
           {/* <Box
             sx={{
               display: 'flex',
@@ -330,7 +333,7 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
             <InstructorsSection />
 
             {/* Recorded Lessons */}
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            {/* <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Typography variant="h4" sx={{ fontWeight: 700 }}>
                 الدروس المسجلة
               </Typography>
@@ -343,15 +346,15 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
                 الكل
                 <LeftIcon />
               </Button>
-            </Box>
-            {loadingLessons ? (
+            </Box> */}
+            {/* {loadingLessons ? (
               <Typography>جاري تحميل الدروس...</Typography>
             ) : (
               <RecoarLessonsSection lessons={recordedLessons} limit={4} />
-            )}
+            )} */}
           </Box>
         </Box>
-      </Box>
+      {/* </Box> */}
     </>
   );
 }

@@ -76,11 +76,11 @@ async function page() {
     country: "",
     date: formatDate(session.sessionDate),
     time: formatTime(session.startTime),
-    href: "#",
+    enrollmentId: session.sessionId,
   }));
 
 
-  return <LessonsSection cards={cards} />;
+  return <LessonsSection cards={cards}  />;
 }
 
 export default page;
