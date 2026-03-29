@@ -63,8 +63,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Install sharp for next/image optimization
-RUN npm install --os=linux --cpu=x64 sharp@latest && \
-    rm -rf /root/.npm /tmp/*
+RUN cd /tmp && npm init -y && npm install --os=linux --cpu=x64 sharp@latest && \
+    cp -r node_modules/sharp /app/node_modules/sharp && \
+    rm -rf /tmp/* /root/.npm
 
 USER nextjs
 
