@@ -59,7 +59,6 @@ export default function HeroSection() {
         >
           منصتك للتعلم المباشر
           <br />
-          والتفاعل الحقيقي
         </Typography>
       </Box>
 
