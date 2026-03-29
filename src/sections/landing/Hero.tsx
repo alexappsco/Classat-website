@@ -57,7 +57,8 @@ export default function HeroSection() {
             color: primaryMain,
           }}
         >
-          منصتك للتعلم           <br />
+          منصتك للتعلم المباشر
+          <br />
           والتفاعل الحقيقي
         </Typography>
       </Box>
