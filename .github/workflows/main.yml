@@ -1,9 +1,9 @@
-name: Deploy to Production
+name: Deploy
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch: # allows manual trigger from GitHub UI
+    branches: [main, staging]
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
@@ -21,6 +21,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set environment tag
+        id: env
+        run: |
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            echo "tag=production" >> $GITHUB_OUTPUT
+          else
+            echo "tag=staging" >> $GITHUB_OUTPUT
+          fi
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -37,15 +46,15 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/${{ env.IMAGE_NAME }}:latest
-            ghcr.io/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ghcr.io/${{ env.IMAGE_NAME }}:${{ steps.env.outputs.tag }}
+            ghcr.io/${{ env.IMAGE_NAME }}:${{ steps.env.outputs.tag }}-${{ github.sha }}
           build-args: |
             NEXT_PUBLIC_HOST_API=${{ vars.NEXT_PUBLIC_HOST_API }}
             NEXT_PUBLIC_HOST_API_SHARED=${{ vars.NEXT_PUBLIC_HOST_API_SHARED }}
             NEXT_PUBLIC_GOOGLE_MAP_API_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_MAP_API_KEY }}
             NEXT_PUBLIC_GOOGLE_MAP_ID=${{ vars.NEXT_PUBLIC_GOOGLE_MAP_ID }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=gha,scope=${{ steps.env.outputs.tag }}
+          cache-to: type=gha,mode=max,scope=${{ steps.env.outputs.tag }}
 
   deploy:
     name: Deploy to VPS
@@ -53,6 +62,19 @@ jobs:
     needs: build-and-push
 
     steps:
+      - name: Set deploy config
+        id: config
+        run: |
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            echo "tag=production" >> $GITHUB_OUTPUT
+            echo "container=classat-prod" >> $GITHUB_OUTPUT
+            echo "port=4004" >> $GITHUB_OUTPUT
+          else
+            echo "tag=staging" >> $GITHUB_OUTPUT
+            echo "container=classat" >> $GITHUB_OUTPUT
+            echo "port=4003" >> $GITHUB_OUTPUT
+          fi
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
         with:
@@ -64,43 +86,36 @@ jobs:
             echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
             # Pull the new image
-            docker pull ghcr.io/${{ env.IMAGE_NAME }}:latest
+            docker pull ghcr.io/${{ env.IMAGE_NAME }}:${{ steps.config.outputs.tag }}
 
             # Stop and remove old container (ignore errors if not running)
-            docker stop classat 2>/dev/null || true
-            docker rm classat 2>/dev/null || true
+            docker stop ${{ steps.config.outputs.container }} 2>/dev/null || true
+            docker rm ${{ steps.config.outputs.container }} 2>/dev/null || true
 
             # Run new container
             docker run -d \
-              --name classat \
+              --name ${{ steps.config.outputs.container }} \
               --restart unless-stopped \
-              -p 127.0.0.1:4003:8083 \
-              ghcr.io/${{ env.IMAGE_NAME }}:latest
+              -p 127.0.0.1:${{ steps.config.outputs.port }}:8083 \
+              ghcr.io/${{ env.IMAGE_NAME }}:${{ steps.config.outputs.tag }}
 
             # Wait for healthcheck
             echo "Waiting for container to be healthy..."
             for i in $(seq 1 30); do
-              if curl -sf http://127.0.0.1:4003 > /dev/null 2>&1; then
+              if curl -sf http://127.0.0.1:${{ steps.config.outputs.port }} > /dev/null 2>&1; then
                 echo "Container is healthy!"
                 break
               fi
               if [ $i -eq 30 ]; then
                 echo "ERROR: Container failed to start. Rolling back..."
-                docker stop classat 2>/dev/null || true
-                docker rm classat 2>/dev/null || true
-                # Try to run previous image
-                PREV_IMAGE=$(docker images ghcr.io/${{ env.IMAGE_NAME }} --format '{{.Tag}}' | grep -v latest | head -1)
-                if [ -n "$PREV_IMAGE" ]; then
-                  docker run -d --name classat --restart unless-stopped -p 127.0.0.1:4003:8083 ghcr.io/${{ env.IMAGE_NAME }}:$PREV_IMAGE
-                  echo "Rolled back to $PREV_IMAGE"
-                fi
+                docker stop ${{ steps.config.outputs.container }} 2>/dev/null || true
+                docker rm ${{ steps.config.outputs.container }} 2>/dev/null || true
                 exit 1
               fi
               sleep 2
             done
 
-            # Clean up old images (keep last 3)
-            docker images ghcr.io/${{ env.IMAGE_NAME }} --format '{{.ID}} {{.CreatedAt}}' | \
-              sort -k2 -r | awk 'NR>3 {print $1}' | xargs -r docker rmi 2>/dev/null || true
+            # Clean up old images
+            docker image prune -f 2>/dev/null || true
 
-            echo "Deployment complete!"
+            echo "Deployment complete! (${{ steps.config.outputs.tag }} on port ${{ steps.config.outputs.port }})"
