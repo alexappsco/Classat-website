@@ -1,3 +1,5 @@
+
+
 'use client';
 
 import Link from 'next/link';
@@ -16,6 +18,7 @@ import { useSettingsContext } from 'src/components/settings';
 
 import LoginBYEmailView from './login-with-email';
 import { useTranslations } from 'next-intl';
+import LoginDialog from './login-with-email';
 
 export default function LoginView() {
   const settings = useSettingsContext();
@@ -59,7 +62,7 @@ export default function LoginView() {
           }}
         >
           {renderHead}
-          <LoginBYEmailView />
+          {/* <LoginDialog /> */}
           <Typography variant="caption" mx={0.2} sx={{ textAlign: 'center', mt: 2 }}>
             {t('Label.Donot_account')}
 

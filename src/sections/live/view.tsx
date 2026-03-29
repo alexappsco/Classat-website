@@ -15,7 +15,7 @@ export default function Live() {
   return (
     <>
       <Box sx={{ position: 'relative' }}>
-        <Hero />
+        <Hero selectedCategory={selectedCategory} />
 
         <Box
           sx={{
@@ -29,24 +29,24 @@ export default function Live() {
             minWidth: { xs: 300, sm: 360, md: 400 },
           }}
         >
-          <Categories selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+          {/* <Categories selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} /> */}
         </Box>
       </Box>
 
       <FiltersBar />
 
-      {selectedCategory === 'جلسات فردية' ? (
+      {/* {selectedCategory === 'جلسات فردية' ? (
         <>
           <InstructorsSection title="المعلمين الاعلى تقييماً" />
           <InstructorsSection title="مقترح لك" />
           <InstructorsSection title="معلمون جدد" />
         </>
-      ) : (
+      ) : ( */}
         <>
-          <LiveSessionsSection title="بثوث مباشرة الان"/>
-          <LiveSessionsSection title="بثوث مباشرة قادمة"/>
+          <LiveSessionsSection title="بثوث مباشرة الان" />
+          <LiveSessionsSection title="بثوث مباشرة قادمة" />
         </>
-      )}
+      {/* )} */}
     </>
   );
 }

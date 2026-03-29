@@ -1,16 +1,17 @@
+import Link from 'next/link';
 import React, { useState } from 'react';
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Typography,
-  Button,
-  Box,
-  IconButton
-} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Success from 'public/assets/courses/icons/success.svg';
-import Link from 'next/link';
+import {
+  Box,
+  Dialog,
+  Button,
+  Typography,
+  IconButton,
+  DialogTitle,
+  DialogContent
+} from "@mui/material";
+
 import InvoiceDialog from './InvoiceDialog'
 
 interface Props {
@@ -39,7 +40,7 @@ export default function SuccessPurchaseDialog({
         },
       }}
     >
-      
+
       <IconButton
         onClick={onClose}
         sx={{
@@ -51,12 +52,12 @@ export default function SuccessPurchaseDialog({
         <CloseIcon />
       </IconButton>
 
-      
+
       <Box sx={{ mt: 2 }}>
        <Success />
       </Box>
 
-      
+
       <DialogTitle sx={{ fontWeight: "bold", fontSize: "20px" }}>
         تم شراء الكورس بنجاح
       </DialogTitle>
@@ -66,7 +67,7 @@ export default function SuccessPurchaseDialog({
           لقد قمت بالدفع بنجاح و شراء الكورس.
         </Typography>
 
-        
+
         <Box
           sx={{
             display: "flex",

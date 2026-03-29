@@ -38,6 +38,7 @@
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
+    "mui-tel-input": "^9.0.1",
     "next": "^15.1.0",
     "next-intl": "^3.26.1",
     "notistack": "^3.0.1",

@@ -6,16 +6,17 @@ import { cookies } from 'next/headers';
 import axiosInstance, { endpoints, getErrorMessage, SharedApiClient } from 'src/utils/axios';
 
 import { HOST_API_SHARED } from 'src/config-global';
+import { IRegister } from 'src/types/regester';
 
 const getServerLanguage = async () => {
   const cookieStore = await cookies();
-  return cookieStore.get('Language')?.value || 'en';
+  return cookieStore.get('Language')?.value || 'ar';
 };
 
 export const Login = async (data: { email: string; password: string }) => {
   const lang = await getServerLanguage();
   try {
-    const res = await SharedApiClient.post(`${endpoints.auth.login}`, data, {
+    const res = await SharedApiClient.post(`${endpoints.auth.sendOtp}`, data, {
       headers: {
         'Accept-Language': lang,
       },
@@ -36,15 +37,20 @@ export const Register = async (data: {
   phoneNumber: string;
   password: string;
   projectName: string;
+  role?: string;
 }) => {
   const lang = await getServerLanguage();
   try {
-    const res = await axiosInstance.post(`${endpoints.auth.register}`, data, {
+    const payload = {
+      ...data,
+      role: data.role || 'Student',
+    };
+    const res = await axiosInstance.post(`${endpoints.auth.register}`, payload, {
       headers: {
         'Accept-Language': lang,
       },
     });
-    return res?.status;
+    return res?.data;
   } catch (e) {
     return {
       error: getErrorMessage(e.error),
@@ -55,7 +61,7 @@ export const Register = async (data: {
 export const ForgetPassword = async (data: { email: string }) => {
   const lang = await getServerLanguage();
   try {
-    const res = await axiosInstance.post(`${endpoints.auth.forgetPassword}`, data, {
+    const res = await axiosInstance.post(`${endpoints.auth.sendOtp}`, data, {
       headers: {
         'Accept-Language': lang,
       },
@@ -71,7 +77,7 @@ export const ForgetPassword = async (data: { email: string }) => {
 export const ResetPassword = async (data: { email: string; code: string; newPassword: string }) => {
   const lang = await getServerLanguage();
   try {
-    const res = await axiosInstance.post(`${endpoints.auth.verifyforgetPassword}`, data, {
+    const res = await axiosInstance.post(`${endpoints.auth.verifyOtpLogin}`, data, {
       headers: {
         'Accept-Language': lang,
       },
@@ -96,6 +102,39 @@ export const VerifyOtpLogin = async (data: { phone: string; code: string }) => {
   } catch (e) {
     return {
       error: getErrorMessage(e.error),
+    };
+  }
+};
+
+
+export const RegisterStudent = async (data: IRegister) => {
+  const lang = await getServerLanguage();
+      const formatPhoneNumber = (phone: string) => {
+      if (!phone) return phone; // Return early if phone is undefined/null/empty
+      if (phone.startsWith('+')) {
+        return phone; // Already has country code
+      }
+      return '+966' + phone;
+    };
+  try {
+    const payload = {
+      name: data.name,
+      email: data.email,
+      phoneNumber: data.phoneNumber ? formatPhoneNumber(data.phoneNumber) : undefined,
+      guardianPhoneNumber: data.guardianPhoneNumber ? formatPhoneNumber(data.guardianPhoneNumber) : undefined,
+      countryId: data.countryId,   
+      learningPreference: data.learningPreference ,
+    };
+    const res = await axiosInstance.post(endpoints.auth.register, payload, {
+      
+      headers: {
+        'Accept-Language': lang,
+      },
+    });
+     return res?.data;
+  } catch (e: any) {
+    return {
+      error: getErrorMessage(e),
     };
   }
 };
@@ -138,3 +177,101 @@ export const getServerUser = async () => {
     return null;
   }
 };
+
+export const LoginWithPhone = async (data: { phoneNumber: string }) => {
+  const lang = await getServerLanguage();
+  try {
+    const res = await SharedApiClient.post(`/users/send-phone-login`, data, {
+      headers: {
+        'Accept-Language': lang,
+      },
+    });
+    return res.data;
+  } catch (e) {
+    return { error: getErrorMessage(e) };
+  }
+};
+
+
+
+export async function SendLoginOtp(data: {
+  channel: 'Email' | 'Phone';
+  value: string;
+  role: string;
+}) {
+  const lang = await getServerLanguage();
+ 
+  // Prepare the payload based on channel type
+const payload = {
+  channel: data.channel,
+  value: data.value,
+  role: data.role,
+};
+
+  
+  try {
+    const res = await SharedApiClient.post(
+      endpoints.auth.sendOtp,
+      payload,
+      { 
+        headers: {
+          'Accept-Language': lang,
+        }
+      }
+    );
+    
+    return {
+      ...res.data,
+      channel: data.channel,
+      value: data.value,
+    };
+  } catch (e: any) {
+
+    return {
+      error:
+        e?.response?.data?.message ||
+        e?.response?.data?.error ||
+        'Failed to send OTP',
+    };
+  }
+}
+
+
+export const VerifyLoginOtp = async (data: {
+  channel: 'Email' | 'Phone';
+  value: string;
+  otp: string;
+}) => {
+  const lang = await getServerLanguage();
+
+  // Prepare the payload based on channel type
+const payload = {
+    channel: data.channel,
+    value: data.value,
+    otp: data.otp,
+    role: 'Student',
+  };
+
+
+  try {
+    const res = await SharedApiClient.post(
+      endpoints.auth.verifyOtp,
+      payload,
+      {
+        headers: { 'Accept-Language': lang ,
+                    // 'Content-Type': 'application/json',
+
+        },
+      }
+    );
+
+    return res.data;
+  } catch (e) {
+
+    return {  error:
+        e?.response?.data?.message ||
+        e?.response?.data?.error ||
+        'Invalid OTP', };
+  }
+};
+

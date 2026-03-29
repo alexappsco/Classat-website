@@ -7,18 +7,19 @@ import { USER, ACCESS_TOKEN, REFRESH_TOKEN } from './config';
 
 export async function saveSession({ user, accessToken, refreshToken }: UserSession) {
   const cookiesStore = await cookies();
+  const isProd = process.env.NODE_ENV === 'production';
 
   cookiesStore.set(ACCESS_TOKEN, accessToken.value, {
     httpOnly: true,
-    secure: true,
+    secure: isProd,
     expires: new Date(refreshToken.expire), // remove with Refresh Token because the old accessToken is needed to get new accessToken
   });
   cookiesStore.set(REFRESH_TOKEN, refreshToken.value, {
     httpOnly: true,
-    secure: true,
+    secure: isProd,
     expires: new Date(refreshToken.expire),
   });
-  cookiesStore.set(USER, JSON.stringify(user), { httpOnly: true, secure: true });
+  cookiesStore.set(USER, JSON.stringify(user), { httpOnly: true, secure: isProd });
 }
 
 export async function removeSession() {

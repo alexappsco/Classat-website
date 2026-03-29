@@ -3,7 +3,6 @@ import { useTheme } from '@mui/material/styles';
 import { repeat } from 'lodash';
 import Image from 'src/components/image';
 import { primary, secondary, shadow, text } from 'src/theme/palette';
-// import StarIcon from '@mui/icons-material/Star'; // Placeholder for the star icon
 
 type InstructorCardProps = (typeof INSTRUCTORS)[0];
 
@@ -29,109 +28,10 @@ export default function InstructorCard({
   const primaryColor = primary.main;
   const secondaryColor = secondary.main;
   const primaryTextColor = text.primary; // Light blue for button
-  //   function Rating(rating) {
-  //     let stars = [];
-  //     for (let counter = 0; counter < rating; counter++) stars.push();
-  //   }
+
 
   return (
-    // <Card
-    //   sx={{
-    //     p: 0,
-    //     borderRadius: 2,
-    //     boxShadow: shadow.main,
-    //     height: 1,
-    //     // Ensures content stacks correctly for the card
-    //     display: 'flex',
-    //     flexDirection: 'column',
-    //     textAlign: 'center',
-    //     overflow: 'visible',
-    //   }}
-    //   style={{ overflow: 'visible' }}
-    // >
-    //   {/* 1. Image and Category Tag Area */}
-    //   <Box sx={{ position: 'relative', pt: '100%' }}>
-    //     {/* Instructor Image */}
-    //     <Box
-    //       component="img"
-    //       src={image}
-    //       alt={name}
-    //       sx={{
-    //         position: 'absolute',
-    //         top: 0,
-    //         left: 0,
-    //         width: 1,
-    //         height: 1,
-    //         objectFit: 'cover',
-    //       }}
-    //     />
-
-    //     {/* Category Chip - Positioned Absolutely */}
-    //     <Chip
-    //       label={category}
-    //       size="small"
-    //       sx={{
-    //         position: 'absolute',
-    //         top: 10,
-    //         left: 10, // Position on the left side in RTL
-    //         bgcolor: secondaryColor, // Use a light blue color
-    //         color: theme.palette.common.white,
-    //         fontWeight: 500,
-    //         fontSize: theme.typography.pxToRem(12),
-    //       }}
-    //     />
-    //   </Box>
-
-    //   {/* 2. Content and Rating Area */}
-    //   <Stack spacing={1.5} sx={{ p: 2, flexGrow: 1, alignItems: 'center' }}>
-    //     {/* Instructor Name */}
-    //     <Typography variant="h6" sx={{ fontWeight: 600, color: primaryColor }}>
-    //       {name}
-    //     </Typography>
-    //     {/* Rating and Course Count */}
-    //     <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
-    //       {/* Rating Stars */}
-    //       <Stack direction="row" alignItems={'flex-start'}>
-    //         {Array.from({ length: rating }).map((_, i) => (
-    //           <Box
-    //             key={i}
-    //             component="img"
-    //             // Local path for the star image
-    //             src="/assets/icons/rating/star.png"
-    //             alt="Star rating"
-    //             sx={{ width: 16, height: 16, objectFit: 'contain', mx: 0.2 }}
-    //           />
-    //         ))}
-    //       </Stack>
-
-    //       {/* Course Count */}
-    //       <Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>
-    //         {courses}
-    //       </Typography>
-    //     </Stack>
-    //   </Stack>
-
-    //   {/* 3. Profile Button */}
-    //   <Button
-    //     variant="outlined"
-    //     size="large"
-    //     sx={{
-    //       py: 1.5,
-    //       color: secondaryColor,
-    //       borderColor: secondaryColor,
-    //       '&:hover': {
-    //         borderColor: secondaryColor,
-    //         bgcolor: alpha(secondaryColor, 0.08),
-    //       },
-    //       borderTopLeftRadius: 0,
-    //       borderTopRightRadius: 0,
-    //       // Push button to the bottom edge
-    //       mt: 'auto',
-    //     }}
-    //   >
-    //     عرض الملف الشخصي
-    //   </Button>
-    // </Card>
+   
     <Card
       sx={{
         pb: 2,

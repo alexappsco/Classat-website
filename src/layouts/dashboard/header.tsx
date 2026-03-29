@@ -1,91 +1,77 @@
-import { useState } from 'react';
+import Link from 'next/link';
+import { Box, AppBar, Toolbar, IconButton } from '@mui/material';
 import { usePathname } from 'next/navigation';
-import { Box } from '@mui/material';
-import { bgBlur } from 'src/theme/css';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
+
+import { bgBlur } from 'src/theme/css';
 import { useOffSetTop } from 'src/hooks/use-off-set-top';
 import { useResponsive } from 'src/hooks/use-responsive';
 import { useSettingsContext } from 'src/components/settings';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { useRouter } from 'next/dist/client/components/navigation';
+import { useAuthStore } from 'src/auth/auth-store';
 
 import { LogoText } from './logo-text';
 import { HEADER } from '../config-layout';
 import { AuthButtons } from './auth-buttons';
 import AccountPopover from '../common/account-popover';
+
 // ----------------------------------------------------------------------
 
 export default function Header() {
-  const router = useRouter();
   const theme = useTheme();
-const pathname = usePathname();
-  const flag = false;
-
+  const pathname = usePathname();
   const settings = useSettingsContext();
-  const [isSignIn, setIsSignIn] = useState(false);
 
-  const isNavHorizontal = settings.themeLayout === 'horizontal';
-
-  const isNavMini = settings.themeLayout === 'mini';
+  // 1. Get the authenticated state directly from your Auth Context
+  const { authenticated, loading } = useAuthStore();
 
   const lgUp = useResponsive('up', 'lg');
   const offset = useOffSetTop(HEADER.H_DESKTOP);
-
+  const isNavHorizontal = settings.themeLayout === 'horizontal';
+  const isNavMini = settings.themeLayout === 'mini';
   const offsetTop = offset && !isNavHorizontal;
 
-  // remove last slash mark -> / from url
-const cleanPath = pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
-
-// landing paths
-const landingPaths = ['/', '/ar'];
-const isLanding = landingPaths.includes(cleanPath);
-
-
+  // Clean path logic
+  const cleanPath = pathname.endsWith('/') && pathname !== '/' ? pathname.slice(0, -1) : pathname;
+  const landingPaths = ['/', '/ar', '/en'];
+  const isLanding = landingPaths.includes(cleanPath);
   const renderContent = (
-    <Box width={'100%'} display={'flex'} alignItems={'center'} justifyContent={'space-between'}>
-      <LogoText {...{ lgUp }} />
-      {isLanding ? (
-  <AuthButtons changeSignIn={setIsSignIn} />
-) : (
-  <Box display="flex" alignItems="center" gap={1.5} pt={0.5}>
+    <Box width="100%" display="flex" alignItems="center" justifyContent="space-between">
+      <Link href="/ar/curricula" style={{ textDecoration: 'none' }}>
+        <Box sx={{ display: 'flex', cursor: 'pointer' }}>
+          <LogoText {...{ lgUp }} />
+        </Box>
+      </Link>
 
-    <IconButton
-    onClick={() => router.push('/ar/courses/favorites/')}
-    >
-      <FavoriteIcon />
-    </IconButton>
+      {/* 2. Logic Check: Use 'authenticated' instead of interval/localStorage checks */}
+      {authenticated ? (
+        <Box display="flex" alignItems="center" gap={1.5} pt={0.5}>
+          <Link href="/ar/courses/favorites/">
+            <IconButton>
+              <FavoriteIcon
+                sx={{ color: cleanPath === '/ar/courses/favorites' ? 'red' : 'inherit' }}
+              />
+            </IconButton>
+          </Link>
 
+          <Link href="/ar/cart/">
+            <IconButton>
+              <ShoppingCartIcon fontSize="small" />
+            </IconButton>
+          </Link>
 
-  <IconButton
-  onClick={() => router.push('/ar/cart/')}
-  >
-    <ShoppingCartIcon fontSize="small" />
-  </IconButton>
-
-    <AccountPopover />
-  </Box>
-)}
-
-
-      {/* <Box sx={{ maxWidth: '150px' }}>
-      </Box> */}
-      {/* <Stack
-        flexGrow={1}
-        direction="row"
-        alignItems="center"
-        justifyContent="flex-end"
-        spacing={{ xs: 0.5, sm: 1 }}
-      >
-        <LanguagePopover />
-
-        <AccountPopover />
-      </Stack> */}
+          <AccountPopover />
+        </Box>
+      ) : (
+        // Show AuthButtons if not authenticated or on landing
+        <AuthButtons />
+      )}
     </Box>
   );
+
+  // Optional: Return null or a skeleton if auth is still 'loading' to prevent layout shift
+  if (loading) return null;
 
   return (
     <AppBar
@@ -94,27 +80,21 @@ const isLanding = landingPaths.includes(cleanPath);
         backgroundColor: '#FDFDFD',
         height: HEADER.H_MOBILE,
         zIndex: theme.zIndex.appBar + 1,
-        ...bgBlur({
-          color: theme.palette.background.default,
-        }),
+        ...bgBlur({ color: theme.palette.background.default }),
         transition: theme.transitions.create(['height'], {
           duration: theme.transitions.duration.shorter,
         }),
         ...(lgUp && {
-          width: `100%`,
+          width: '100%',
           height: HEADER.H_DESKTOP,
-          ...(offsetTop && {
-            height: HEADER.H_DESKTOP_OFFSET,
-          }),
+          ...(offsetTop && { height: HEADER.H_DESKTOP_OFFSET }),
           ...(isNavHorizontal && {
             width: 1,
             bgcolor: 'background.default',
             height: HEADER.H_DESKTOP_OFFSET,
             borderBottom: `dashed 1px ${theme.palette.divider}`,
           }),
-          ...(isNavMini && {
-            width: `100%`,
-          }),
+          ...(isNavMini && { width: '100%' }),
         }),
       }}
     >

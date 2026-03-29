@@ -4,52 +4,40 @@ import { useResponsive } from 'src/hooks/use-responsive';
 import { Box, Grid, Stack, Button, Container, Typography } from '@mui/material';
 
 import LiveSessionCard from './LiveSessionCard'; // Assuming the card is imported
+import { useEffect, useState } from 'react';
+import { getData } from 'src/utils/crud-fetch-api';
+import { endpoints } from 'src/utils/endpoints';
+import { ILiveCourse } from 'src/types/liveCourse';
 
-
-const LIVE_SESSIONS = [
-  {
-    image: '/assets/landing-page/live-sessions/courses/live1.jpg',
-    isLive: true,
-    category: 'UI UX Desgin',
-    title: 'أساسيات تصميم المواقع والتطبيقات',
-    instructor: 'أ. خالد محمد',
-    time: 'بدأ منذ 5 دقائق',
-    attendees: '15 طالب',
-  },
-  {
-    image: '/assets/landing-page/live-sessions/courses/live2.png',
-    isLive: true,
-    category: 'UI UX Desgin',
-    title: 'أساسيات تصميم المواقع والتطبيقات',
-    instructor: 'أ. خالد محمد',
-    time: 'بدأ منذ 5 دقائق',
-    attendees: '15 طالب',
-  },
-  {
-    image: '/assets/landing-page/live-sessions/courses/live3.jpg',
-    isLive: true,
-    category: 'UI UX Desgin',
-    title: 'أساسيات تصميم المواقع والتطبيقات',
-    instructor: 'أ. خالد محمد',
-    time: 'بدأ منذ 5 دقائق',
-    attendees: '15 طالب',
-  },
-  {
-    image: '/assets/landing-page/live-sessions/courses/live4.png',
-    isLive: true,
-    category: 'UI UX Desgin',
-    title: 'أساسيات تصميم المواقع والتطبيقات',
-    instructor: 'أ. خالد محمد',
-    time: 'بدأ منذ 5 دقائق',
-    attendees: '15 طالب',
-  },
-];
 
 export default function LiveSessionsSection({title}:{title: string}) {
   const primaryTextColor = text.primary;
   const paragraphTextColor = text.paragraph;
   const mainColor = primary.main;
   const smDown = useResponsive('down', 'sm');
+
+  const [liveSessions, setLiveSessions] = useState<ILiveCourse[]>([]);
+
+  // Function to refresh data
+  const refreshData = async () => {
+    try {
+
+
+
+      // Refresh lessons
+      const lessonsRes = await getData<any>(endpoints.liveCourse.get);
+      if (lessonsRes?.success && Array.isArray(lessonsRes?.data?.items)) {
+        setLiveSessions(lessonsRes.data.items);
+      } else {
+        setLiveSessions([]);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+    useEffect(() => {
+    refreshData();
+  }, []);
   return (
     <Box sx={{ py: { xs: 8, md: 10 }, px: { xs: 4, md: 6 }, direction: 'ltr' }}>
       <Container>
@@ -92,15 +80,16 @@ export default function LiveSessionsSection({title}:{title: string}) {
 
         {/* 2. Live Sessions Grid */}
         <Grid container spacing={4} justifyContent={'center'}>
-          {LIVE_SESSIONS.map((session, index) => (
+          {liveSessions.map((session) => (
             <Grid
               item
               xs={12} // Full width on mobile
               sm={6} // Two cards per row on small screens
-              md={3} // Four cards per row on desktop
-              key={index}
+              md={4}
+              lg={3} // Four cards per row on desktop
+              key={session.id}
             >
-              <LiveSessionCard {...session} />
+              <LiveSessionCard liveCourse={session}  />
             </Grid>
           ))}
         </Grid>

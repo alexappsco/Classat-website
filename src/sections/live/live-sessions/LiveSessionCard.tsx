@@ -1,72 +1,52 @@
+import Link from 'next/link';
 import Image from 'src/components/image';
 import { useTheme } from '@mui/material/styles';
 import { text, shadow, primary, warning } from 'src/theme/palette';
-import { Box, Card, Chip, Stack, Button, Divider, Typography } from '@mui/material';
+import { Box, Card, Chip, Stack, Button, Divider, Typography, CardMedia } from '@mui/material';
+import { ILiveCourse } from 'src/types/liveCourse';
 
-type LiveSessionCardProps = (typeof LIVE_SESSIONS)[0]; // Reuse the type
-const LIVE_SESSIONS = [
-  {
-    image: '/assets/sessions/mobile_dev.jpg',
-    isLive: true,
-    category: 'UI UX Desgin',
-    title: 'أساسيات تصميم المواقع والتطبيقات',
-    instructor: 'أ. خالد محمد',
-    time: 'يبدأ منذ 5 دقائق',
-    attendees: '15 طالب',
-  },
-  {
-    image: '/assets/sessions/ux_design.jpg',
-    isLive: true,
-    category: 'UI UX Desgin',
-    title: 'أساسيات تصميم المواقع والتطبيقات',
-    instructor: 'أ. خالد محمد',
-    time: 'يبدأ منذ 5 دقائق',
-    attendees: '15 طالب',
-  },
-  {
-    image: '/assets/sessions/coding_basics.jpg',
-    isLive: true,
-    category: 'UI UX Desgin',
-    title: 'أساسيات تصميم المواقع والتطبيقات',
-    instructor: 'أ. خالد محمد',
-    time: 'يبدأ منذ 5 دقائق',
-    attendees: '15 طالب',
-  },
-  {
-    image: '/assets/sessions/design_diff.jpg',
-    isLive: true,
-    category: 'UI UX Desgin',
-    title: 'أساسيات تصميم المواقع والتطبيقات',
-    instructor: 'أ. خالد محمد',
-    time: 'يبدأ منذ 5 دقائق',
-    attendees: '15 طالب',
-  },
-];
 
-export default function LiveSessionCard({
-  image,
-  isLive,
-  category,
-  title,
-  instructor,
-  time,
-  attendees,
-}: LiveSessionCardProps) {
+interface LiveSessionCard {
+  liveCourse: ILiveCourse;
+}
+export default function LiveSessionCard({ liveCourse }: LiveSessionCard) {
   const theme = useTheme();
   const redColor = '#B30505';
   const padgBg = '#FFE5E5';
   const orangeColor = warning.main;
   const orangeBg = '#FFF6E4';
+  const parseStart = () => {
+    if (!liveCourse.date || !liveCourse.time) return null;
+
+    const dateOnly = liveCourse.date.split('T')[0];
+
+    return new Date(`${dateOnly}T${liveCourse.time}Z`);
+  };
+  const startsAt = parseStart();
+
+  const localDate = startsAt?.toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+
+  const localTime = startsAt?.toLocaleTimeString(undefined, {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true, // لو عايز AM/PM
+  });
+
   return (
     <Card
       sx={{
         borderRadius: 2,
         boxShadow: shadow.main,
-        height: 1,
+        height: 'auto',
         // Ensure card content stacks correctly
         display: 'flex',
         flexDirection: 'column',
         p: '20px 16px 16px',
+
         // width: 'fit-content',
       }}
     >
@@ -74,29 +54,21 @@ export default function LiveSessionCard({
       <Box
         sx={{
           position: 'relative',
-          pt: '56.25%', // 16:9 Aspect Ratio
+          // pt: '56.25%', // 16:9 Aspect Ratio
           overflow: 'hidden',
           borderRadius: '8px',
         }}
       >
-        {/* Session Image */}
-        <Box
+
+        <CardMedia
           component="img"
-          src={image}
-          alt={title}
-          sx={{
-            position: 'absolute',
-            top: 0,
-            width: 1,
-            height: 1,
-            objectFit: 'cover',
-            borderRadius: '8px',
-          }}
-          minWidth={'287px'}
+          image={liveCourse.coverImagePath}
+          alt={liveCourse.title}
+          sx={{ height: 270, width: '100%', objectFit: 'fill' }}
         />
 
         {/* Live Tag (Chip) - Positioned Absolutely */}
-        {isLive && (
+        {liveCourse.status && (
           <Chip
             label="مباشر"
             size="small"
@@ -128,7 +100,7 @@ export default function LiveSessionCard({
             width: 'fit-content',
           }}
         >
-          {category}
+          {liveCourse.courseCategory}
         </Typography>
 
         {/* Session Title */}
@@ -136,7 +108,7 @@ export default function LiveSessionCard({
           variant="subtitle1"
           sx={{ fontWeight: 600, color: text.primary, minHeight: 40 }}
         >
-          {title}
+          {liveCourse.title}
         </Typography>
 
         {/* Instructor Name and Avatar (Simple text for now) */}
@@ -147,51 +119,66 @@ export default function LiveSessionCard({
           alignItems={'center'}
           gap={'10px'}
         >
-          <Image src="/assets/landing-page/live-sessions/instructors/instructor.png" />
-          {instructor}
+          <Image src={liveCourse.teacherImagePath} sx={{ width: 38, height: 38, borderRadius: '50%' }} />
+          {liveCourse.teacherName}
         </Typography>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         {/* Metadata (Time and Attendees) */}
         <Stack direction="row" justifyContent="space-between" alignItems="center">
-          {/* Time/Start Status */}
+
           <Stack direction="row" alignItems="center" spacing={0.5}>
-            {/* Using a placeholder icon for simplicity */}
-            {/* <AccessTimeIcon sx={{ width: 16, height: 16, color: theme.palette.text.secondary }} /> */}
-            <Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>
-              {time}
+            <Typography sx={{ fontSize: '14px', color: '#666', display: 'flex' }}>
+              <img
+                src={'/assets/icons/app/calendar-event.svg'}
+                style={{ height: '18px', marginLeft: '5px' }}
+                alt=""
+              />
+              {localDate}
             </Typography>
+
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={0.5}>
+            <Typography sx={{ fontSize: '14px', color: '#666' }}>
+              <img
+                src={'/assets/icons/app/clock.svg'}
+                style={{ height: '18px', marginLeft: '5px' }}
+                alt=""
+              />
+              {localTime}
+            </Typography>
+
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={0.5}>
+            <Typography sx={{ fontSize: '14px', color: '#666' }}>
+              {liveCourse.price} <span style={{ color: '#666' }}> AED</span>
+            </Typography>
+
           </Stack>
 
-          {/* Attendees Count */}
-          <Stack direction="row" alignItems="center" spacing={0.5}>
-            {/* Using a placeholder icon for simplicity */}
-            {/* <PeopleIcon sx={{ width: 16, height: 16, color: theme.palette.text.secondary }} /> */}
-            <Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>
-              {attendees}
-            </Typography>
-          </Stack>
         </Stack>
       </Stack>
 
       {/* 3. Join Button */}
-      <Button
-        variant="contained"
-        size="medium"
-        sx={{
-          backgroundColor: primary.main,
-          color: 'white',
-          width: '90%',
-          m: 'auto',
-          borderTopLeftRadius: theme.spacing(4),
-          borderTopRightRadius: theme.spacing(4),
-          borderBottomLeftRadius: theme.spacing(4),
-          borderBottomRightRadius: theme.spacing(4),
-        }}
-      >
-        انضم الآن
-      </Button>
+      <Link href="/ar/courses/instructor/">
+        <Button
+          variant="contained"
+          size="medium"
+          sx={{
+            backgroundColor: primary.main,
+            color: 'white',
+            width: '90%',
+            m: 'auto',
+            borderTopLeftRadius: theme.spacing(4),
+            borderTopRightRadius: theme.spacing(4),
+            borderBottomLeftRadius: theme.spacing(4),
+            borderBottomRightRadius: theme.spacing(4),
+          }}
+        >
+          انضم الآن
+        </Button>
+      </Link>
     </Card>
   );
 }

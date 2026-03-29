@@ -2,7 +2,6 @@
 
 import { useTranslations } from 'next-intl';
 import { GuestGuard } from 'src/auth/guard';
-// import { GuestGuard } from 'src/auth/guard/jwt';
 import AuthClassicLayout from 'src/layouts/auth/classic';
 
 // ----------------------------------------------------------------------

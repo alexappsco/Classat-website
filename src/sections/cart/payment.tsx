@@ -1,309 +1,267 @@
 'use client';
-import React, { useState } from 'react';
-import Image from 'src/components/image';
+
+import { endpoints } from 'src/utils/endpoints';
+import React, { useState, useEffect } from 'react';
+import { postData } from 'src/utils/crud-fetch-api';
+// الاستيرادات الخاصة بمشروعك (تأكد من صحة المسارات)
+import { useSnackbar } from 'src/components/snackbar';
+import { FetchTags } from 'src/actions/config-actions';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { invalidateTag } from 'src/actions/cache-invalidation';
 import {
   Box,
   Grid,
   Card,
+  Radio,
   Button,
   Avatar,
   Divider,
-  Typography,
-  Radio,
   TextField,
-  IconButton,
-  CardContent,
   Container,
+  Typography,
+  IconButton,
+  CircularProgress,
 } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import SuccessPurchaseDialog from './successPurchaseDialog'
-export default function Payment() {
-  const [selectedMethod, setSelectedMethod] = useState('master');
+
+import SuccessPurchaseDialog from './successPurchaseDialog';
+
+// --- Interfaces ---
+interface CartItem {
+  cartItemId: string;
+  itemType: string;
+  title: string;
+  imageUrl: string | null;
+  price: number;
+  rating: number | null;
+  sessions: any[];
+}
+
+interface PaymentSummary {
+  subTotal: number;
+  vat: number;
+  discount: number;
+  total: number;
+  totalAfterDiscount: number;
+  platformProfitPercentage: number;
+  taxRate: number;
+  platformProfit: number;
+}
+
+interface PaymentMethod {
+  id: string;
+  name: string;
+  logo: string;
+}
+
+interface Props {
+  items: {
+    cartId: string;
+    items: CartItem[];
+    paymentSummary: PaymentSummary;
+  };
+  paymentList: {
+    totalCount: number;
+    items: PaymentMethod[];
+  };
+}
+
+export default function Payment({ items: data, paymentList }: Props) {
+  const { enqueueSnackbar } = useSnackbar();
+
+  // استخراج البيانات من الـ Props
+  const paymentMethods = paymentList?.items || [];
+  const cartItemsList = data?.items || [];
+  const summary = data?.paymentSummary;
+
+  // الحالات (States)
+  const [selectedMethod, setSelectedMethod] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
-    const handlePay = () => {
-    setOpenSuccess(true);
-  };
-  const cartItems = [
-    {
-      id: 1,
-      title: 'أساسيات تصميم المواقع والتطبيقات',
-      instructor: 'د.خالد محمد',
-      price: 32.0,
-      originalPrice: 65.0,
-      image: '/assets/courses/study.png',
-    },
-    {
-      id: 2,
-      title: 'أساسيات تصميم المواقع والتطبيقات',
-      instructor: 'د.خالد محمد',
-      price: 32.0,
-      originalPrice: 65.0,
-      image: '/assets/courses/study.png',
-    },
-    {
-      id: 3,
-      title: 'أساسيات تصميم المواقع والتطبيقات',
-      instructor: 'د.خالد محمد',
-      price: 32.0,
-      originalPrice: 65.0,
-      image: '/assets/courses/study.png',
-    },
-  ];
 
-  const calculateTotal = () => {
-    return cartItems.reduce((sum, item) => sum + item.price, 0).toFixed(2);
-  };
+  // اختيار أول وسيلة دفع تلقائياً
+  useEffect(() => {
+    if (paymentMethods.length > 0 && !selectedMethod) {
+      setSelectedMethod(paymentMethods[0].id);
+    }
+  }, [paymentMethods, selectedMethod]);
 
+const handlePaySubmit = async () => {
+  if (!selectedMethod) {
+    enqueueSnackbar('يرجى اختيار وسيلة دفع', { variant: 'warning' });
+    return;
+  }
+
+  // Check if cart has items
+  if (!data?.items || data.items.length === 0) {
+    enqueueSnackbar('السلة فارغة', { variant: 'warning' });
+    return;
+  }
+
+  setIsSubmitting(true);
+  try {
+    const requestBody = {
+      paymentMethodId: selectedMethod,
+    };
+
+    const response = await postData(
+      endpoints.payment.post_all_payment,
+      requestBody
+    );
+
+    if (response && !('error' in response)) {
+      enqueueSnackbar('تم الدفع بنجاح', { variant: 'success' });
+      setOpenSuccess(true);
+      invalidateTag(FetchTags.PaymentMethod);
+        // router.push(paths.controlPanel.products.list);
+    } else if ('error' in response) {
+      enqueueSnackbar(response.error || 'فشلت عملية الدفع', { variant: 'error' });
+    } else {
+      // If we get here, assume success (since 204 returns empty response)
+      enqueueSnackbar('تم الدفع بنجاح', { variant: 'success' });
+      setOpenSuccess(true);
+    }
+  } catch (error) {
+    enqueueSnackbar('حدث خطأ غير متوقع', { variant: 'error' });
+  } finally {
+    setIsSubmitting(false);
+  }
+};
   return (
-<Container
-      sx={{
-        py: { xs: 8, md: 12 },
-        direction: 'rtl',
-      }}
-    >
-    <Box sx={{ p: 3 }} dir="rtl">
-      <Grid container spacing={4} sx={{ maxWidth: 1200, mx: 'auto' }}>
-       
-        <Grid item xs={12} md={7}>
-          <Typography variant="h5" fontWeight={700} sx={{ mb: 3 }}>
-            إتمام الدفع
-          </Typography>
+    <Container sx={{ py: { xs: 12, md: 10 }, px: { xs: 1, sm: 1 }, mt: 5 }}>
+      <Box dir="rtl">
+        <Grid container spacing={4} sx={{ maxWidth: 1200, mx: 'auto' }}>
 
-          
-          <Card sx={{ p: 2, mb: 2, cursor: 'pointer' }} onClick={() => setSelectedMethod('master')}>
-            <Box sx={{ display: 'flex', alignItems: 'center', }}>
-              <Radio checked={selectedMethod === 'master'} />
-              <Image src="/assets/courses/icons/visa_mastercard.svg" />
-            </Box>
-          </Card>
-
-          
-          <Card sx={{ p: 2, mb: 2, cursor: 'pointer' }} onClick={() => setSelectedMethod('paypal')}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <Radio checked={selectedMethod === 'paypal'} />
-              <Image src="/assets/courses/icons/paypal.svg" />
-            </Box>
-          </Card>
-
-          
-          <Card sx={{ p: 2, mb: 2, cursor: 'pointer' }} onClick={() => setSelectedMethod('apple')}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <Radio checked={selectedMethod === 'apple'} />
-              <Image src="/assets/courses/icons/apple_pay.svg" />
-            </Box>
-          </Card>
-
-          
-          <Typography fontWeight={600} sx={{ mt: 3, mb: 1 }}>
-            كوبون خصم
-          </Typography>
-
-          <Box sx={{ position: 'relative', width: '100%' }}>
-            <TextField
-              fullWidth
-              placeholder="كود الخصم"
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  borderRadius: '10px',
-                },
-              }}
-            />
-
-            <IconButton
-              sx={{
-                position: 'absolute',
-                right: 5,
-                top: '50%',
-                transform: 'translateY(-50%)',
-              }}
-            >
-              <ArrowBackIcon />
-            </IconButton>
-          </Box>
-        </Grid>
-
-       
-        <Grid item xs={12} md={5}>
-          <Card sx={{ boxShadow: 2, p: 2 }}>
-            <Typography fontWeight={700} sx={{ mb: 2 }}>
-              لديك {cartItems.length} دورات
-            </Typography>
-
-           
-{cartItems.map((item) => (
-  <Box
-    key={item.id}
-    sx={{
-      mb: 2,
-      pb: 1,
-      borderBottom: '1px solid #eee',
-    }}
-  >
-    <Box sx={{ display: 'flex', gap: 2 }}>
-      <Box
-        component="img"
-        src={item.image}
-        alt={item.title}
-        sx={{
-          width: 120,
-          height: 90,
-          borderRadius: 2,
-          objectFit: 'cover',
-        }}
-      />
-
-      <Box sx={{ flex: 1 }}>
-        <Typography fontWeight={600}>{item.title}</Typography>
-
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            mt: 1,
-          }}
-        >
-          
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Avatar sx={{ bgcolor: '#e0e0e0' }}>
-              <Image src="/assets/landing-page/live-sessions/instructors/instructor.png" />
-            </Avatar>
-            <Typography color="gray">{item.instructor}</Typography>
-          </Box>
-
-          
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Typography
-              sx={{
-                textDecoration: 'line-through',
-                color: 'gray',
-                fontSize: 14,
-              }}
-            >
-              ${item.originalPrice.toFixed(2)}
-            </Typography>
-
-            <Typography fontWeight={700} sx={{ color: '#54B0D7', fontSize: 16 }}>
-              ${item.price.toFixed(2)}
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
-    </Box>
-  </Box>
-))}
-
-
-            <Divider sx={{ my: 2 }} />
-
-            
-<Typography
-  variant="h6"
-  fontWeight={700}
-  sx={{ mb: 2, fontSize: 16 }}
->
-  تفاصيل الدفع
-</Typography>
-
-{[1, 2, 3, 4].map((i) => (
-  <Box
-    key={i}
-    sx={{
-      display: 'flex',
-      justifyContent: 'space-between',
-      mb: 1,
-    }}
-  >
-    <Typography color="gray" sx={{ fontSize: 14 }}>
-      تثبيت رسوم الضيف
-    </Typography>
-    <Typography fontWeight={500} sx={{ fontSize: 14 }}>
-      150 درهم
-    </Typography>
-  </Box>
-))}
-
-<Box
-  sx={{
-    display: 'flex',
-    justifyContent: 'space-between',
-    mb: 1,
-  }}
->
-  <Typography color="gray" sx={{ fontSize: 14 }}>
-    ضريبة القيمة المضافة
-  </Typography>
-  <Typography fontWeight={500} sx={{ fontSize: 14 }}>
-    94 درهم
-  </Typography>
-</Box>
-
-<Box
-  sx={{
-    display: 'flex',
-    justifyContent: 'space-between',
-    mb: 1,
-  }}
->
-  <Typography color="gray" sx={{ fontSize: 14 }}>
-    خصم
-  </Typography>
-  <Typography sx={{ color: 'green', fontSize: 14 }}>0 درهم</Typography>
-</Box>
-
-<Divider sx={{ my: 1.5 }} />
-
-<Box
-  sx={{
-    display: 'flex',
-    justifyContent: 'space-between',
-    mb: 0.5,
-  }}
->
-  <Typography color="gray" sx={{ fontSize: 14 }}>
-    الإجمالي
-  </Typography>
-  <Typography fontWeight={600} sx={{ fontSize: 15 }}>
-    495 درهم
-  </Typography>
-</Box>
-
-<Box
-  sx={{
-    display: 'flex',
-    justifyContent: 'space-between',
-    mb: 1,
-  }}
->
-  <Typography fontWeight={700} sx={{ fontSize: 15 }}>
-    الإجمالي بعد الخصم
-  </Typography>
-  <Typography fontWeight={800} variant="h6" sx={{ fontSize: 18 }}>
-    ${calculateTotal()}
-  </Typography>
-</Box>
-
-
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{
-                backgroundColor: '#00bcd4',
-                mt: 2,
-                '&:hover': { backgroundColor: '#0097a7' },
-              }}
-              onClick={handlePay} 
-            >
+          {/* الجانب الأيمن: وسائل الدفع */}
+          <Grid item xs={12} md={7}>
+            <Typography variant="h5" fontWeight={700} sx={{ mb: 3 }}>
               إتمام الدفع
-            </Button>
-          </Card>
+            </Typography>
+
+            {paymentMethods.map((method) => (
+              <Card
+                key={method.id}
+                sx={{
+                  p: 2.5,
+                  mb: 2,
+                  cursor: isSubmitting ? 'default' : 'pointer',
+                  border: selectedMethod === method.id ? '2px solid #00bcd4' : '1px solid #ddd',
+                  transition: '0.2s',
+                  opacity: isSubmitting ? 0.7 : 1,
+                  '&:hover': { boxShadow: isSubmitting ? 0 : 3 },
+                }}
+                onClick={() => !isSubmitting && setSelectedMethod(method.id)}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Radio checked={selectedMethod === method.id} color="primary" />
+                    <Typography fontWeight={600} sx={{ fontSize: 16 }}>{method.name}</Typography>
+                  </Box>
+
+                  <Box sx={{ width: 70, height: 40, display: 'flex', alignItems: 'center' }}>
+                    <img
+                      src={method.logo}
+                      alt={method.name}
+                      style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+                    />
+                  </Box>
+                </Box>
+              </Card>
+            ))}
+
+            <Typography fontWeight={600} sx={{ mt: 4, mb: 1 }}>كوبون خصم</Typography>
+            <Box sx={{ position: 'relative' }}>
+              <TextField
+                fullWidth
+                placeholder="أدخل كود الخصم"
+                disabled={isSubmitting}
+                sx={{ '& .MuiOutlinedInput-root': { borderRadius: '10px' } }}
+              />
+              <IconButton sx={{ position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)' }}>
+                <ArrowBackIcon sx={{ transform: 'rotate(180deg)' }} />
+              </IconButton>
+            </Box>
+          </Grid>
+
+          {/* الجانب الأيسر: ملخص الطلب */}
+          <Grid item xs={12} md={5}>
+            <Card sx={{ p: 3, boxShadow: 2, position: { md: 'sticky' }, top: 100 }}>
+              <Typography fontWeight={700} sx={{ mb: 3, fontSize: 18 }}>
+                ملخص الطلب ({cartItemsList.length} عناصر)
+              </Typography>
+
+              <Box sx={{ maxHeight: 300, overflowY: 'auto', mb: 2 }}>
+                {cartItemsList.map((item) => (
+                  <Box key={item.cartItemId} sx={{ mb: 2, pb: 2, borderBottom: '1px solid #eee', display: 'flex', gap: 2 }}>
+                    <Avatar
+                      src={item.imageUrl || ''}
+                      variant="rounded"
+                      sx={{ width: 60, height: 60 }}
+                    />
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="subtitle2" fontWeight={700} noWrap>{item.title}</Typography>
+                      <Typography variant="caption" color="text.secondary">{item.itemType}</Typography>
+                      <Typography variant="subtitle2" sx={{ color: '#00bcd4', mt: 0.5 }}>{item.price} درهم</Typography>
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+
+              <Divider sx={{ my: 2 }} />
+
+              <Box sx={summaryRowStyle}>
+                <Typography color="text.secondary">المجموع الفرعي</Typography>
+                <Typography fontWeight={600}>{summary?.subTotal} درهم</Typography>
+              </Box>
+              <Box sx={summaryRowStyle}>
+                <Typography color="text.secondary">الضريبة  {summary?.taxRate}٪</Typography>
+                {/* <Typography fontWeight={600}>{summary?.taxRate}٪</Typography> */}
+                <Typography fontWeight={600}>{summary?.vat} درهم</Typography>
+              </Box>
+              <Box sx={summaryRowStyle}>
+                <Typography color="text.secondary">ربح المنصة  {summary?.platformProfitPercentage}٪</Typography>
+                {/* <Typography fontWeight={600}>{summary?.taxRate}٪</Typography> */}
+                <Typography fontWeight={600}>{summary?.platformProfit} درهم</Typography>
+              </Box>
+              <Box sx={summaryRowStyle}>
+                <Typography color="text.secondary">الخصم</Typography>
+                <Typography sx={{ color: 'error.main', fontWeight: 600 }}>-{summary?.discount} درهم</Typography>
+              </Box>
+
+              <Divider sx={{ my: 2 }} />
+
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 3 }}>
+                <Typography fontWeight={800}>الإجمالي النهائي</Typography>
+                <Typography variant="h5" fontWeight={800} color="primary">{summary?.totalAfterDiscount} درهم</Typography>
+              </Box>
+
+              <Button
+                fullWidth
+                variant="contained"
+                size="large"
+                onClick={handlePaySubmit}
+                disabled={isSubmitting || !selectedMethod}
+                sx={{
+                  py: 1.5,
+                  borderRadius: '12px',
+                  bgcolor: '#00bcd4',
+                  fontSize: 17,
+                  '&:hover': { bgcolor: '#0097a7' }
+                }}
+              >
+                {isSubmitting ? <CircularProgress size={24} color="inherit" /> : 'تأكيد الدفع الآن'}
+              </Button>
+            </Card>
+          </Grid>
         </Grid>
-      </Grid>
-      <SuccessPurchaseDialog
-        open={openSuccess}
-        onClose={() => setOpenSuccess(false)}
-      />
-    </Box>
+
+        <SuccessPurchaseDialog open={openSuccess} onClose={() => setOpenSuccess(false)} />
+      </Box>
     </Container>
   );
 }
+
+const summaryRowStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  mb: 1.5,
+};

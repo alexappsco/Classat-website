@@ -1,8 +1,7 @@
-import { Container, Grid, Box, Button, Stack, Typography } from '@mui/material';
+import { text } from 'src/theme/palette';
+import { Box, Grid, Stack, Container, Typography } from '@mui/material';
 
 import InstructorCard from './InstructorCard';
-
-import { text, primary } from 'src/theme/palette';
 const INSTRUCTORS = [
   {
     image: '/assets/landing-page/top-instructors/instructor1.png',

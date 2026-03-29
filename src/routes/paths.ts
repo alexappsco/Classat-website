@@ -1,3 +1,4 @@
+import MyCoursesCard from "src/sections/mycourses/mycoursecard";
 
 const ROOTS = {
   AUTH: '/auth',
@@ -7,7 +8,7 @@ const ROOTS = {
 export const paths = {
   // AUTH
   auth: {
-    login: '/auth/login',
+    login: '/',
     forgotPassword: '/auth/forgot-password',
     register: `${ROOTS.AUTH}/jwt/register`,
 
@@ -18,98 +19,42 @@ export const paths = {
   // Control Panel
   controlPanel: {
     main: '/',
+    mainCourse: '/courses',
+    mainCurricula: '/curricula',
     profile: {
-      viewProfileEdit: '/edit-profile'
+      viewProfileEdit: '/profile'
     },
-    categories: {
-      list: '/categories',
-      single: (id: string) => `/categories/${id}`,
+    technicalSupport: {
+      list: '/technical-support',
     },
-    subCategories: {
-      list: '/sub-categories',
-      single: (id: string) => `/sub-categories/${id}`,
+    mycourses: {
+      list: '/mycourses',
+      single: (id: string) => `/mycourses/${id}`,
     },
-    products: {
-      list: '/products',
-      single: (id: string) => `/products/${id}`,
-      new: '/products/new',
-      details: (id: string) => `/products/details/${id}`,
+    mylivecourses: {
+      list: '/courses/myLive',
+      single: (id: string) => `/courses/myLive/${id}`,
     },
-    orders: {
-      list: '/orders',
-      single: (id: string) => `/orders/${id}`,
+    myliveSubject: {
+      list: '/curricula/myLive',
+      single: (id: string) => `/curricula/myLive/${id}`,
     },
-    returnOrders: {
-      list: '/orders/return-orders',
-      single: (id: string) => `/orders/return-orders/${id}`,
+    nextlessons: {
+      list: '/curricula/nextlessons/'
     },
-    units: {
-      list: '/products/units',
+    all_courses: {
+      list: (categoryId: string) => `/courses/all/${categoryId}`,
     },
-    marketings: {
-      root: '/marketings',
-      offers: {
-        list: '/marketings/offers',
-        new: '/marketings/offers/new',
-        edit: (id: string) => `/marketings/offers/${id}`,
-      },
-      banners: {
-        list: '/marketings/banners',
-        single: (id: string) => `/marketings/banners/${id}`,
-        new: '/marketings/banners/new',
-      },
-      barcodeDiscount: {
-        list: '/marketings/coupons',
-        new: '/marketings/coupons/new',
-      },
-      notifications: {
-        list: '/marketings/notifications',
-        new: '/marketings/notifications/new',
-      },
+    Curricula: {
+      live: '/curricula/live',
+      nextlisson: '/curricula/nextlessons',
+      mycourses: '/curricula/all-courses',
+      myPackages: '/curricula/myPackages',
     },
-    workArea: {
-      list: '/work-area',
-      single: (id: string) => `/work-area/${id}`,
-      new: '/work-area/new',
-      edit: (id: string) => `/work-area/${id}`,
+    liveCourses: {
+      list: '/courses/live',
     },
-    users: {
-      root: '/users',
-      drivers: {
-        list: '/users/drivers',
-        driverOrders: (id: string) => `/users/drivers/orders/${id}`,
-        edit: (id: string) => `/users/drivers/edit/${id}`,
-        single: (id: string) => `/users/drivers/${id}`,
-      },
-      clients: {
-        list: '/users/clients',
-        edit: (id: string) => `/users/clients/edit/${id}`,
-        single: (id: string) => `/users/clients/${id}`,
-      },
-      employee: {
-        list: '/users/employee',
-        edit: (id: string) => `/users/employee/edit/${id}`,
-        register: '/users/employee/register',
-        single: (id: string) => `/users/employees/${id}`,
-      },
-    },
-    policy: {
-      root: '/policy',
-      PrivacyPolicy: {
-        list: '/policy/privacy-policy', // Matches your privacy policy path
-      },
-      ReturnPolicy: {
-        list: '/policy/return-policy', // Matches your return policy path
-      },
-    },
-    contactUs: {
-      list: '/contact-us',
-    },
-    reports: {
-      list: '/reports',
-    },
-    deliveryFees: {
-      list: '/delivery-fees'
-    }
+
+
   },
 };

@@ -20,10 +20,10 @@ const SearchBar = () => {
   };
 
   return (
-    <Box sx={{ py: { xs: 8, md: 10 }, px: { xs: 4, md: 6 }, direction: 'ltr' }}>
+    <Box sx={{ pt: { xs: 8, md: 10 }, px: { xs: 4, md: 6 }, direction: 'ltr' }}>
       <Container
       sx={{
-        py: { xs: 8, md: 12 },
+        py: { xs: 8, md: 6 },
         direction: 'rtl',
       }}
     >

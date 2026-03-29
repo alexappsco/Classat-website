@@ -1,11 +1,9 @@
 'use client';
-import Header from 'src/layouts/dashboard/header';
-import { primary } from 'src/theme/palette';
+;
 import HeroSection from './Hero';
 import LearningMethods from './learning-methods/LearningMethods';
 import SectionHeader from './section-header/SectionHeader';
 import SpecializationSection from './specializations/SpecializationSection';
-import HowItWorkCard from './how-it-works/HowItWorkCard';
 import HowItWorksSection from './how-it-works/HowItWorkSection';
 import LiveSessionsSection from './live-sessions/LiveSessionSection';
 import InstructorsSection from './top-instructor/TopInstructorsSection';
@@ -13,8 +11,19 @@ import SuggestedCoursesSection from './suggested-courses/SuggestedCoursesSection
 import { Box } from '@mui/material';
 import TestimonialsSection from './testimonials/TestimonialsSection';
 import JoinUsSection from './join-us/JoinUsSection';
+import { useJwtAuth } from 'src/auth/jwt-context';
+
+import { useEffect } from 'react';
 
 export const LandingPage = () => {
+  const { logout } = useJwtAuth();
+
+
+  // Only logout on the client side and only once when component mounts
+  useEffect(() => {
+    logout();
+  }, [logout]);
+
   return (
     <>
       {/* <Header /> */}

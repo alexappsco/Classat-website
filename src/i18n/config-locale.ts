@@ -1,10 +1,10 @@
-export type LocaleType = 'en' | 'ar';
+export type LocaleType =  'ar' |'en';
 
 interface LocaleSetting {
   label: string;
   // value: LocaleType;
   value:string;
-  dir: 'ltr' | 'rtl';
+  dir: 'rtl' | 'ltr';
   currency: string;
   icon: string;
   numberFormat: {

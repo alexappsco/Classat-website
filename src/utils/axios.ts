@@ -1,5 +1,4 @@
-// import axios from 'axios';
-// import { HOST_API } from 'src/config-global';
+
 import Cookie from 'js-cookie';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
@@ -8,46 +7,49 @@ import { HOST_API, HOST_API_SHARED } from 'src/config-global';
 import { ACCESS_TOKEN } from '../auth/constants';
 // ----------------------------------------------------------------------
 
-const axiosInstance = axios.create({ baseURL: HOST_API });
 
-// Add a request interceptor
-// axiosInstance.interceptors.request.use(
-//   (config) => {
-//     config.headers['Content-Type'] = 'application/json';
 
-//     return config;
-//   },
-//   (error) => Promise.reject(error)
-// );
+const axiosInstance = axios.create({
+  baseURL: HOST_API,
+});
 
-// // Add a response interceptor (optional)
-// axiosInstance.interceptors.response.use(
-//   (response) => response?.data,
-//   (error) => {
-//     const status = error.response?.status || 500;
-//     const message = getErrorMessage(error.response.data);
-//     // Handle errors
-//     return Promise.reject({ message, status });
-//   }
-// );
-// export default axiosInstance;
+// Request interceptor
+axiosInstance.interceptors.request.use(
+  (config) => {
+    // خلي Axios يحدد النوع تلقائيًا
+    if (!(config.data instanceof FormData)) {
+      config.headers['Content-Type'] = 'application/json';
+    }
+
+    // ضيف التوكن لو موجود
+    const token =
+      typeof window !== 'undefined'
+        ? localStorage.getItem('accessToken')
+        : null;
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response interceptor
+axiosInstance.interceptors.response.use(
+  (response) => response, // رجّع الـ response كامل
+  (error) => {
+    // سيب الـ error زي ما هو
+    return Promise.reject(error);
+  }
+);
+
+export { axiosInstance };
+
 // ----------------------------------------------------------------------
 
-// export const getErrorMessage = (error: unknown): string => {
-//   let message: string;
-//   if (error instanceof Error) {
-//     // eslint-disable-next-line prefer-destructuring
-//     message = error.message;
-//   } else if (error && typeof error === 'object' && 'message' in error) {
-//     message = String(error.message);
-//   } else if (typeof error === 'string') {
-//     message = error;
-//   } else {
-//     message = 'Something went wrong';
-//   }
-//   return message;
-// };
-/* eslint-disable prefer-destructuring */
+
 
 
 export interface Params {
@@ -70,7 +72,7 @@ const apiClient: AxiosInstance = axios.create({
 });
 
 const SharedApiClient: AxiosInstance = axios.create({
-  baseURL: HOST_API_SHARED,
+  baseURL: process.env.NEXT_PUBLIC_HOST_API_SHARED,
   headers: {
     'Content-Type': 'application/json',
     'Accept-Language': Cookie.get('Language') ? Cookie.get('Language') : 'en',
@@ -79,13 +81,7 @@ const SharedApiClient: AxiosInstance = axios.create({
     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
   },
 });
-axios.interceptors.request.use(
-  (config) => {
-    config.headers['Accept-Language'] = Cookie.get('Language');
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+
 
 apiClient.interceptors.response.use(
   (response) => response,
@@ -99,6 +95,7 @@ SharedApiClient.interceptors.response.use(
 
 export default apiClient;
 export { apiClient, SharedApiClient };
+
 
 export const baseUrl = HOST_API;
 export const sharedBaseUrl = HOST_API_SHARED;
@@ -158,13 +155,41 @@ export const getErrorMessage = (error: any): string => {
   return first || 'Something went wrong';
 };
 
+
+
+
 export const endpoints = {
   auth: {
-    login: '/auth/email-login',
-    register: '/users/register',
-    forgetPassword: '/users/request-forget-password',
-    verifyforgetPassword: '/users/verify-forget-password',
-    verifyOtpLogin: '/users/verify-phone-login',
-    sendQuestions: '/users/questions',
+    logout: '/shared/auth/logout',
+    sendOtp: '/shared/auth/otp/send',
+    verifyOtp: '/shared/auth/otp/verify',
+    verifyOtpLogin: '/shared/auth/otp/verify',
+    register: '/students/register',
+    refreshToken: '/shared/auth/refresh-token',
+    forgetPassword: '/shared/users/request-forget-password',
+    // sendOtp: '/shared/auth/send-otp',
+    // verifyOtp: '/shared/auth/verify-otp',
+
   },
+  country:{
+    get: '/shared/location/countries',
+  },
+  EducationApproach:
+  {
+    type:'/shared/education/approaches',
+    typeMap:'/shared/education/mappings/approach-type',
+    typeStage:'/shared/education/mappings/approach-type-stages',
+    typeStageGrade:'/shared/education/mappings/approach-type-stage-grades',
+
+  },
+  profile: {
+    get: '/students/profile',
+    update: '/students/profile/update',
+  },
+  post_payment: '/shared/payment-methods',
+  get_payment: '/shared/payment-methods',
+  liveCourse:{
+  get: "/students/live-session-courses"
+},
+
 };

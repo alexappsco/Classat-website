@@ -21,9 +21,10 @@ import RHFOTP from 'src/components/hook-form/rhf-otp';
 import { memo, useMemo, useState, useEffect } from 'react';
 import { Link, IconButton, InputAdornment } from '@mui/material';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
-import { verifyOtp, requestOtp, resetPassword } from 'src/auth/auth-actions';
+import { VerifyLoginOtp, SendLoginOtp } from 'src/actions/auth';
 
 import { EMAIL_REGEX } from './config-auth';
+import { ResetPassword } from 'src/actions/auth';
 
 YupPassword(Yup);
 // ----------------------------------------------------------------------
@@ -77,7 +78,7 @@ export default function ForgotPasswordView() {
       )}
 
       {step === 3 && (
-        <NewPasswordStep onNextStep={handleNextStep} onBackStep={handleBackStep} token={token} />
+        <NewPasswordStep onNextStep={handleNextStep} onBackStep={handleBackStep} token={token} email={email}/>
       )}
     </Box>
   );
@@ -113,7 +114,7 @@ function EmailStep({ onNextStep, setEmail }: StepProps & { setEmail: (email: str
   const onSubmit = handleSubmit(async (data) => {
     try {
       loading.onTrue();
-      await requestOtp(data.email);
+      await SendLoginOtp({ channel: 'Email', value: data.email, role: 'Student' });
       setEmail(data.email);
       onNextStep();
     } catch (error) {
@@ -221,7 +222,7 @@ function OtpStep({
   const onSubmit = handleSubmit(async (data) => {
     try {
       loading.onTrue();
-      const response = await verifyOtp(email, data.otp);
+      const response = await VerifyLoginOtp({ channel: 'Email', value: email, otp: data.otp });
       setToken(response.accessToken);
       onNextStep();
     } catch (error) {
@@ -316,7 +317,7 @@ const ResendOtp = memo(({ email }: { email: string }) => {
 
   const handleResendOtp = async () => {
     try {
-      await requestOtp(email);
+      await SendLoginOtp({ channel: 'Email', value: email, role: 'Student' });
       setCounter(60);
     } catch (error) {
       enqueueSnackbar(error.message, { variant: 'error' });
@@ -346,7 +347,7 @@ const ResendOtp = memo(({ email }: { email: string }) => {
   );
 });
 
-function NewPasswordStep({ onBackStep, token }: StepProps & { token: string }) {
+function NewPasswordStep({ onBackStep, token, email }: StepProps & { token: string; email: string }) {
   const t = useTranslations();
   const router = useRouter();
   const loading = useBoolean();
@@ -387,10 +388,10 @@ function NewPasswordStep({ onBackStep, token }: StepProps & { token: string }) {
   const onSubmit = handleSubmit(async (data) => {
     try {
       loading.onTrue();
-      await resetPassword({
+      await ResetPassword({
         newPassword: data.password,
-        confirmPassword: data.confirmPassword,
-        token,
+        code: token,
+        email: email,
       });
       router.push(paths.auth.login);
     } catch (error) {

@@ -78,7 +78,7 @@ export default function HeroSection() {
         spacing={2}
         justifyContent={{ xs: 'center', md: 'flex-start' }}
       >
-        <Link href="/ar/lisson/" passHref>
+        <Link href="/ar/curricula/" passHref>
           <Button
             variant="contained"
             size="large"

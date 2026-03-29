@@ -1,9 +1,8 @@
-import { Box, Card, Typography, Stack, Button, Chip, alpha } from '@mui/material';
+'use client';
+
 import { useTheme } from '@mui/material/styles';
-import { repeat } from 'lodash';
-import Image from 'src/components/image';
-import { primary, secondary, shadow, text } from 'src/theme/palette';
-// import StarIcon from '@mui/icons-material/Star'; // Placeholder for the star icon
+import { text, primary, secondary } from 'src/theme/palette';
+import { Box, Card, Chip, Stack, Button, Typography } from '@mui/material';
 
 type InstructorCardProps = (typeof INSTRUCTORS)[0];
 
@@ -29,9 +28,7 @@ export default function InstructorCard({
   const secondaryColor = secondary.main;
   const primaryTextColor = text.primary;
 
-
   return (
-    
     <Card
       sx={{
         pb: 2,
@@ -41,17 +38,16 @@ export default function InstructorCard({
         display: 'flex',
         flexDirection: 'column',
         textAlign: 'center',
-        
+
         overflow: 'visible',
       }}
     >
-      {/* 1. Image and Category Tag Area (Composite Background) */}
       <Box
         sx={{
           position: 'relative',
           height: 150,
-          borderRadius: '8px 8px 0 0', // Rounded corners on top only
-          overflow: 'visible', // Keeps image overflow visible
+          borderRadius: '8px 8px 0 0',
+          overflow: 'visible',
           backgroundColor: primary.main,
         }}
       >
@@ -71,7 +67,6 @@ export default function InstructorCard({
           }}
         />
 
-        {/* Instructor Image (PNG) - Positioned to slightly exit the card boundary */}
         <Box
           component="img"
           src={image}
@@ -79,19 +74,17 @@ export default function InstructorCard({
           sx={{
             position: 'absolute',
             width: 200,
-            height: 'auto', // Fixed height
-            top: -93, // Push the image down to exit the card slightly
+            height: 'auto',
+            top: -93,
             left: '50%',
-            transform: 'translateX(-50%)', // Center the image horizontally
+            transform: 'translateX(-50%)',
             objectFit: 'contain',
             zIndex: 5,
           }}
         />
       </Box>
 
-      {/* 2. Content and Rating Area (Below the image, padded to clear the image overlap) */}
       <Stack spacing={1.5} sx={{ p: 2, flexGrow: 1, alignItems: 'flex-end', pt: 4 }}>
-        {/* Instructor Name */}
         <Typography variant="h6" sx={{ fontWeight: 600, color: primaryTextColor }}>
           الاستاذ / {name}
         </Typography>
@@ -104,13 +97,11 @@ export default function InstructorCard({
           justifyContent="space-between"
           width={'100%'}
         >
-          {/* Rating Stars (PNG Image) */}
           <Stack direction="row">
             {Array.from({ length: rating }).map((_, i) => (
               <Box
                 key={i}
                 component="img"
-                // Local path for the star image
                 src="/assets/icons/rating/star.png"
                 alt="Star rating"
                 sx={{ width: 16, height: 16, objectFit: 'contain', mx: 0.2 }}
@@ -140,22 +131,20 @@ export default function InstructorCard({
 
       {/* 3. Profile Button */}
       <Button
-        variant="outlined"
+        variant="contained"
         size="medium"
         sx={{
-          py: 1.5,
-          color: primaryTextColor,
-          borderColor: primaryColor,
-          '&:hover': {
-            borderColor: primaryColor,
-            bgcolor: alpha(primaryColor, 0.08),
-          },
-          borderRadius: '30px',
+          backgroundColor: primary.main,
+          color: 'white',
           width: '90%',
           m: 'auto',
+          borderTopLeftRadius: theme.spacing(4),
+          borderTopRightRadius: theme.spacing(4),
+          borderBottomLeftRadius: theme.spacing(4),
+          borderBottomRightRadius: theme.spacing(4),
         }}
       >
-        عرض الملف الشخصي
+        احجز الآن
       </Button>
     </Card>
   );

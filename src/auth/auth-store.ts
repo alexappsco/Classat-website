@@ -1,15 +1,20 @@
+
 import { create } from 'zustand';
 import { Profile } from 'src/types/prof';
+import { paths } from 'src/routes/paths';
 
-import { login, refreshSession } from './auth-actions';
+import { login, verifyOtpApi, refreshSession } from './auth-actions';
+import { LoginCretentials, VerifyCretentials } from './types';
 import { saveSession, removeSession, restoreSession } from './auth-utils';
 
 type AuthStore = {
   loading: boolean;
   authenticated: boolean;
   user: any | null;
-  login: (credentials: { email: string; password: string }) => Promise<void | { error: string }>;
-  verifyOtp: (otp: string) => Promise<void | { error: string }>;
+  accessToken: string | null;
+  refreshToken: string | null;
+  login: (credentials: LoginCretentials) => Promise<{ error?: string; redirectTo?: string }>;
+  verifyOtp: (credentials: VerifyCretentials) => Promise<{ error?: string }>;
   init: () => Promise<void | { accessTokenExp: number }>;
   logout: () => Promise<void>;
   updateProfile: (updates: Partial<Profile>) => void;
@@ -19,93 +24,109 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
   loading: true,
   authenticated: false,
   user: null,
+  accessToken: null,
+  refreshToken: null,
 
-   login: async ({ email, password }) => {
-    try {
-      const credentials = {
-        email,
-        password,
-      };
+  // --- LOGIN REQUEST ---
+  login: async (credentials) => {
+    const res = await login(credentials);
 
-      const { user, accessToken, refreshToken } = await login(credentials);
-
-      await saveSession({ user, accessToken, refreshToken });
-
-      set({ authenticated: true, user });
-    } catch (error) {
-      return {
-        error: error.message,
-      };
+    if (!res.success) {
+      return { error: res.message };
     }
+
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('phoneNumber', credentials.value);
+      localStorage.setItem('verifyReferrer', paths.auth.login);
+    }
+
+    return { redirectTo: '/auth/verify' };
   },
-  verifyOtp: async (otp) => {
+
+  // --- OTP VERIFICATION ---
+  verifyOtp: async (credentials) => {
     try {
-      await new Promise((resolve, reject) => {
-        setTimeout(() => {
-          if (otp === '1234') {
-            resolve({});
-          } else {
-            reject(new Error('Invalid OTP'));
-          }
-        }, 500);
+      const session = await verifyOtpApi(credentials);
+
+      // Save to cookies via utility
+      await saveSession(session);
+
+      set({
+        authenticated: true,
+        user: session.user,
+        accessToken: session.accessToken.value,
+        refreshToken: session.refreshToken.value,
+        loading: false,
       });
-    } catch (error) {
-      return {
-        error: error.message,
-      };
+
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('phoneNumber');
+        localStorage.removeItem('verifyReferrer');
+      }
+      return {};
+    } catch (error: any) {
+      return { error: error.message };
     }
   },
 
-init: async () => {
-    const errorFunc = async () => {
+  // --- INITIALIZE APP (Refresh Token Flow) ---
+  init: async () => {
+    const clearAuth = async () => {
       await removeSession();
-      set({ loading: false });
+      set({ loading: false, authenticated: false, user: null, accessToken: null, refreshToken: null });
     };
 
-    const refreshToken = await restoreSession();
-    if (refreshToken) {
-      try {
-        const { user, accessToken, refreshToken } = await refreshSession();
-
-        await saveSession({ user, accessToken, refreshToken });
-        set({ loading: false, authenticated: true, user });
-        return {
-          accessTokenExp: new Date(accessToken.expire).getTime() - new Date().getTime() - 60 * 1000,
-        };
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.log(error);
-        errorFunc();
+    try {
+      const tokenExists = await restoreSession();
+      if (!tokenExists) {
+        await clearAuth();
+        return;
       }
-    } else {
-      errorFunc();
+
+      const session = await refreshSession();
+      await saveSession(session);
+
+      set({
+        loading: false,
+        authenticated: true,
+        user: session.user,
+        accessToken: session.accessToken.value,
+        refreshToken: session.refreshToken.value,
+      });
+
+      // Calculate time until next refresh (minus 1 minute buffer)
+      const expireTime = new Date(session.accessToken.expire).getTime();
+      const accessTokenExp = expireTime - new Date().getTime() - 60 * 1000;
+
+      return { accessTokenExp };
+    } catch (error) {
+      await clearAuth();
     }
   },
 
- 
- logout: async () => {
+  // --- LOGOUT ---
+  logout: async () => {
     const { user } = get();
-    // Clean up temporary image URLs using image property
     if (user?.image?.startsWith('blob:')) {
       URL.revokeObjectURL(user.image);
     }
-    
+
     await removeSession();
-    set({ authenticated: false, user: null, loading: false });
+    set({ authenticated: false, user: null, accessToken: null, refreshToken: null, loading: false });
   },
+
+  // --- UPDATE PROFILE ---
   updateProfile: (updates) => {
     set((state) => {
       if (!state.user) return state;
-      
-      // Handle image cleanup
+
       const currentImage = state.user.image;
       const newImage = updates.image;
-      
-      // Revoke old temporary URL if being replaced
+
       if (currentImage?.startsWith('blob:') && currentImage !== newImage) {
         URL.revokeObjectURL(currentImage);
       }
-      
+
       return {
         user: {
           ...state.user,
@@ -115,8 +136,4 @@ init: async () => {
       };
     });
   },
-  //  updateProfile: (updates) => 
-  //   set((state) => ({
-  //     user: state.user ? { ...state.user, ...updates } : null
-  //   })),
 }));

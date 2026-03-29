@@ -8,6 +8,7 @@ import Header from './header';
 import NavMini from './nav-mini';
 import NavVertical from './nav-vertical';
 import NavHorizontal from './nav-horizontal';
+import Footer from './footer';
 
 // ----------------------------------------------------------------------
 
@@ -32,56 +33,13 @@ export default function DashboardLayout({ children }: Props) {
 
   const renderNavVertical = <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />;
 
-  // if (isHorizontal) {
-  //   return (
-  //     <>
-  //       <Header />
-
-  //       {/* {lgUp ? renderHorizontal : renderNavVertical} */}
-
-  //       {children}
-  //       {/* <Main></Main> */}
-  //     </>
-  //   );
-  // }
-
-  // if (isMini) {
-  //   return (
-  //     <>
-  //       <Header onOpenNav={nav.onTrue} />
-
-  //       <Box
-  //         sx={{
-  //           minHeight: '100vh',
-  //           display: 'flex',
-  //           flexDirection: { xs: 'column', lg: 'row' },
-  //           alignItems: 'stretch',
-  //         }}
-  //       >
-  //         {lgUp ? renderNavMini : renderNavVertical}
-
-  //         <Main>{children}</Main>
-  //       </Box>
-  //     </>
-  //   );
-  // }
+   
 
   return (
     <>
       <Header />
       {children}
-      {/* <Box
-        sx={{
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: { xs: 'column', lg: 'row' },
-          alignItems: 'stretch',
-        }}
-      >
-        // {renderNavVertical} 
-
-        <Main></Main>
-      </Box> */}
+      <Footer />
     </>
   );
 }

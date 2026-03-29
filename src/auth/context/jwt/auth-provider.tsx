@@ -1,21 +1,20 @@
 'use client';
 
-/* eslint-disable consistent-return */
+
 
 import axios from 'axios';
 import Cookie from 'js-cookie';
-import { useMemo, useEffect, useReducer, useCallback } from 'react';
-
+import { IUser } from 'src/@types/user';
+import { IRegister } from 'src/types/regester';
 import { endpoints, getErrorMessage } from 'src/utils/axios';
-
+import { useMemo, useEffect, useReducer, useCallback } from 'react';
 // import { IUser } from 'src/@types/user';
-import { RefreshToken, LoginWithEmail, VerifyOtpLogin } from 'src/actions/auth';
+import { RefreshToken, LoginWithEmail, VerifyOtpLogin, VerifyLoginOtp } from 'src/actions/auth';
 
 import { AuthContext } from './auth-context';
 import { setSession, isValidToken } from './utils';
 import { USER_KEY, ACCESS_TOKEN } from '../../constants';
 import { AuthUserType, ActionMapType, AuthStateType } from './types';
-import { IUser } from 'src/@types/user';
 
 // ----------------------------------------------------------------------
 /**
@@ -93,7 +92,7 @@ export function AuthProvider({ children }: Readonly<Props>) {
 
   const initialize = useCallback(async () => {
     try {
-      const lang: string = Cookie.get('Language') || 'en';
+      const lang: string = Cookie.get('Language') || 'ar';
       Cookie.set('Language', lang);
       const accessToken = Cookie.get(ACCESS_TOKEN);
       const refreshToken = Cookie.get('refreshToken');
@@ -164,7 +163,7 @@ export function AuthProvider({ children }: Readonly<Props>) {
           id,
           email: userEmail,
           phoneNumber,
-          role,
+          role = 'Student', // Default to Student if no role is provided
           completeTeacherProfile,
         } = res;
         setSession({ accessToken, refreshToken, accessTokenExpireAt, refreshTokenExpireAt });
@@ -194,6 +193,58 @@ export function AuthProvider({ children }: Readonly<Props>) {
       };
     }
   }, []);
+
+  // Unified login with OTP - supports both email and phone
+  const loginWithOtp = useCallback(async (data: {
+  channel: 'Email' | 'Phone';
+  value: string;
+  otp: string;
+}) => {
+  const res = await VerifyLoginOtp(data);
+    try {
+      if (!res?.error) {
+        const {
+          accessToken,
+          refreshToken,
+          accessTokenExpireAt,
+          refreshTokenExpireAt,
+          name,
+          id,
+          email,
+          phoneNumber,
+          role = 'Student', // Default to Student if no role is provided
+          completeTeacherProfile,
+        } = res;
+        setSession({ accessToken, refreshToken, accessTokenExpireAt, refreshTokenExpireAt });
+        sessionStorage.setItem(USER_KEY, JSON.stringify(res));
+        Cookie.set(USER_KEY, name ?? '');
+        dispatch({
+          type: Types.LOGIN,
+          payload: {
+            user: {
+              id,
+              name,
+              email,
+              phoneNumber,
+              role,
+              completeTeacherProfile,
+              accessToken,
+            },
+          },
+        });
+      } else {
+        return res;
+      }
+    } catch (error) {
+      return {
+        error: getErrorMessage(error.error),
+      };
+    }
+  }, []);
+
+ 
+
+
   const loginWithPhone = useCallback(async (phone: string, code: string) => {
     const credentials = {
       phone,
@@ -211,7 +262,7 @@ export function AuthProvider({ children }: Readonly<Props>) {
           id,
           email,
           phoneNumber,
-          role,
+          role = 'Student', // Default to Student if no role is provided
           completeTeacherProfile,
         } = res;
         setSession({ accessToken, refreshToken, accessTokenExpireAt, refreshTokenExpireAt });
@@ -241,12 +292,15 @@ export function AuthProvider({ children }: Readonly<Props>) {
     }
   }, []);
   const register = useCallback(
-    async (email: string, password: string, firstName: string, lastName: string) => {
+    // async (email: string, password: string, firstName: string, lastName: string) => {
+    async (IRegister: IRegister) => {
       const data = {
-        email,
-        password,
-        firstName,
-        lastName,
+        name: IRegister.name,
+        email: IRegister.email,
+        phoneNumber: IRegister.phoneNumber,
+        guardianPhoneNumber: IRegister.guardianPhoneNumber,
+        countryId: IRegister.countryId,
+        learningPreference: IRegister.learningPreference,
       };
 
       const res = await axios.post(endpoints.auth.register, data);
@@ -301,8 +355,9 @@ export function AuthProvider({ children }: Readonly<Props>) {
       register,
       logout,
       loginWithPhone,
+      loginWithOtp,
     }),
-    [login, logout, register, state.user, status, loginWithPhone]
+    [login, logout, register, state.user, status, loginWithPhone, loginWithOtp]
   );
 
   return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;

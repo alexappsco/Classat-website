@@ -5,6 +5,15 @@
     "Categories": {
       "title": "Categories | Classat"
     },
+    "editProfile": {
+      "title": "Edit Profile | Classat"
+    },
+    "Cart": {
+      "title": "Cart |  Classat"
+    },
+    "Payment": {
+      "title": "Payment |  Classat"
+    },
     "SubCategories": {
       "title": "Subcategories | Classat"
     },
@@ -44,6 +53,9 @@
     "ContactUs": {
       "title": "Contact Us | Classat"
     },
+    "Support": {
+      "title": "Technical Support | Classat"
+    },
     "Clients": {
       "title": "Clients | Classat"
     },
@@ -55,19 +67,41 @@
     },
     "DeliveryFees": {
       "title": "Delivery Fees | Classat"
+    },
+    "Terms": {
+      "title": "Terms & Conditions | Classat"
+    },
+    "UpcomingSessions": {
+      "title": " UpcomingSessions  |  Classat"
+    },
+    "mycourses": {
+      "title": " UpcomingSessions  |  Classat"
+    },
+    "AboutUs": {
+      "title": "من نحن | ثمار كلاسات"
+    },
+    "CancellationPolicySection": {
+      "title": "Cancellation Policy | Classat"
     }
   },
   "Nav": {
     "main": "Main",
+    "mycourse": "My Courses",
+    "mylive": "My Live Sessions",
+    "nextlessons": "Next Lessons",
     "logout": "Logout",
     "upcoming_sessions": "Upcoming sessions",
     "live_broadcasts": "Live Broadcasts",
-
+    "curricula": "Curricula",
+    "Curricula": "Curricula",
+    "courses": "Training courses",
+    "Courses": "Courses",
     "categories": "Categories",
     "subcategories": "Subcategories",
     "products": "Products",
     "orders": "Orders",
     "units": "Units",
+    "mycourses": "my Courses",
     "return-orders": "Returned Orders",
     "Marketing": {
       "title": "Offers and Marketings",
@@ -89,11 +123,16 @@
     "contact-us": "Contact Us",
     "Work-area": "Works Area",
     "delivery-fees": "Delivery Fees",
-    "setting": "setting"
+    "setting": "setting",
+    "CancellationPolicy": "Cancellation Policy",
+    "AboutUs": "About Us",
+    "myRecordedLessons": "My Recorded Lessons"
+
   },
   "Global": {
     "title": "Classat",
     "comma": ",",
+    "or": "OR",
     "Date": {
       "sunday": "Sunday",
       "monday": "Monday",
@@ -133,11 +172,13 @@
     "Label": {
       "name_ar": "Name in Arabic",
       "name_en": "Name in English",
+      "phone_Parent": "Parent Phone Number",
       "description_ar": "Description in Arabic",
       "description_en": "Description in English",
       "min_selection": "Min Selection",
       "max_selection": "Max Selection",
       "email": "Email Address",
+      "country": "country",
       "phone": "Phone Number",
       "password": "Password",
       "confirm_password": "Confirm Password",
@@ -187,7 +228,11 @@
       "new_password": "New Password",
       "confirm_new_password": "Confirm New Password",
       "basic_data": "Basic Data",
-      "change_password": "Change Password"
+      "change_password": "Change Password",
+      "Cancelled": "Cancelled",
+      "Completed": "Completed",
+      "InProgress": "In Progress",
+      "Scheduled": "Scheduled"
     },
     "Helper": {
       "drop_or_select": "Drop files here or click <browse>browse</browse> through your machine",
@@ -217,6 +262,9 @@
       "next": "Next",
       "finish": "Finish",
       "register": "Register"
+    },
+    "Actions": {
+      "confirm": "Confirm"
     },
     "Validation": {
       "var_required": "{var} is Required",
@@ -253,7 +301,13 @@
       "required": "This field is required",
       "vat_min": "VAT must be at least 0.01",
       "vat_max": "VAT cannot exceed 1.00",
-      "vat_invalid": "Please enter a valid VAT percentage between 0.01 and 1.00"
+      "vat_invalid": "Please enter a valid VAT percentage between 0.01 and 1.00",
+      "invalid_email": "Invalid email address",
+      "phone_or_email_required": "Phone or Email is required",
+      "full_name_required": "First name required",
+      "parent_phone_required": "Parent phone number is required",
+      "country_required": "Country is required",
+      "learning_preference_required": "Learning preference required"
     },
     "Sections": {
       "DeleteDialog": {
@@ -299,7 +353,16 @@
       "reset_password": "Reset Password",
       "otp_sent_to": "Enter the OTP code sent to the email: {email}",
       "resend_otp": "Resend OTP",
-      "login_redirect": "Sign in instead"
+      "login_redirect": "Sign in instead",
+      "verify_sms_title": "Verify OTP",
+      "verify_sms_text": "Code sent to {phoneNumberMasked}",
+      "code_expires_in": "Expires in",
+      "otp_expired_please_resend": "OTP expired, please resend",
+      "otp_must_be_4_digits": "OTP must be 4 digits",
+      "code_sent_successfully": "Code sent successfully",
+      "no_code": "Didn't receive code?",
+      "resend_code": "Resend",
+      "back_to_login": "Back to login"
     },
     "Home": {
       "min_free_shipping": "Minimum free shipping",
@@ -597,11 +660,83 @@
       "title_ar": "Title in Arabic",
       "title_en": "Title in English"
     },
+    "Cart": {
+      "title": "Cart",
+      "confirm_delete_item": "Confirm Delete Item",
+      "item": "Item",
+      "items": "Items",
+      "empty_cart": "Empty Cart",
+      "checkout": "Checkout",
+      "cart_total": "Cart Total",
+      "cart_subtotal": "Cart Subtotal",
+      "cart_tax": "Cart Tax",
+      "cart_discount": "Cart Discount",
+      "cart_total_items": "Total Items"
+    },
     "PrivacyPolicy": {
       "title": "Privacy Policy",
       "privacy_policy": "Privacy Policy",
       "add_privacy_policy": "Add Privacy Policy",
-      "edit_privacy_policy": "Edit Privacy Policy"
+      "edit_privacy_policy": "Edit Privacy Policy",
+      "intro": "We value your privacy and how your personal information is used. This policy explains how we collect, use, and process data within the Classat application.",
+      "sections": {
+        "introduction": {
+          "title": "Introduction",
+          "body": "By using the Classat application, you agree to this Privacy Policy, which explains how we handle your data while you use the app or our educational services."
+        },
+        "collectedInfo": {
+          "title": "Information we collect",
+          "description": "We collect two types of information:",
+          "provided": {
+            "title": "Information you provide to us:",
+            "items": {
+              "1": "Full name.",
+              "2": "Phone number or email address (used for login via OTP verification).",
+              "3": "Educational level and study type.",
+              "4": "Other account information (optional)."
+            }
+          },
+          "automatic": {
+            "title": "Information collected automatically:",
+            "items": {
+              "1": "IP address and approximate device location.",
+              "2": "Device type and operating system.",
+              "3": "App usage data (such as the pages you visit and the time spent on each section)."
+            }
+          }
+        },
+        "usage": {
+          "title": "How we use the information",
+          "intro": "We use your data for the following purposes:",
+          "items": {
+            "1": "Operating the app and providing our services to the user.",
+            "2": "Sending notifications and alerts related to lessons and educational sessions.",
+            "3": "Improving the user experience and analyzing app usage.",
+            "4": "Personalizing educational content according to your interests and academic level.",
+            "5": "Responding to your inquiries and providing technical support."
+          }
+        },
+        "protection": {
+          "title": "Information security",
+          "body": "We use advanced security technologies to protect your data. Access to your information is restricted to a specialized team within Classat, and we will not sell or share your data with any third party without your explicit consent, unless required by law."
+        },
+        "sharing": {
+          "title": "Data sharing",
+          "body": "We may share certain aggregated data (not linked to your personal identity) with our partners for analytics and service improvement purposes, ensuring that no identifying information about you is disclosed."
+        },
+        "rights": {
+          "title": "Your rights",
+          "items": {
+            "1": "You have the right to request access to your personal data and to correct or update it.",
+            "2": "You can request deletion of your account and data from within the app or by contacting the support team.",
+            "3": "You have the right to unsubscribe from marketing messages at any time."
+          }
+        },
+        "updates": {
+          "title": "Updates to this Privacy Policy",
+          "body": "We may update this Privacy Policy from time to time to reflect changes in the app or legal requirements. You will be informed of any material changes through the app or via email when possible."
+        }
+      }
     },
     "ContactUs": {
       "title": "Contact Us",
@@ -612,6 +747,39 @@
       "this_client": " Client {var}",
       "client_address": "Address",
       "birth_date": "Birth Date"
+    },
+    "Support": {
+      "title": "Technical Support",
+      "subtitle": "Tell us what happened and we will help you right away.",
+      "cards": {
+        "login": {
+          "title": "Login issues",
+          "description": "Reset password or verification problems"
+        },
+        "billing": {
+          "title": "Billing & invoices",
+          "description": "Payments, invoices, and subscriptions"
+        },
+        "technical": {
+          "title": "Technical issues",
+          "description": "Errors inside the platform or mobile apps"
+        }
+      },
+      "form": {
+        "complaintTypeLabel": "Complaint type",
+        "complaintTypePlaceholder": "Select the complaint type",
+        "complaintOptions": {
+          "login": "Login issues",
+          "payments": "Payments & billing",
+          "technical": "Technical issues"
+        },
+        "topicLabel": "Subject",
+        "topicPlaceholder": "Subject",
+        "descriptionLabel": "Issue description",
+        "descriptionPlaceholder": "Explain the issue in detail",
+        "submit": "Send",
+        "helper": "Our team will contact you soon."
+      }
     },
     "WorkArea": {
       "work_area": "Work Area",
@@ -664,6 +832,9 @@
       "PermissionMessage": "You must have the correct permission to be able to view this section.",
       "PermissionActivate": "Settings permission must be activated"
     },
+    "terms": {
+      "title": "Terms & Conditions"
+    },
     "DeliveryFees": {
       "add_delivery_fee": "Add Delivery Fee",
       "this_delivery_fee": "This Delivery Fee",
@@ -683,6 +854,7 @@
     "create_an_account": "Create an account",
     "email_address": "Email address",
     "phone": "Number Phone",
+    "country": "Country",
     "phone_Parent": "Parent's number",
     "full_name": "full name",
     "return_to_sign_in": "Return to sign in",
@@ -722,11 +894,22 @@
     "days": "days",
     "curriculum": "curriculum",
     "Donot_account": "Don't have an account?",
-    "we_sent_code": "We have sent you a 6-digit verification code to",
-    "please_enter_code": "Please enter the code in the box below to confirm your email address.",
-    "check_resend": "Didn't receive the email? Please check your spam folder, or resend the code within 60 seconds.",
+    "we_sent_code": "We have sent you a 4-digit verification code to",
+    "please_enter_code": "Please enter the code in the box below to confirm .",
+    "please_verify_registration": "Please verify your registration",
+    "please_verify_login": "Please verify your login",
+    "check_resend": "Didn't receive the email? Please check your spam folder, or resend the code within ",
     "donot_code": "Don't have a code?",
-    "resend_code": "Resend code"
+    "resend_code": "Resend code",
+    "resending": "Sending",
+    "second": "Second",
+    "live_broadcast": "Live Broadcast",
+    "all": "All",
+    "My_Live_Sessions": "My Live Sessions",
+    "no_lessons_available": "No lessons available",
+    "no_packages_available": "No packages available",
+    "no_live_available": "No live broadcasts available",
+    "my_packages": "My Packages"
   },
   "Button": {
     "creat_account": "Create Account",
@@ -773,6 +956,7 @@
     "verify_email_line2": "Please enter the code in the field below to verify your email.",
     "no_code": "Didn't receive a code?",
     "reset_password": "Please enter your new password below.",
-    "mas_sign_in": "Join us and start your learning journey — we promise safe and fun uses!"
+    "mas_sign_in": "Join us and start your learning journey — we promise safe and fun uses!",
+    "Already_have_account": "Already have an account?"
   }
 }
