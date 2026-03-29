@@ -25,12 +25,6 @@ export default async function Page({ params }: Props) {
         throw new Error(section_nums_res.error);
     }
 
-    // const session_sections_res = await getData<{ totalCount: number, items: sessionSection[] }>(endpoints.CourseEnroll.getCourses_Section_Sessions(section_nums_res.data.items.sectionId));
-    // if ('error' in session_sections_res) {
-    //     throw new Error(session_sections_res.error);
-    // }
-    // console.log("session_sections_res bb", session_sections_res);
-
     return (
         <CourseDetailsEnrolledView
             course={courseDetails}

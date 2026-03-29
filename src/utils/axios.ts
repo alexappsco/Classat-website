@@ -1,5 +1,4 @@
-// import axios from 'axios';
-// import { HOST_API } from 'src/config-global';
+
 import Cookie from 'js-cookie';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
@@ -8,29 +7,6 @@ import { HOST_API, HOST_API_SHARED } from 'src/config-global';
 import { ACCESS_TOKEN } from '../auth/constants';
 // ----------------------------------------------------------------------
 
-// const axiosInstance = axios.create({ baseURL: HOST_API });
-
-// // Add a request interceptor
-// axiosInstance.interceptors.request.use(
-//   (config) => {
-//     config.headers['Content-Type'] = 'application/json';
-
-//     return config;
-//   },
-//   (error) => Promise.reject(error)
-// );
-
-// // Add a response interceptor (optional)
-// axiosInstance.interceptors.response.use(
-//   (response) => response?.data,
-//   (error) => {
-//     const status = error.response?.status || 500;
-//     const message = getErrorMessage(error.response.data);
-//     // Handle errors
-//     return Promise.reject({ message, status });
-//   }
-// );
-// export { axiosInstance };
 
 
 const axiosInstance = axios.create({
@@ -73,21 +49,7 @@ export { axiosInstance };
 
 // ----------------------------------------------------------------------
 
-// export const getErrorMessage = (error: unknown): string => {
-//   let message: string;
-//   if (error instanceof Error) {
-//     // eslint-disable-next-line prefer-destructuring
-//     message = error.message;
-//   } else if (error && typeof error === 'object' && 'message' in error) {
-//     message = String(error.message);
-//   } else if (typeof error === 'string') {
-//     message = error;
-//   } else {
-//     message = 'Something went wrong';
-//   }
-//   return message;
-// };
-/* eslint-disable prefer-destructuring */
+
 
 
 export interface Params {
@@ -119,13 +81,7 @@ const SharedApiClient: AxiosInstance = axios.create({
     'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
   },
 });
-// axios.interceptors.request.use(
-//   (config) => {
-//     config.headers['Accept-Language'] = Cookie.get('Language');
-//     return config;
-//   },
-//   (error) => Promise.reject(error)
-// );
+
 
 apiClient.interceptors.response.use(
   (response) => response,

@@ -27,7 +27,6 @@ export default function SessionsSection({
   paymentList = [],
 
 }: SessionsSectionProps) {
-  console.log('sessions one', sessions);
   const primaryTextColor = text.primary;
   const smDown = useResponsive('down', 'sm');
 

@@ -15,13 +15,7 @@ interface Props {
 export default async function Page({ searchParams }: Props) {
   let { page, limit, status, search } = await searchParams;
 
-  // const urlSearchParams = new URLSearchParams({
-  //   page: page || '1',
-  //   limit: limit || `${DEFAULT_LIMIT}`,
-  //   ...(status && { IsActive: status }),
-  //   ...(search && { Name: search }),
 
-  // });
 
   const cartResponse = await getData<ApiResponse<CartData>>(
     endpoints.cart.getCarts

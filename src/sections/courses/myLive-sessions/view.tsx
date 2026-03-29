@@ -175,15 +175,7 @@ export default function MyLiveSesions({
                   setSelectedDate(newValue);
                   handleFilterChange(selectedCategory, selectedStatus, newValue, selectedEnrollmentStatus);
                 }}
-              // slotProps={{
-              //   textField: {
-              //     label: 'التاريخ',
-              //     fullWidth: true,
-              //     // InputProps: {
-              //     //   startAdornment: <EventIcon sx={{ mr: 1 }} />,
-              //     // },
-              //   },
-              // }}
+
               />
             </Box>
           </Card>

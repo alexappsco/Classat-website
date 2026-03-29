@@ -142,22 +142,6 @@ export async function deleteData<TResponse>(
   return apiRequest<TResponse>(endpoint, 'DELETE', undefined, options);
 }
 
-// const errorObject = (
-//   error: string = '',
-//   status: string | number = '',
-//   code: unknown = null,
-//   details: unknown = null,
-//   data: unknown = {},
-//   validationErrors: unknown = null
-// ): ApiErrorResponse => ({
-//   success: false,
-//   error,
-//   status,
-//   code,
-//   details,
-//   data,
-//   validationErrors,
-// });
 const errorObject = (
   error: string = '',
   status: string | number = '',

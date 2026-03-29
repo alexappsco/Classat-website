@@ -86,7 +86,6 @@ export default function LiveSessionCard({ lessonList, teacher_id, paymentList }:
     }
   };
 
-  console.log('lessonList:', lessonList);
   if (!lessonList || lessonList.length === 0) {
     return (
       <Box sx={{ p: 3 }}>

@@ -26,11 +26,8 @@ export default function LiveSessionsSection({title}:{title: string}) {
 
       // Refresh lessons
       const lessonsRes = await getData<any>(endpoints.liveCourse.get);
-      console.log('Live Sessions data:', lessonsRes.data.items);
       if (lessonsRes?.success && Array.isArray(lessonsRes?.data?.items)) {
-        // console.log('Lessons data:', lessonsRes.data.items);
         setLiveSessions(lessonsRes.data.items);
-        console.log('Live Sessions data:', lessonsRes.data.items);
       } else {
         setLiveSessions([]);
       }

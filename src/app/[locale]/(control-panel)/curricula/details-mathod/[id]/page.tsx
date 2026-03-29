@@ -23,8 +23,7 @@ interface Props {
   params: Promise<{ id: string }>; // Only id in params
   searchParams: Promise<
   Record<'subjectId' | 'page' | 'limit' | 'StartDate' | 'EndDate', string | undefined>
-  // { subjectId?: string }
-  >; // subjectId comes from searchParams
+  >; 
 
 
 }

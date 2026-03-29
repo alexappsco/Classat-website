@@ -45,9 +45,7 @@ const StatisticsStudentsCard = ({ cards }: IProps) => {
             img={card.img}
             name={card.name}
             subject={card.language}
-            // studentClass={card.studentClass}
-            // ={card.language}
-            // country={card.country}
+
             date={card.date}
             time={card.time}
             href={card.href}

@@ -13,7 +13,6 @@ type Props = {
 };
 
 export default function MyCoursesSection({ courses }: Props) {
-  console.log("courses bxxf", courses)
 
   const primaryTextColor = text.primary;
   const paragraphTextColor = text.paragraph;

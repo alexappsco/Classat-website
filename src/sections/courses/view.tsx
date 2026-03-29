@@ -33,26 +33,16 @@ type CourseCategory = {
 // };
 
 type Props = {
-  // studentAppointments: any;
-  // lessonList: any[];
-  // id: string;
-  // paymentList?: any[];
-  // subjectId: string;
+
   title?: string;
   liveCourse?: ILiveCourse[];
 
   categories: CourseCategory[];
   getAllCourses: Course[];
   getCoursesEnrolled: CoursesEnrolled[];
-  // paymentLists: any[];
 
 };
-// export default function Courses({ categories, liveCourse }: Props) {
 
-// type Props = {
-
-
-// };
 
 export default function Courses({ categories, getAllCourses, getCoursesEnrolled }: Props) {
 
@@ -69,19 +59,14 @@ const [liveCourses, setLiveCourses] = React.useState<ILiveCourse[]>([]);
 
       // Refresh lessons
       const lessonsRes = await getData<any>(`${endpoints.liveCourse.get}?MaxResultCount=4`);
-      console.log('Live Sessions data:', lessonsRes.data.items);
       if (lessonsRes?.success && Array.isArray(lessonsRes?.data?.items)) {
-        // console.log('Lessons data:', lessonsRes.data.items);
         setLiveCourses(lessonsRes.data.items);
-        console.log('Live Sessions data:', lessonsRes.data.items);
       } else {
         setLiveCourses([]);
       }
 
       const paymentResponse = await getData<any>(endpoints.payment.get);
-      console.log('Payment data:', paymentResponse.data.items);
       if (paymentResponse?.success && Array.isArray(paymentResponse?.data?.items)) {
-        console.log('Payment data:', paymentResponse.data.items);
         setPaymentList(paymentResponse.data.items);
       } else {
         setPaymentList([]);

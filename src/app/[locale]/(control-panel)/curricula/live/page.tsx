@@ -35,15 +35,6 @@ export default async function Page({
       query.append('Date', params.Date || '');
     }
 
-
-    // lessonsRes = await getData<any>(endpoints.liveSubjects.get);
-    // if (lessonsRes?.success && Array.isArray(lessonsRes?.data?.items)) {
-    //   // console.log('Lessons data:', lessonsRes.data.items);
-    //   (lessonsRes.data.items);
-    // } else {
-    //   (lessonsRes.data.items || []);
-    // }
-
         const lessonsUrl = query.toString()
           ? `${endpoints.liveSubjects.get}?${query.toString()}`
           : endpoints.liveSubjects.get;

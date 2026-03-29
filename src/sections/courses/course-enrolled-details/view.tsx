@@ -90,7 +90,6 @@ export default function CourseDetailsEnrolledView({ course, sections }: Props) {
           endpoints.CourseEnroll.getCourses_Section_Sessions(section.sectionId)
         );
 
-        console.log("res.data", res.data)
 
      const sessions: sessionSection[] = Array.isArray(
           (res as any)?.data?.items

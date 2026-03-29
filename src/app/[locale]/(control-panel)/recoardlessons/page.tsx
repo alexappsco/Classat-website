@@ -8,7 +8,6 @@ export default async function Page() {
   const response = await getData(endpoints.studentEducationLesson.get);
 
   const lessons = (response.data as { items: StudentLesson[] })?.items ?? [];
-  console.log(lessons);
 
   return <RecoarLessonsSection lessons={lessons} />;
 }

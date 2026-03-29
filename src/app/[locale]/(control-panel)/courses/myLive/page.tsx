@@ -62,7 +62,6 @@ export default async function Page({
     const lessonsUrl = query.toString()
       ? `${endpoints.liveCourse.getmyCourses}?${query.toString()}`
       : endpoints.liveCourse.getmyCourses ;
-      console.log('Live Sessions URL:', lessonsUrl);
 
     // ✅ Fetch Live Sessions (always fresh + tagged)
     lessonsRes = await getData<any>(lessonsUrl, {
@@ -70,12 +69,6 @@ export default async function Page({
       tags: [FetchTags.LiveCourse],
     });
 
-    // ✅ Fetch Payments (always fresh + tagged)
-    // const paymentResponse = await getData<any>(endpoints.payment.get, {
-    //   cache: 'no-store',
-    //   tags: [FetchTags.PaymentMethod],
-    // });
-    // paymentList = paymentResponse?.data?.items || [];
   } catch (error) {
     paymentList = [];
   }
@@ -97,7 +90,6 @@ export default async function Page({
       ? lessonsRes.data.items 
       : [];
       
-console.log('Live Sessions data:', liveSubjectItems);
   return (
     <MyLiveSesions
       // paymentList={paymentList}

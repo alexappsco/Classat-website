@@ -65,7 +65,6 @@ async function page() {
     res?.result?.items ||
     [];
 
-  console.log("SESSIONS:", sessions);
 
   const cards: IStudentCard[] = sessions.map((session) => ({
     id: session.sessionId,

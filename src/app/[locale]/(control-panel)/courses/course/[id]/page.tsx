@@ -45,7 +45,6 @@ type Props = {
 export default async function Page({ params }: Props) {
   const { id: courseId } = await params;
 
-  console.log('Course ID from params:', courseId);
 
   const res = await getData(
     endpoints.courseCategory.getCourse(courseId),
@@ -56,13 +55,11 @@ export default async function Page({ params }: Props) {
         endpoints.payment.get,  // What is this endpoint?
       );
       paymentList = paymentResponse?.data?.items || [];
-  console.log('Course Data from API:', res);
 
   const courseResponse = res as ApiResponse<CourseResponse>;
   if (!courseResponse?.data) {
     throw new Error('Course data not found');
   }
-  console.log(" Course Response:",courseResponse)
 
   return <CourseDetailsView course={courseResponse.data}
     paymentList={paymentList}

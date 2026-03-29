@@ -41,7 +41,6 @@ export default function SessionsSectionCard({
   session,
   paymentList,
 }: Props) {
-  console.log('session missions', session);
   const theme = useTheme();
   const blueColor = '#0D47A1';
   const blueBg = '#E3F2FD';

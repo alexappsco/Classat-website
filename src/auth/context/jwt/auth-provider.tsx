@@ -242,21 +242,7 @@ export function AuthProvider({ children }: Readonly<Props>) {
     }
   }, []);
 
-// const loginWithOtp = async (identifier: string, otp: string) => {
-//   const res = await VerifyLoginOtp({ identifier, otp });
-
-//   if (res?.error) {
-//     throw new Error(res.error);
-//   }
-
-//   // خزّن التوكن
-//   setSession(res.accessToken, res.refreshToken);
-
-//   setUser(res.user);
-
-//   return res;
-// };
-
+ 
 
 
   const loginWithPhone = useCallback(async (phone: string, code: string) => {

@@ -33,39 +33,7 @@ export default function DashboardLayout({ children }: Props) {
 
   const renderNavVertical = <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />;
 
-  // if (isHorizontal) {
-  //   return (
-  //     <>
-  //       <Header />
-
-  //       {/* {lgUp ? renderHorizontal : renderNavVertical} */}
-
-  //       {children}
-  //       {/* <Main></Main> */}
-  //     </>
-  //   );
-  // }
-
-  // if (isMini) {
-  //   return (
-  //     <>
-  //       <Header onOpenNav={nav.onTrue} />
-
-  //       <Box
-  //         sx={{
-  //           minHeight: '100vh',
-  //           display: 'flex',
-  //           flexDirection: { xs: 'column', lg: 'row' },
-  //           alignItems: 'stretch',
-  //         }}
-  //       >
-  //         {lgUp ? renderNavMini : renderNavVertical}
-
-  //         <Main>{children}</Main>
-  //       </Box>
-  //     </>
-  //   );
-  // }
+   
 
   return (
     <>

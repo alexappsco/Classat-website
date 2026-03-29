@@ -45,7 +45,6 @@ export default function LiveSessionCard({ lessonList }: LiveSessionCardProps) {
 
 
 
-  console.log('lessonList:', lessonList);
   if (!lessonList || lessonList.length === 0) {
     return (
       <Box sx={{ p: 3 }}>

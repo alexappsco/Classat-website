@@ -131,10 +131,8 @@ export const RegisterStudent = async (data: IRegister) => {
         'Accept-Language': lang,
       },
     });
-        console.log('REGISTRATION SUCCESS 👉', res?.data);
      return res?.data;
   } catch (e: any) {
-    console.log('REGISTRATION ERROR 👉', e?.response?.data);
     return {
       error: getErrorMessage(e),
     };
@@ -202,11 +200,7 @@ export async function SendLoginOtp(data: {
   role: string;
 }) {
   const lang = await getServerLanguage();
-  console.log(
-  'BASE URL 👉',
-  SharedApiClient.defaults.baseURL
-);
-  
+ 
   // Prepare the payload based on channel type
 const payload = {
   channel: data.channel,
@@ -232,9 +226,7 @@ const payload = {
       value: data.value,
     };
   } catch (e: any) {
-    console.log('SEND OTP ERROR FULL 👉', e?.response?.data);
-    console.log('FINAL URL 👉', SharedApiClient.defaults.baseURL + endpoints.auth.sendOtp);
-    console.log('PAYLOAD SENT 👉', payload);
+
     return {
       error:
         e?.response?.data?.message ||
@@ -260,7 +252,6 @@ const payload = {
     role: 'Student',
   };
 
-  console.log('VERIFY OTP PAYLOAD 👉', payload);
 
   try {
     const res = await SharedApiClient.post(
@@ -276,7 +267,6 @@ const payload = {
 
     return res.data;
   } catch (e) {
-        console.log('VERIFY OTP ERROR 👉', e?.response?.data);
 
     return {  error:
         e?.response?.data?.message ||

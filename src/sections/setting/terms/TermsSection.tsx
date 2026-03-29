@@ -14,7 +14,6 @@ export default function TermsSection() {
         const data = await getData(`${endpoints.staticPage}?pageType=TermsAndConditions`);
 
         setTermsAndConditions(data);
-        console.log('terms and conditions:', data);
       } catch (error) {
         console.error('Error fetching terms and conditions', error);
       }

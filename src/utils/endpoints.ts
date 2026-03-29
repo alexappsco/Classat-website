@@ -8,12 +8,7 @@ export const endpoints = {
     editFreeShipping: (id: string) => `/admin/settings/${id}`
   },
   auth: {
-    // login: '/auth/login',
-    // refreshToken: '/auth/refresh-token',
-    // sendOtp: '/otps/resend-otp',
-    // verifyOtp: '/otps/verify-otp',
-    // changePassword: '/auth/change-password',
-    // viewProf:"/admin/profile/get-profile",
+
     editProf: "/admin/profile/update-profile",
     sendOtp: '/shared/auth/otp/send',
     register: '/students/register',
@@ -57,10 +52,7 @@ export const endpoints = {
     list: (teacherId: string, subjectId: string) =>
       `/students/teacher/${teacherId}/education/${subjectId}/lessons`
   },
-  // courseCategory:{
-  //   get:'/shared/course-categories',
-  //   getCourses:'/students/teacher/courses',
-  // },
+
   courseCategory: {
     get: '/shared/course-categories',
     getCourses:
@@ -92,11 +84,7 @@ export const endpoints = {
   studentCourse: {
     getCourses: "/students/courses",
   },
-  // payment: {
-  //   get: '/shared/payment-methods',
-  //   post_all_payment: '/students/cart/checkout',
-  //   post_single_item: '/students/cart/checkout/direct-booking',
-  // },
+
   studentEducationSession: {
     get: "/students/education-sessions"
   },
@@ -131,29 +119,7 @@ export const endpoints = {
   get: '/shared/course-categories',
   getCourses:`/students/teacher/courses`,
   getCourse:(courseId: string) =>`/students/teacher/course/${courseId}`,
-// cart:{
-//   getCarts:'/students/cart',
-//   addToCart:'/students/cart/items',
-//   deleteCartItem: (cartItemId: string) => `/students/cart/items/${cartItemId}`,
-// },
-// country:{
-//   get: '/shared/location/countries',
-// },
-// approaches: {
-//   get: "/shared/education/approaches"
-// },
-// educationApproachType:{
-//   get:"/shared/education/approach-types"
-// },
-// educationApproachTypeStage:{
-//   get: "/shared/education/mappings/approach-type-stages"
-// },
-// educationApproachTypeStageGrade:{
-//   get: "/shared/education/mappings/approach-type-stage-grades"
-// },
-// studentCourse:{
-//   getCourses: "/students/courses",
-// },
+
 payment:{
   get: '/shared/payment-methods',
   post_all_payment: '/students/cart/checkout',
@@ -167,25 +133,7 @@ EducationCourses:{
   getCourseByCourseId: (courseId: string) => `/students/education-lessons/${courseId}`,
   getsessions: (lessonId: string) => `/students/education-lessons/${lessonId}/sections`,
   getSessionId: (sectionId: string) => `/students/education-lessons/sections/${sectionId}/sessions`,
-  /*output
-   "items": [
-    {
-      "sessionId": "0337cfd3-c359-4fc2-bf3b-084946111202",
-      "title": "kk",
-      "videoUrl": "https://api-staging.classat.net/uploads/videos/5f25cd9a-9173-4cdf-9404-a9067bd57b46.mp4",
-      "videoDuration": "00:04:00",
-      "isWatched": false,
-      "isLastWatched": false
-    },
-    {
-      "sessionId": "cbbce7e1-e050-4430-bf9c-f7f52b31d638",
-      "title": "loo",
-      "videoUrl": "https://api-staging.classat.net/uploads/videos/023addf5-8e25-4ab6-84cb-d52dd916fabf.mp4",
-      "videoDuration": "00:05:00",
-      "isWatched": false,
-      "isLastWatched": false
-    }
-  */
+
   markWatched: (sessionId: string) => `/students/education-lessons/sessions/${sessionId}/mark-watched`,
 },
 packageSubscription: {

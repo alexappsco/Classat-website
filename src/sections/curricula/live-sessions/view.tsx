@@ -29,10 +29,7 @@ const searchParams = useSearchParams();
 
 
 
-  // ✅ States
-  // const [selectedCategory, setSelectedCategory] = React.useState(
-  //   searchParams.get('courseCategoryId') || ''
-  // );
+
 
   const [selectedStatus, setSelectedStatus] = React.useState(
     searchParams.get('LiveSessionStatus') || ''
@@ -104,27 +101,6 @@ const searchParams = useSearchParams();
                 gap: 3,
               }}
             >
-              {/* Category */}
-              {/* <FormControl fullWidth>
-                <InputLabel>التصنيف</InputLabel>
-                <Select
-                  value={selectedCategory}
-                  label="التصنيف"
-                  // startAdornment={<CategoryIcon sx={{ mr: 1 }} />}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setSelectedCategory(value);
-                    handleFilterChange(value, selectedStatus, selectedDate);
-                  }}
-                >
-                  <MenuItem value="">كل التصنيفات</MenuItem>
-                  {categories?.map((c) => (
-                    <MenuItem key={c.id} value={c.id}>
-                      {c.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl> */}
 
               {/* Status */}
               <FormControl fullWidth>
@@ -154,15 +130,7 @@ const searchParams = useSearchParams();
                   setSelectedDate(newValue);
                   handleFilterChange( selectedStatus, newValue);
                 }}
-              // slotProps={{
-              //   textField: {
-              //     label: 'التاريخ',
-              //     fullWidth: true,
-              //     // InputProps: {
-              //     //   startAdornment: <EventIcon sx={{ mr: 1 }} />,
-              //     // },
-              //   },
-              // }}
+
               />
             </Box>
           </Card>

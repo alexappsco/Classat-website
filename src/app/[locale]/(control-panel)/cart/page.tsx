@@ -10,7 +10,6 @@ export default async function Page() {
   const cartResponse = await getData<ApiResponse<any>>(
     endpoints.cart.getCarts
   );
-  console.log("cart",cartResponse)
 
 
   return <Cart

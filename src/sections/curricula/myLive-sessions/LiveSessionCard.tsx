@@ -54,7 +54,6 @@ export default function LiveSessionCard({ lessonList }: LiveSessionCardProps) {
 
 
 
-  console.log('lessonList:', lessonList);
   if (!lessonList || lessonList.length === 0) {
     return (
       <Box sx={{ p: 3 }}>
@@ -151,9 +150,7 @@ function LiveSessionCards({ liveCourse, bookingType, enrollmentId }: LiveSession
       BookingType: bookingType,
       StudentLiveSessionSubjectEnrollmentId: enrollmentId,
     }).toString();
-    console.log("🔥 QS:", qs);
     const endpoint = `${endpoints.cancelorder}?${qs}`;
-    console.log("🔥 ENDPOINT:", endpoint);
 
 
     setLoading(true);
@@ -161,7 +158,6 @@ function LiveSessionCards({ liveCourse, bookingType, enrollmentId }: LiveSession
     try {
       const res = await postData(endpoint, undefined as unknown as Record<string, never>);
 
-      console.log("🔥 RESPONSE:", res);
 
       if (res.success) {
         // alert("تم إلغاء الحجز بنجاح");

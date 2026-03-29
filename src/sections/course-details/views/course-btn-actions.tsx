@@ -54,7 +54,6 @@ function CoursePaymentModal({
   course: any;
 
 }) {
-  console.log("courseData", courseData)
   const [selectedMethod, setSelectedMethod] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { enqueueSnackbar } = useSnackbar();

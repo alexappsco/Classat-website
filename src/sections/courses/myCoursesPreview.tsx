@@ -17,7 +17,6 @@ type MyCoursesPreviewProps = {
 
 export default function MyCoursesPreview({ all_courses, paymentList }: MyCoursesPreviewProps) {
 
-  console.log("all courses", all_courses);
   const router = useRouter();
   // عرض أول 4 كورسات فقط
   const displayCourses = React.useMemo(() => {
@@ -25,7 +24,6 @@ export default function MyCoursesPreview({ all_courses, paymentList }: MyCourses
   }, [all_courses]);
 
   if (!displayCourses.length) return null;
-  console.log("displayCourses", displayCourses);
 
   return (
     <Box sx={{ py: { xs: 6, md: 8 } }}>

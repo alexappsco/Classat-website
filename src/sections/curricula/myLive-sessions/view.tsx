@@ -30,10 +30,7 @@ export default function MyLiveSesions({
     const t = useTranslations();
 
 
-  // ✅ States
-  // const [selectedCategory, setSelectedCategory] = React.useState(
-  //   searchParams.get('courseCategoryId') || ''
-  // );
+
 
   const [selectedStatus, setSelectedStatus] = React.useState(
     searchParams.get('LiveSessionStatus') || ''
@@ -54,9 +51,7 @@ export default function MyLiveSesions({
   ) => {
     const params = new URLSearchParams();
 
-    // if (category) {
-    //   params.set('CourseCategoryId', category);
-    // }
+
 
     if (LiveSessionStatus) {
       params.set('LiveSessionStatus', LiveSessionStatus);
@@ -110,27 +105,7 @@ export default function MyLiveSesions({
                 gap: 3,
               }}
             >
-              {/* Category */}
-              {/* <FormControl fullWidth>
-                <InputLabel>التصنيف</InputLabel>
-                <Select
-                  value={selectedCategory}
-                  label="التصنيف"
-                  // startAdornment={<CategoryIcon sx={{ mr: 1 }} />}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setSelectedCategory(value);
-                    handleFilterChange(value, selectedStatus, selectedDate, selectedEnrollmentStatus);
-                  }}
-                >
-                  <MenuItem value="">كل التصنيفات</MenuItem>
-                  {categories?.map((c) => (
-                    <MenuItem key={c.id} value={c.id}>
-                      {c.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl> */}
+
 
               {/* Status */}
               <FormControl fullWidth>
@@ -178,15 +153,7 @@ export default function MyLiveSesions({
                   setSelectedDate(newValue);
                   handleFilterChange( selectedStatus, newValue, selectedEnrollmentStatus);
                 }}
-              // slotProps={{
-              //   textField: {
-              //     label: 'التاريخ',
-              //     fullWidth: true,
-              //     // InputProps: {
-              //     //   startAdornment: <EventIcon sx={{ mr: 1 }} />,
-              //     // },
-              //   },
-              // }}
+
               />
             </Box>
           </Card>

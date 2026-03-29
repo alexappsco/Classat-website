@@ -26,12 +26,7 @@ export type AuthStateType = {
 
 type CanRemove = {
   login?: (email: string, password: string) => Promise<any>;
-  // register?: (
-  //   email: string,
-  //   password: string,
-  //   firstName: string,
-  //   lastName: string
-  // ) => Promise<void>;
+
     register: (IRegister: IRegister) => Promise<void>;
   loginWithOtp?: (data: { channel: 'Email' | 'Phone'; value: string; otp: string; }) => Promise<any>;
   //

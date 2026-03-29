@@ -18,7 +18,6 @@ function PackageCard({
   discountText,
   id,
 }: PackageCardProps) {
-  console.log("id",id)
   return (
     <Card
       sx={{

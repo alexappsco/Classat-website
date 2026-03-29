@@ -4,44 +4,7 @@ import { useTheme } from '@mui/material/styles';
 import { text, shadow, primary, warning } from 'src/theme/palette';
 import { Box, Card, Chip, Stack, Button, Divider, Typography, CardMedia } from '@mui/material';
 import { ILiveCourse } from 'src/types/liveCourse';
-// const LIVE_SESSIONS = [
-//   {
-//     image: '/assets/sessions/mobile_dev.jpg',
-//     isLive: true,
-//     category: 'UI UX Desgin',
-//     title: 'أساسيات تصميم المواقع والتطبيقات',
-//     instructor: 'أ. خالد محمد',
-//     time: 'يبدأ منذ 5 دقائق',
-//     attendees: '15 طالب',
-//   },
-//   {
-//     image: '/assets/sessions/ux_design.jpg',
-//     isLive: true,
-//     category: 'UI UX Desgin',
-//     title: 'أساسيات تصميم المواقع والتطبيقات',
-//     instructor: 'أ. خالد محمد',
-//     time: 'يبدأ منذ 5 دقائق',
-//     attendees: '15 طالب',
-//   },
-//   {
-//     image: '/assets/sessions/coding_basics.jpg',
-//     isLive: true,
-//     category: 'UI UX Desgin',
-//     title: 'أساسيات تصميم المواقع والتطبيقات',
-//     instructor: 'أ. خالد محمد',
-//     time: 'يبدأ منذ 5 دقائق',
-//     attendees: '15 طالب',
-//   },
-//   {
-//     image: '/assets/sessions/design_diff.jpg',
-//     isLive: true,
-//     category: 'UI UX Desgin',
-//     title: 'أساسيات تصميم المواقع والتطبيقات',
-//     instructor: 'أ. خالد محمد',
-//     time: 'يبدأ منذ 5 دقائق',
-//     attendees: '15 طالب',
-//   },
-// ];
+
 
 interface LiveSessionCard {
   liveCourse: ILiveCourse;
@@ -96,21 +59,7 @@ export default function LiveSessionCard({ liveCourse }: LiveSessionCard) {
           borderRadius: '8px',
         }}
       >
-        {/* Session Image */}
-        {/* <Box
-          component="img"
-          src={liveCourse.coverImagePath}
-          alt={liveCourse.title}
-          sx={{
-            position: 'absolute',
-            top: 0,
-            width: 1,
-            height: 1,
-            objectFit: 'cover',
-            borderRadius: '8px',
-          }}
-          minWidth={'287px'}
-        /> */}
+
         <CardMedia
           component="img"
           image={liveCourse.coverImagePath}
@@ -178,13 +127,7 @@ export default function LiveSessionCard({ liveCourse }: LiveSessionCard) {
 
         {/* Metadata (Time and Attendees) */}
         <Stack direction="row" justifyContent="space-between" alignItems="center">
-          {/* Time/Start Status */}
-          {/* <Stack direction="row" alignItems="center" spacing={0.5}>
 
-            <Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>
-              {liveCourse.time}
-            </Typography>
-          </Stack> */}
           <Stack direction="row" alignItems="center" spacing={0.5}>
             <Typography sx={{ fontSize: '14px', color: '#666', display: 'flex' }}>
               <img
@@ -214,13 +157,6 @@ export default function LiveSessionCard({ liveCourse }: LiveSessionCard) {
 
           </Stack>
 
-          {/* Attendees Count */}
-          {/* <Stack direction="row" alignItems="center" spacing={0.5}>
-
-            <Typography variant="caption" sx={{ color: theme.palette.text.secondary }}>
-              {liveCourse.isEnrolled ? 'Enrolled' : 'Not Enrolled'}
-            </Typography>
-          </Stack> */}
         </Stack>
       </Stack>
 

@@ -1,4 +1,3 @@
-// import HomeView from 'src/sections/home/views/list-view';
 import { getTranslations } from 'next-intl/server';
 import { LandingPage } from 'src/sections/landing/LandingPage';
 
@@ -9,60 +8,7 @@ interface Props {
   >;
 }
 export default async function HomePage({ searchParams }: Props) {
-  // let { page, limit, status, search, StartDate, EndDate } = await searchParams;
-
-  // const urlSearchParams = new URLSearchParams({
-  //   page: page || '1',
-  //   limit: limit || `${DEFAULT_LIMIT}`,
-  //   ...(status && { IsActive: status }),
-  //   ...(search && { Name: search }),
-  //   StartDate: StartDate || '',
-  //   EndDate: EndDate || '',
-
-  // });
-
-  // const mostPurchaseProducts = await getData<{ totalCount: number; items: PurchasedProduct[] }>(
-  //   `${endpoints.home.mostPurchasedProducts}?${urlSearchParams.toString()}`,
-  //   { tags: [FetchTags.MostPurchased] }
-  // );
-  // if ('error' in mostPurchaseProducts) {
-  //   if (mostPurchaseProducts.status === 403) {
-  //     return <NoPermissionView />;
-  //   }
-  //   throw new Error(mostPurchaseProducts.error);
-  // }
-
-  // const reports = await getData<Reports>(
-  //   endpoints.home.reports
-  // );
-  // if ('error' in reports) {
-  //   if (reports.status === 403) {
-  //     return <NoPermissionView />;
-  //   }
-  //   throw new Error(reports.error);
-  // }
-
-  // const SalesRenveu = await getData<SalesRevenue>(
-  //   `${endpoints.home.salesRenveu}?${urlSearchParams.toString()}`,
-  //   { tags: [FetchTags.SalesRenveu] }
-  // );
-  // if ('error' in SalesRenveu) {
-  //   if (SalesRenveu.status === 403) {
-  //     return <NoPermissionView />;
-  //   }
-  //   throw new Error(SalesRenveu.error);
-  // }
-
-  // const freeShipping = await getData<{ totalCount: number; data: SettingData }>(
-  //   endpoints.home.freeShipping
-  // );
-  // if ('error' in freeShipping) {
-  //   if (freeShipping.status === 403) {
-  //     return <NoPermissionView />;
-  //   }
-  //   throw new Error(freeShipping.error);
-  // }
-
+ 
   return (
     <>
       {/* <Loading /> */}

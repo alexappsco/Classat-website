@@ -1,18 +1,4 @@
-// export interface CourseEnrolledDetails {
-//     enrollmentId: string;
-//     courseId: string;
-//     courseTitle: string;
-//     courseDescription: string;
-//     coverImage: string;
-//     teacherName: string;
-//     progressPercentage: number;
-//     status: number;
-//     lastWatchedSessionId: null;
-//     videoDuration: string;
-//     isWatched: boolean;
-//     enrolledAt: Date;
-//     completedAt: null;
-// }
+
 export interface CourseEnrolledDetails {
   enrollmentId: string;
   courseId: string;

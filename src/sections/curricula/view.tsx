@@ -56,27 +56,20 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
     try {
       // Refresh lessons
       const lessonsRes = await getData<any>(`${endpoints.liveSubjects.get}?MaxResultCount=4`);
-      console.log('Live Sessions data:', lessonsRes.data.items);
       if (lessonsRes?.success && Array.isArray(lessonsRes?.data?.items)) {
-        // console.log('Lessons data:', lessonsRes.data.items);
         setLiveCourses(lessonsRes.data.items);
-        console.log('Live Sessions data:', lessonsRes.data.items);
       } else {
         setLiveCourses([]);
       }
       const myPackages = await getData<any>(`${endpoints.packageSubscription.get}?MaxResultCount=4`);
       if (myPackages?.success && Array.isArray(myPackages?.data?.items)) {
-        // console.log('Lessons data:', lessonsRes.data.items);
         setMyPackages(myPackages.data.items);
-        console.log('Live Sessions data:', myPackages.data.items);
       } else {
         setMyPackages([]);
       }
 
       const paymentResponse = await getData<any>(endpoints.payment.get);
-      console.log('Payment data:', paymentResponse.data.items);
       if (paymentResponse?.success && Array.isArray(paymentResponse?.data?.items)) {
-        console.log('Payment data:', paymentResponse.data.items);
         setPaymentList(paymentResponse.data.items);
       } else {
         setPaymentList([]);

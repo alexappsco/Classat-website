@@ -51,7 +51,6 @@ export default async function Page({
     const lessonsUrl = query.toString()
       ? `${endpoints.packageSubscription.get}?${query.toString()}`
       : endpoints.packageSubscription.get;
-    console.log('Live Sessions URL:', lessonsUrl);
 
     // ✅ Fetch Live Sessions (always fresh + tagged)
     lessonsRes = await getData<any>(lessonsUrl, {
@@ -64,7 +63,6 @@ export default async function Page({
   const packageItems =
     lessonsRes?.success && Array.isArray(lessonsRes?.data?.items) ? lessonsRes.data.items : [];
 
-  console.log('Live Sessions data:', packageItems);
   return (
     <MyPackages
       // paymentList={paymentList}

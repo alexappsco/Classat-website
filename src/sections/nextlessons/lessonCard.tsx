@@ -66,7 +66,6 @@ export default function LessonCard({
     try {
       const res = await postData(endpoint, undefined as unknown as Record<string, never>);
 
-      console.log("🔥 RESPONSE:", res);
 
       if (res.success) {
         // alert("تم إلغاء الحجز بنجاح");

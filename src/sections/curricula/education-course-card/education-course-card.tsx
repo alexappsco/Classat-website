@@ -7,7 +7,6 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { Box, Card, Stack, alpha, Typography, CardContent, LinearProgress } from '@mui/material';
 
 export default function EducationCourseCard({ course }: { course: any }) {
-    console.log("course bye bye", course)
     const router = useRouter();
   // دالة بسيطة لتنسيق التاريخ من الـ API
   const formatDate = (dateString: string) => {

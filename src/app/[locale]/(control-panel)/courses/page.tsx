@@ -34,7 +34,6 @@ export default async function Page() {
    endpoints.CourseEnroll.get
  );
   if (!getCoursesEnrolled.success || 'error' in getCoursesEnrolled) {
-    console.log('Error fetching courses:', getCoursesEnrolled.error);
   }
   const CoursesEnrolled = getCoursesEnrolled.success && getCoursesEnrolled.data ? getCoursesEnrolled.data.items : [];
 
@@ -46,9 +45,7 @@ export default async function Page() {
   const courses = getAllCourses.success && getAllCourses.data ? getAllCourses.data.items : [];
 
   if (!getAllCourses.success || 'error' in getAllCourses) {
-    console.log('Error fetching courses:', getAllCourses.error);
   }
-  console.log("Courses:", courses)
 
   const categories =
     (response?.data as CourseCategoriesResponse)?.items ?? [];
