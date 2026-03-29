@@ -145,6 +145,7 @@ export default function MyLiveSesions({
                     handleFilterChange( value, selectedDate, selectedEnrollmentStatus);
                   }}
                 >
+                <MenuItem value="">كل الحالات</MenuItem>
              <MenuItem value="Scheduled">{t('Global.Label.Scheduled')}</MenuItem>
                   <MenuItem value="InProgress">{t('Global.Label.InProgress')}</MenuItem>
                   <MenuItem value="Completed">{t('Global.Label.Completed')}</MenuItem>

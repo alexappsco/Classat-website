@@ -19,6 +19,7 @@ interface SessionItem {
   subjectName: string;
   teacherName: string;
   teacherLogo: string;
+  status?: number;
 }
 
 /* =========================
@@ -70,6 +71,8 @@ export default function NextLessonsPreview() {
 
         const mapped: IStudentCard[] = sessions.map((session) => ({
           id: session.sessionId,
+          status:
+            session.status != null ? String(session.status) : '',
           img: session.teacherLogo,
           name: session.teacherName,
           studentClass: '',

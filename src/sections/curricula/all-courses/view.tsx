@@ -6,6 +6,7 @@ import EducationCourseCard from '../education-course-card/education-course-card'
 
 interface AllCoursesProps {
   courses: any[];
+  
 }
 
 export default function AllCourses({ courses }: AllCoursesProps) {
@@ -45,7 +46,7 @@ export default function AllCourses({ courses }: AllCoursesProps) {
               xs={12}
               sm={6}
               md={4}
-              lg={3}
+              lg={4}
             >
               <EducationCourseCard course={course} />
             </Grid>

@@ -22,21 +22,30 @@ import {
   Typography,
   Chip,
   CardMedia,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
-import {  useState } from 'react';
+import { useState } from 'react';
 import { ILiveSubject } from 'src/types/liveSubject';
+import { endpoints } from 'src/utils/endpoints';
+import { postData } from 'src/utils/crud-fetch-api';
 
 
 interface LiveSessionCardProps {
   lessonList: ILiveSubject[];
+  bookingType?: "LiveSessionSubject"; // 👈 حالياً ثابت
+  enrollmentId?: string; // 👈 هنا هنحط sessionId
 }
 
 // Define the props type for the PaymentModal component
 
 interface LiveSessionCardPropsItem {
   liveCourse: ILiveSubject;
+  bookingType: "LiveSessionSubject"; // 👈 حالياً ثابت
+  enrollmentId: string; // 👈 هنا هنحط sessionId
 
 }
 
@@ -64,7 +73,9 @@ export default function LiveSessionCard({ lessonList }: LiveSessionCardProps) {
             <Grid item xs={12} sm={6} md={6} lg={3} key={lesson.id}>
               <LiveSessionCards
                 liveCourse={lesson}
-                // onAddToCart={onAddToCart}
+                bookingType="LiveSessionSubject"
+                enrollmentId={lesson.id || ''}
+              // onAddToCart={onAddToCart}
               />
             </Grid>
           ))}
@@ -79,7 +90,7 @@ export default function LiveSessionCard({ lessonList }: LiveSessionCardProps) {
 
 
 
-function LiveSessionCards({ liveCourse}: LiveSessionCardPropsItem) {
+function LiveSessionCards({ liveCourse, bookingType, enrollmentId }: LiveSessionCardPropsItem) {
   const t = useTranslations();
 
   const theme = useTheme();
@@ -122,6 +133,52 @@ function LiveSessionCards({ liveCourse}: LiveSessionCardPropsItem) {
     setCourse((prev) => ({ ...prev, isEnrolled: true }));
   };
 
+  //-----------------------------------------------------
+
+  const [openCancel, setOpenCancel] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleCancel = async () => {
+    if (!enrollmentId) {
+      alert("في مشكلة في ID");
+      return;
+    }
+
+    // API expects query params (Swagger): BookingType + StudentEducationApproachSessionEnrollmentId
+    const qs = new URLSearchParams({
+      BookingType: bookingType,
+      StudentLiveSessionSubjectEnrollmentId: enrollmentId,
+    }).toString();
+    console.log("🔥 QS:", qs);
+    const endpoint = `${endpoints.cancelorder}?${qs}`;
+    console.log("🔥 ENDPOINT:", endpoint);
+
+
+    setLoading(true);
+
+    try {
+      const res = await postData(endpoint, undefined as unknown as Record<string, never>);
+
+      console.log("🔥 RESPONSE:", res);
+
+      if (res.success) {
+        // alert("تم إلغاء الحجز بنجاح");
+        enqueueSnackbar("تم إلغاء الحجز بنجاح", { variant: "success" });
+
+        setOpenCancel(false);
+      } else {
+        enqueueSnackbar(res.error || "حدث خطأ", { variant: "error" });
+      }
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar("خطأ غير متوقع", { variant: "error" });
+    } finally {
+      setLoading(false);
+    }
+  };
+  //-----------------------------------------------------
   return (
     <>
 
@@ -159,7 +216,7 @@ function LiveSessionCards({ liveCourse}: LiveSessionCardPropsItem) {
             <Chip
               // label="مباشر"
               label={liveCourse.status}
-              
+
               size="small"
               sx={{
                 position: 'absolute',
@@ -189,7 +246,7 @@ function LiveSessionCards({ liveCourse}: LiveSessionCardPropsItem) {
               width: 'fit-content',
             }}
           >
-          {course.educationSubject}
+            {course.educationSubject}
           </Typography>
 
           {/* Session Title */}
@@ -262,30 +319,61 @@ function LiveSessionCards({ liveCourse}: LiveSessionCardPropsItem) {
             </Stack>
           </Stack>
         </Stack>
-
+          
         {/* 3. Join Button */}
+                {course.status === "Active" ? (
 
-          <Link href="/ar/courses/instructor/">
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' , alignItems: 'center' }}>
+          {/* <Link href="/ar/courses/instructor/" > */}
             <Button
               variant="contained"
               size="medium"
               sx={{
                 backgroundColor: primary.main,
                 color: 'white',
-                width: '90%',
+                width: '65%',
                 m: 'auto',
-                borderTopLeftRadius: theme.spacing(4),
-                borderTopRightRadius: theme.spacing(4),
-                borderBottomLeftRadius: theme.spacing(4),
-                borderBottomRightRadius: theme.spacing(4),
               }}
             >
               انضم الآن
             </Button>
 
-          </Link>
+          {/* </Link> */}
+          <Button
+            variant="outlined"
+            color="error"
+              size="medium"
+            onClick={() => setOpenCancel(true)}
+            sx={{}}
+          >
+            إلغاء الحجز
+          </Button>
+        </Box>
+                ):(<></>)}
       </Card>
-``
+      <Dialog open={openCancel} onClose={() => setOpenCancel(false)}>
+        <DialogTitle>تأكيد الإلغاء</DialogTitle>
+
+        <DialogContent>
+          <Typography>
+            هل أنت متأكد من أنك تريد إلغاء هذا الحجز؟
+          </Typography>
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={() => setOpenCancel(false)}>رجوع</Button>
+
+          <Button
+            onClick={handleCancel}
+            color="error"
+            variant="contained"
+            disabled={loading}
+          >
+            {loading ? "جاري الإلغاء..." : "تأكيد الإلغاء"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      ``
     </>
   );
 }

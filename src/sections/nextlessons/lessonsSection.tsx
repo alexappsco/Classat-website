@@ -8,6 +8,7 @@ import LessonCard from "./lessonCard";
 ========================= */
 
 export interface IStudentCard {
+  status:string
   id?: string;
   img: string;
   name: string;
@@ -53,6 +54,7 @@ const LessonsSection = ({ cards }: IProps) => {
             md={3}
           >
             <LessonCard
+              status={card.status}
               img={card.img}
               name={card.name}
               subject={card.language}

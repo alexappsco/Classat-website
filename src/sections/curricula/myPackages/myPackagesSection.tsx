@@ -55,6 +55,7 @@ export default function PackageSection({ title, liveSubject }: Props) {
                 lessonList={liveSubject}
                 // teacher_id={liveCourse[0]?.teacherId || ''}
                 key={liveSubject[0]?.subscriptionId}
+                
               />
             </Grid>
           ) : (

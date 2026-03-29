@@ -137,34 +137,7 @@ export default function LiveSessionsSection({ title, paymentList, liveSubject }:
   const mainColor = primary.main;
   const smDown = useResponsive('down', 'sm');
 
-  // const [liveSessions, setLiveSessions] = useState<ILiveSubject[]>([]);
 
-  // // Function to refresh data
-  // const refreshData = async () => {
-  //   try {
-
-
-
-  //     // Refresh lessons
-  //     const lessonsRes = await getData<any>(endpoints.liveSubjects.get);
-  //     console.log('Live Sessions data:', lessonsRes.data.items);
-  //     if (lessonsRes?.success && Array.isArray(lessonsRes?.data?.items)) {
-  //       // console.log('Lessons data:', lessonsRes.data.items);
-  //       setLiveSessions(lessonsRes.data.items);
-  //       console.log('Live Sessions data:', lessonsRes.data.items);
-  //     } else {
-  //       setLiveSessions([]);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-
-    
-  // };
-  //   useEffect(() => {
-  //   refreshData();
-  // }, []);
-  console.log('liveSubjectسسسسسسسس:', liveSubject);
   return (
     <Box sx={{ py: { xs: 8, md: 10 }, px: { xs: 4, md: 6 }, direction: 'ltr' }}>
       <Container>

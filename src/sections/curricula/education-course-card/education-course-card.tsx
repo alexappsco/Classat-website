@@ -19,6 +19,7 @@ export default function EducationCourseCard({ course }: { course: any }) {
     const date = new Date(dateString);
     return date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', hour12: true });
   };
+  
 
 
   return (
@@ -55,7 +56,11 @@ export default function EducationCourseCard({ course }: { course: any }) {
           <Typography variant="h6" sx={{ fontWeight: 800, fontSize: '1.1rem' }}>
             أ. {course.teacherName}
           </Typography>
-          <Typography variant="h6" sx={{ fontWeight: 800, color: '#1A2027', fontSize: '1.1rem' }}>
+          <Typography variant="h6" sx={{ fontWeight: 800, color: '#1A2027', fontSize: '1.1rem', 
+            backgroundColor: 'rgba(104, 99, 99, 0.5)',
+             padding: '4px 8px', 
+             borderRadius: '4px'
+              }}>
             {course.lessonTitle}
           </Typography>
         </Stack>

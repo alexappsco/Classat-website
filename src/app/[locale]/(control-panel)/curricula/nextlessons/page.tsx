@@ -69,6 +69,7 @@ async function page() {
 
   const cards: IStudentCard[] = sessions.map((session) => ({
     id: session.sessionId,
+    status: String(session.status),
     img: session.teacherLogo,
     name: session.teacherName,
     studentClass: "",
@@ -76,7 +77,6 @@ async function page() {
     country: "",
     date: formatDate(session.sessionDate),
     time: formatTime(session.startTime),
-    enrollmentId: session.sessionId,
   }));
 
 
