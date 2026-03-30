@@ -142,5 +142,9 @@ packageSubscription: {
 },
 wallet: {
   get: "/students/wallet",
+},
+StudentTeacherEducation: {
+  get:(teacherId: string, educationApproachTypeStageGradeSubjectId: string) => `/students/teacher/${teacherId}/education/${educationApproachTypeStageGradeSubjectId}/about-teacher`
 }
+
 };
