@@ -24,6 +24,9 @@ export const paths = {
     profile: {
       viewProfileEdit: '/profile'
     },
+      wallet: {
+      wallet: '/wallet'
+    },
     technicalSupport: {
       list: '/technical-support',
     },
@@ -55,6 +58,6 @@ export const paths = {
       list: '/courses/live',
     },
 
-
+ 
   },
 };

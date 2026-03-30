@@ -126,7 +126,8 @@
     "setting": "setting",
     "CancellationPolicy": "Cancellation Policy",
     "AboutUs": "About Us",
-    "myRecordedLessons": "My Recorded Lessons"
+    "myRecordedLessons": "My Recorded Lessons",
+    "wallet": "Wallet"
 
   },
   "Global": {
@@ -958,5 +959,11 @@
     "reset_password": "Please enter your new password below.",
     "mas_sign_in": "Join us and start your learning journey — we promise safe and fun uses!",
     "Already_have_account": "Already have an account?"
+  },
+  "wallet": {
+    "title": "Wallet",
+    "balance": "Current Balance",
+    "transactions": "Recent Transactions",
+    "dirham": "Dirham"
   }
 }

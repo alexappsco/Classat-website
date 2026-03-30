@@ -140,6 +140,7 @@ packageSubscription: {
   get: "/students/package-subscriptions",
   getmyCourses: "/students/package-subscriptions/my-courses"
 },
-
-
+wallet: {
+  get: "/students/wallet",
+}
 };

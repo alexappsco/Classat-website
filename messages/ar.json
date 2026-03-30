@@ -120,7 +120,8 @@
     "logout": "تسجيل الخروج",
     "CancellationPolicy": "سياسة الالغاء",
     "AboutUs": "من نحن",
-    "myRecordedLessons": "دروسك المسجلة"
+    "myRecordedLessons": "دروسك المسجلة",
+    "wallet": "المحفظة"
   },
   "Global": {
     "title": "ثمار كلاسات",
@@ -957,5 +958,11 @@
     "reset_password": "يرجى إدخال كلمة المرور الجديدة أدناه.",
     "mas_sign_in": "انضم إلينا وابدأ رحلتك التعليمية  نعدك بتجربة آمنة وممتعة",
     "Already_have_account": "هل لديك حساب بالفعل؟"
+  },
+  "wallet": {
+    "title": "المحفظة",
+    "balance": "الرصيد الحالي",
+    "transactions": "المعاملات الأخيرة",
+    "dirham": "درهم"
   }
 }
