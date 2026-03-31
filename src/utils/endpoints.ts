@@ -1,3 +1,4 @@
+import { get } from "lodash";
 
 export const endpoints = {
   home: {
@@ -145,6 +146,11 @@ wallet: {
 },
 StudentTeacherEducation: {
   get:(teacherId: string, educationApproachTypeStageGradeSubjectId: string) => `/students/teacher/${teacherId}/education/${educationApproachTypeStageGradeSubjectId}/about-teacher`
+},
+invoice: {
+  get: "/students/invoices",
+  getDetails: (invoiceId: string) => `/students/invoices/${invoiceId}`,
+
 }
 
 };
