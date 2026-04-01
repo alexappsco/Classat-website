@@ -114,11 +114,11 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              الدروس القادمة
+              {t('next_lessons.title')}
             </Typography>
 
             <Button color="info" sx={{ lineHeight: 1 }} onClick={() => router.push(paths.controlPanel.Curricula.nextlisson)}>
-              الكل
+              {t('Label.all')}
               <LeftIcon />
             </Button>
           </Box>
@@ -204,10 +204,11 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   width: '100%',
+                  mb: 2,
                 }}
               >
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                  {t('Nav.myRecordedLessons')}
+                  {t('packages.title')}
                 </Typography>
                 <Button
                   color="info"

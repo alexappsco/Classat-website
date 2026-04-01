@@ -964,5 +964,29 @@
     "balance": "الرصيد الحالي",
     "transactions": "المعاملات الأخيرة",
     "dirham": "درهم"
+  },
+  "next_lessons": {
+    "title": "الدروس القادمة",
+    "no_lessons": "لا توجد دروس مجددة",
+    "error_with_id":"في مشكلة في ID",
+    "lesson_canceled_successfully":"تم إلغاء الحجز بنجاح",
+    "cancel_lesson":" إلغاء الحجز",
+    "lesson_canceled":"تم إلغاء الحجز",
+    "lesson_completed":"اكتمل",
+    "confirm_cancel":"تأكيد الإلغاء",
+    "are_you_sure":"هل أنت متأكد من أنك تريد إلغاء هذا الحجز؟",
+    "canceling":"جاري الإلغاء...",
+    "back":"رجوع",
+    "completed":"المكتمل",
+    "canceled":"الملغى",
+    "upcoming":"القادم",
+    "all":"الكل",
+    "no_data":"لا يوجد بيانات"
+
+  },
+  "packages": {
+    "title": "الباقات",
+    "no_packages": "لا توجد باقات متاحة"
   }
+
 }
