@@ -7,6 +7,7 @@ import LessonsSection, {
 
 import { endpoints } from 'src/utils/endpoints';
 import { getData } from 'src/utils/crud-fetch-api';
+import LessonsSectionMain from '../nextlessons/lessonsSectionMain';
 
 /* =========================
    Types
@@ -96,5 +97,5 @@ export default function NextLessonsPreview() {
 
   if (loading) return null;
 
-  return<div style={{marginTop:-150}}> <LessonsSection cards={cards} /> </div>;
+  return<div style={{marginTop:-150}}> <LessonsSectionMain cards={cards} /> </div>;
 }

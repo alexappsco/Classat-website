@@ -1,5 +1,10 @@
 
-import { Container, Grid, Typography } from "@mui/material";
+
+
+"use client";
+
+import { useState } from "react";
+import { Container, Grid, Typography, Box, Button } from "@mui/material";
 import { useTranslations } from "next-intl";
 import LessonCard from "./lessonCard";
 
@@ -8,7 +13,7 @@ import LessonCard from "./lessonCard";
 ========================= */
 
 export interface IStudentCard {
-  status:string
+  status: string;
   id?: string;
   img: string;
   name: string;
@@ -19,8 +24,7 @@ export interface IStudentCard {
   time: string;
   href?: string;
   bookingType?: "TeacherPrivateSession";
-
-  sessionId?: string; // أي ID حسب النوع
+  sessionId?: string;
 }
 
 interface IProps {
@@ -28,48 +32,105 @@ interface IProps {
 }
 
 /* =========================
+   Status Mapping (لو API بيرجع أرقام)
+========================= */
+
+const statusMap: Record<string, "Scheduled" | "Cancelled" | "Completed"> = {
+  "1": "Scheduled",
+  "2": "Completed",
+  "3": "Cancelled",
+};
+
+/* =========================
    Component
 ========================= */
 
 const LessonsSection = ({ cards }: IProps) => {
-  const t = useTranslations();
+    const t = useTranslations('next_lessons');
+
+  const [filter, setFilter] = useState<
+    "All" | "Scheduled" | "Cancelled" | "Completed"
+  >("All");
+
+  // تحويل status لو جاي رقم
+  const normalizedCards = cards.map((card) => ({
+    ...card,
+    status: statusMap[card.status] || card.status,
+  }));
+
+  // فلترة
+  const filteredCards = normalizedCards.filter((card) => {
+    if (filter === "All") return true;
+    return card.status === filter;
+  });
 
   return (
-    <Container
-      sx={{
-        mt: 20,
-        mb: 8,
-      }}
-    >
-      {/* <Typography variant="h4" sx={{ mb: 4,  }}>
-        دروسك القادمة
-      </Typography> */}
+    <Container sx={{ mt: 20, mb: 8 }}>
+         <Typography variant="h4" sx={{ mb: 4,  }}>
+          {t('title')}
+     </Typography>
+      {/* أزرار الفلترة */}
+      <Box sx={{ display: "flex", gap: 1, mb: 3, flexWrap: "wrap" }}>
+        <Button
+          variant={filter === "All" ? "contained" : "outlined"}
+          onClick={() => setFilter("All")}
+        >
+          {t('all')}
+        </Button>
+
+        <Button
+          variant={filter === "Scheduled" ? "contained" : "outlined"}
+          onClick={() => setFilter("Scheduled")}
+        >
+          {t('upcoming')}
+        </Button>
+
+        <Button
+          variant={filter === "Cancelled" ? "contained" : "outlined"}
+          onClick={() => setFilter("Cancelled")}
+        >
+          {t('canceled')}
+        </Button>
+
+        <Button
+          variant={filter === "Completed" ? "contained" : "outlined"}
+          onClick={() => setFilter("Completed")}
+        >
+          {t('completed')}
+        </Button>
+      </Box>
+
+      {/* الكروت */}
       <Grid container spacing={{ xs: 2, md: 3 }}>
-        {cards.map((card, index) => (
-          <Grid
-            item
-            key={card.id || `${card.name}-${index}`}
-            xs={12}
-            sm={6}
-            md={3}
-          >
-            <LessonCard
-              status={card.status}
-              img={card.img}
-              name={card.name}
-              subject={card.language}
-              date={card.date}
-              time={card.time}
-              enrollmentId={card.id || "" }
-              bookingType={card.bookingType || "TeacherPrivateSession"}
-              // href={card.href}
-            />
-          </Grid>
-        ))}
+        {filteredCards.length > 0 ? (
+          filteredCards.map((card, index) => (
+            <Grid
+              item
+              key={card.id || `${card.name}-${index}`}
+              xs={12}
+              sm={6}
+              md={3}
+            >
+              <LessonCard
+                status={card.status}
+                img={card.img}
+                name={card.name}
+                subject={card.language}
+                date={card.date}
+                time={card.time}
+                enrollmentId={card.id || ""}
+                bookingType={card.bookingType || "TeacherPrivateSession"}
+              />
+            </Grid>
+          ))
+        ) : (
+          <Typography sx={{ mt: 3, ml: 2 }}>
+            {t('no_data')}
+          </Typography>
+        )}
       </Grid>
     </Container>
   );
 };
 
 export default LessonsSection;
-
