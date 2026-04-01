@@ -24,6 +24,8 @@ export default async function Page({ searchParams }: Props) {
   const paymentResponse = await getData<ApiResponse<any>>(
     endpoints.payment.get  // What is this endpoint?
   );
+  console.log(endpoints.cart.getCarts)
+
   return <Payment items={cartResponse.data as CartData} paymentList={paymentResponse.data as any} />;
 }
 
