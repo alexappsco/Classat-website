@@ -21,6 +21,7 @@ import EducationCourseCard from './education-course-card/education-course-card';
 import { paths } from 'src/routes/paths';
 import PackageCard from './myPackages/myPackagesCard';
 import { IPackageSubscription } from 'src/types/package';
+import { StudentTeacherEducationItem } from 'src/types/teachers';
 
 type EducationGrade = { id: string; name: string };
 
@@ -35,9 +36,10 @@ type CoursesProps = {
   educationGrade?: EducationGrade;
   subjects: SubjectItem[];
   courses: any[];
+  teachers:StudentTeacherEducationItem[]
 };
 
-export default function Courses({ educationGrade, subjects, courses }: CoursesProps) {
+export default function Courses({ educationGrade, subjects, courses, teachers }: CoursesProps) {
 
   const t = useTranslations();
   const settings = useSettingsContext();
@@ -114,11 +116,11 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              الدروس القادمة
+              {t('next_lessons.title')}
             </Typography>
 
             <Button color="info" sx={{ lineHeight: 1 }} onClick={() => router.push(paths.controlPanel.Curricula.nextlisson)}>
-              الكل
+              {t('Label.all')}
               <LeftIcon />
             </Button>
           </Box>
@@ -204,10 +206,11 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   width: '100%',
+                  mb: 2,
                 }}
               >
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                  {t('Nav.myRecordedLessons')}
+                  {t('packages.title')}
                 </Typography>
                 <Button
                   color="info"
@@ -323,7 +326,7 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
                 <LeftIcon />
               </Button>
             </Box>
-            <InstructorsSection />
+            <InstructorsSection teachers={teachers} />
 
             {/* Recorded Lessons */}
             {/* <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>

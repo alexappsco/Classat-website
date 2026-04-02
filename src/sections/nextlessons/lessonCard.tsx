@@ -19,6 +19,7 @@ import BookIcon from "@mui/icons-material/MenuBook";
 import { endpoints } from "src/utils/endpoints";
 import { postData } from "src/utils/crud-fetch-api";
 import { useSnackbar } from "notistack";
+import { useTranslations } from "next-intl";
 
 interface Props {
   img: string;
@@ -45,11 +46,13 @@ export default function LessonCard({
   const [openCancel, setOpenCancel] = useState(false);
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+    const t = useTranslations('next_lessons');
+  
 
 
   const handleCancel = async () => {
     if (!enrollmentId) {
-      alert("في مشكلة في ID");
+      alert(t('error_with_id'));
       return;
     }
 
@@ -69,7 +72,7 @@ export default function LessonCard({
 
       if (res.success) {
         // alert("تم إلغاء الحجز بنجاح");
-        enqueueSnackbar("تم إلغاء الحجز بنجاح", { variant: "success" });
+        enqueueSnackbar(t('lesson_canceled_successfully'), { variant: "success" });
 
         setOpenCancel(false);
       } else {
@@ -85,7 +88,7 @@ export default function LessonCard({
 
   return (
     <>
-      <Card sx={{ m: 1, p: 2, borderRadius: 2 }}>
+      <Card sx={{ m: 1, p: 2, borderRadius: 2, height: "95%" }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Avatar src={img} sx={{ width: 32, height: 32 }} />
           <Typography fontWeight={600}>{name}</Typography>
@@ -114,40 +117,29 @@ export default function LessonCard({
             onClick={() => setOpenCancel(true)}
             sx={{ mt: 2 }}
           >
-            إلغاء الحجز
+            {t('cancel_lesson')}
           </Button>
         )}
-        {status === "Scheduled" ? (
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={() => setOpenCancel(true)}
-            sx={{ mt: 2 }}
-          >
-            إلغاء الحجز
-          </Button>
-        ) : null}
-        <Button
-          variant="outlined"
-          color="error"
-          onClick={() => setOpenCancel(true)}
-          sx={{ mt: 2 }}
-        >
-          إلغاء الحجز
-        </Button>
+        {status === "Cancelled" && (
+          <Typography fontSize={12} sx={{ color: "error.main", p: 1, borderRadius: 1, width: "fit-content",mt:1 }}>{t('lesson_canceled')}</Typography>
+        )}
+        {status === "Completed" && (
+          <Typography fontSize={12} sx={{ color: "success.main", p: 1, borderRadius: 1, width: "fit-content",mt:1 }}>{t('lesson_completed')}</Typography>
+        )}
+
       </Card>
 
       <Dialog open={openCancel} onClose={() => setOpenCancel(false)}>
-        <DialogTitle>تأكيد الإلغاء</DialogTitle>
+        <DialogTitle>{t('confirm_cancel')}</DialogTitle>
 
         <DialogContent>
           <Typography>
-            هل أنت متأكد من أنك تريد إلغاء هذا الحجز؟
+            {t('are_you_sure')}
           </Typography>
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={() => setOpenCancel(false)}>رجوع</Button>
+          <Button onClick={() => setOpenCancel(false)}>{t('back')}</Button>
 
           <Button
             onClick={handleCancel}
@@ -155,7 +147,7 @@ export default function LessonCard({
             variant="contained"
             disabled={loading}
           >
-            {loading ? "جاري الإلغاء..." : "تأكيد الإلغاء"}
+            {loading ? t('canceling') : t('confirm_cancel')}
           </Button>
         </DialogActions>
       </Dialog>

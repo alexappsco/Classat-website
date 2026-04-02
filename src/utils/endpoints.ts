@@ -44,7 +44,7 @@ export const endpoints = {
       if (teacherName) url += `?TeacherName=${teacherName}`;
       return url;
     },
-
+    getStudentTopTeachers:`/students/subject/teachers/search`,
   },
   packages: {
     get: (id: string) => `/students/teacher/${id}/packages`,

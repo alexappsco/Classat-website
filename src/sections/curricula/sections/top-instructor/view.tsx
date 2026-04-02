@@ -1,57 +1,75 @@
 'use client';
 
 import * as React from 'react';
-import { Box } from '@mui/material';
+import { Box, Pagination } from '@mui/material';
 
 import Hero from '../Hero';
-import Categories from '../categories';
-import FiltersBar from '../FiltersBar';
-import LiveSessionsSection from '../../live-sessions/LiveSessionSection';
 import InstructorsSection from './TopInstructorsSection';
 import TeachersFilters from './filterTeacher';
 
-export default function TopTeacher() {
-  const [selectedCategory, setSelectedCategory] = React.useState('مباشرة الآن');
+import { StudentTeacherEducationItem } from 'src/types/teachers';
+import { SubjectItem } from 'src/types/student';
+import { useQuery } from 'src/components/use-query';
+
+interface Props {
+  subjects: SubjectItem[];
+  teachers: StudentTeacherEducationItem[];
+  totalCount: number;
+}
+
+export default function TopTeacher({
+  subjects,
+  teachers,
+  totalCount,
+}: Props) {
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(totalCount / itemsPerPage);
+  const { values, setQueries } = useQuery(
+    ['page'],
+    false,
+    false
+  );
+
+  const page = parseInt(values.page as string) || 1;
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setQueries({ page: value.toString() });
+  };
 
   return (
     <>
+      {/* HERO + FILTER */}
       <Box sx={{ position: 'relative' }}>
         <Hero />
 
         <Box
           sx={{
             position: 'absolute',
-            bottom: { xs: -40, md: -60 },
+            bottom: { xs: -20, md: -40 },
             left: '50%',
             transform: 'translateX(-50%)',
             zIndex: 10,
             width: '64%',
-            Width: { xs: 300, sm: 360, md: 400 },
-            // maxWidth: 700,
-            // boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
-            // backgroundColor: 'white',
           }}
         >
-          {/* <Categories
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          /> */}
-          <TeachersFilters />
+          <TeachersFilters subjects={subjects} />
         </Box>
       </Box>
 
-      <>
-        <InstructorsSection title="المعلمين الاعلى تقييماً" />
-        <InstructorsSection title="مقترح لك" />
-        <InstructorsSection title="معلمون جدد" />
-      </>
-      {/* {selectedCategory === 'جلسات فردية' ? (
-      ) : (
-        <>
-          <LiveSessionsSection title="بثوث مباشرة الان"/>
-          <LiveSessionsSection title="بثوث مباشرة قادمة"/>
-        </>
-      )} */}
+      {/* ONE SECTION ONLY - NO TITLE */}
+      <InstructorsSection teachers={teachers} />
+
+      {/* PAGINATION */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
+        <Pagination
+          count={totalPages}
+          page={page}
+          showFirstButton
+          showLastButton
+          onChange={handlePageChange}
+          color='info'
+        />
+      </Box>
     </>
   );
 }
