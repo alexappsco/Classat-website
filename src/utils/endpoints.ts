@@ -150,7 +150,6 @@ StudentTeacherEducation: {
 invoice: {
   get: "/students/invoices",
   getDetails: (invoiceId: string) => `/students/invoices/${invoiceId}`,
-
 }
 
 };

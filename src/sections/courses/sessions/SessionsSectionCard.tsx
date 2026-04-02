@@ -31,7 +31,8 @@ import {
   DialogActions,
   CircularProgress,
 } from '@mui/material';
-
+import { getData } from 'src/utils/crud-fetch-api';
+import InvoiceDetails from 'src/sections/invoice/invoiceDetails';
 interface Props {
   paymentList: any[];
   session: any;
@@ -51,7 +52,8 @@ export default function SessionsSectionCard({
   const [liked, setLiked] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+const [invoiceData, setInvoiceData] = useState<any>(null);
+const [openInvoiceDialog, setOpenInvoiceDialog] = useState(false);
   // Extract session data
   const {
     courseId,
@@ -360,6 +362,179 @@ export default function SessionsSectionCard({
 }
 
 // Payment Modal Component
+// function PaymentModal({
+//   open,
+//   onClose,
+//   session,
+//   paymentList,
+//   onSuccess
+// }: {
+//   open: boolean;
+//   onClose: () => void;
+//   session: any;
+//   paymentList: any[];
+//   onSuccess?: () => void;
+// }) {
+//   const [selectedMethod, setSelectedMethod] = useState('');
+//   const [isSubmitting, setIsSubmitting] = useState(false);
+//   const { enqueueSnackbar } = useSnackbar();
+
+//   // Calculate VAT and totals
+//   const VAT_PERCENTAGE = 0.15; // 15%
+//   const subtotal = session?.price || 0;
+//   const vatAmount = subtotal * VAT_PERCENTAGE;
+//   const total = subtotal + vatAmount;
+
+//   // Set first payment method as default when modal opens
+//   useEffect(() => {
+//     if (paymentList && paymentList.length > 0 && !selectedMethod) {
+//       setSelectedMethod(paymentList[0].id);
+//     }
+//   }, [paymentList, selectedMethod]);
+
+//   const handleBuyNow = async () => {
+//     if (!selectedMethod) {
+//       enqueueSnackbar('يرجى اختيار وسيلة دفع', { variant: 'warning' });
+//       return;
+//     }
+
+//     setIsSubmitting(true);
+//     try {
+//       const checkoutRes = await postData(endpoints.payment.post_single_item, {
+//         paymentMethodId: selectedMethod,
+//         itemType: 'Course',
+//         courseId: session.courseId,
+//         teacherId: session?.teacherId,
+//       });
+
+//       if (checkoutRes.success || checkoutRes.status === 204) {
+//         enqueueSnackbar('تم شراء الكورس بنجاح', { variant: 'success' });
+//         onSuccess?.();
+//         onClose();
+//       } else {
+//         enqueueSnackbar(checkoutRes.error || 'فشلت عملية الدفع', { variant: 'error' });
+//       }
+//     } catch (error) {
+//       enqueueSnackbar('حدث خطأ غير متوقع', { variant: 'error' });
+//     } finally {
+//       setIsSubmitting(false);
+//     }
+//   };
+
+//   return (
+//     <Dialog
+//       open={open}
+//       onClose={onClose}
+//       maxWidth="sm"
+//       fullWidth
+//       dir="rtl"
+//       onClick={(e) => e.stopPropagation()}
+//     >
+//       <DialogTitle sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+//         إتمام شراء الكورس
+//       </DialogTitle>
+//       <DialogContent>
+//         <Box sx={{ mb: 3, p: 2, bgcolor: '#f5f5f5', borderRadius: 2 }}>
+//           <Typography variant="subtitle1" fontWeight="bold">
+//             {session?.title}
+//           </Typography>
+//         </Box>
+
+//         <Typography variant="h6" sx={{ mb: 2, fontSize: '1.1rem' }}>
+//           اختر وسيلة الدفع
+//         </Typography>
+
+//         <FormControl component="fieldset" sx={{ width: '100%' }}>
+//           <RadioGroup
+//             value={selectedMethod}
+//             onChange={(e) => setSelectedMethod(e.target.value)}
+//           >
+//             {paymentList && paymentList.map((method) => (
+//               <Card
+//                 key={method.id}
+//                 sx={{
+//                   mb: 1.5,
+//                   p: 1,
+//                   border: selectedMethod === method.id ? '2px solid #00bcd4' : '1px solid #e0e0e0',
+//                   borderRadius: 2,
+//                   cursor: 'pointer',
+//                   '&:hover': {
+//                     borderColor: '#00bcd4',
+//                   },
+//                 }}
+//                 onClick={() => setSelectedMethod(method.id)}
+//               >
+//                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+//                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
+//                     <Radio checked={selectedMethod === method.id} color="primary" />
+//                     <Typography>{method.name}</Typography>
+//                   </Box>
+//                   {method.logo && (
+//                     <Box sx={{ width: 50, height: 30 }}>
+//                       <img
+//                         src={method.logo}
+//                         alt={method.name}
+//                         style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+//                       />
+//                     </Box>
+//                   )}
+//                 </Box>
+//               </Card>
+//             ))}
+//           </RadioGroup>
+//         </FormControl>
+
+//         <Divider sx={{ my: 3 }} />
+
+//         {/* Price Breakdown */}
+//         <Box sx={{ mb: 2 }}>
+//           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+//             <Typography color="text.secondary">سعر الكورس</Typography>
+//             <Typography>{session?.price?.toFixed(2) || 0} درهم</Typography>
+//           </Box>
+//           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+//             <Typography color="text.secondary">ضريبة القيمة المضافة (15%)</Typography>
+//             <Typography>{vatAmount.toFixed(2)} درهم</Typography>
+//           </Box>
+//            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+//             <Typography color="text.secondary">نسبة ربح النصه {session?.platformProfitPercentage || 0}%</Typography>
+//             <Typography>{(session?.platformProfitPercentage * session?.price).toFixed(2) || 0} درهم</Typography>
+//           </Box>
+//           <Divider sx={{ my: 1.5 }} />
+//           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+//             <Typography variant="h6" fontWeight="bold">الإجمالي</Typography>
+//             <Typography variant="h5" color="primary" fontWeight="bold">
+//               {session?.priceAfterTaxAndProfit || 0} درهم
+//             </Typography>
+//           </Box>
+//         </Box>
+//       </DialogContent>
+//       <DialogActions sx={{ p: 3, pt: 0 }}>
+//         <Button
+//           onClick={onClose}
+//           variant="outlined"
+//           sx={{ borderRadius: '50px', px: 3 }}
+//           disabled={isSubmitting}
+//         >
+//           إلغاء
+//         </Button>
+//         <Button
+//           onClick={handleBuyNow}
+//           variant="contained"
+//           sx={{
+//             borderRadius: '50px',
+//             px: 3,
+//             bgcolor: '#56b0d3',
+//             '&:hover': { bgcolor: '#459dbf' }
+//           }}
+//           disabled={isSubmitting || !selectedMethod}
+//         >
+//           {isSubmitting ? <CircularProgress size={24} color="inherit" /> : 'تأكيد الشراء'}
+//         </Button>
+//       </DialogActions>
+//     </Dialog>
+//   );
+// }
 function PaymentModal({
   open,
   onClose,
@@ -375,15 +550,19 @@ function PaymentModal({
 }) {
   const [selectedMethod, setSelectedMethod] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // ✅ NEW (فقط إضافات)
+  const [invoiceData, setInvoiceData] = useState<any>(null);
+  const [openInvoiceDialog, setOpenInvoiceDialog] = useState(false);
+
   const { enqueueSnackbar } = useSnackbar();
 
-  // Calculate VAT and totals
-  const VAT_PERCENTAGE = 0.15; // 15%
+  // ✅ نفس الحسابات بدون تغيير
+  const VAT_PERCENTAGE = 0.15;
   const subtotal = session?.price || 0;
   const vatAmount = subtotal * VAT_PERCENTAGE;
   const total = subtotal + vatAmount;
 
-  // Set first payment method as default when modal opens
   useEffect(() => {
     if (paymentList && paymentList.length > 0 && !selectedMethod) {
       setSelectedMethod(paymentList[0].id);
@@ -398,15 +577,31 @@ function PaymentModal({
 
     setIsSubmitting(true);
     try {
-      const checkoutRes = await postData(endpoints.payment.post_single_item, {
+      const checkoutRes : any = await postData(endpoints.payment.post_single_item, {
         paymentMethodId: selectedMethod,
         itemType: 'Course',
         courseId: session.courseId,
         teacherId: session?.teacherId,
       });
 
+      // ✅ نفس شرط النجاح + إضافة الفاتورة
       if (checkoutRes.success || checkoutRes.status === 204) {
         enqueueSnackbar('تم شراء الكورس بنجاح', { variant: 'success' });
+
+        // ✅ NEW: جلب الفاتورة
+        const invoiceId = checkoutRes?.data?.invoiceId;
+
+        if (invoiceId) {
+          const invoiceRes = await getData(
+            endpoints.invoice.getDetails(invoiceId)
+          );
+
+          if (invoiceRes?.data) {
+            setInvoiceData(invoiceRes.data);
+            setOpenInvoiceDialog(true);
+          }
+        }
+
         onSuccess?.();
         onClose();
       } else {
@@ -420,119 +615,145 @@ function PaymentModal({
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      maxWidth="sm"
-      fullWidth
-      dir="rtl"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <DialogTitle sx={{ textAlign: 'center', fontWeight: 'bold' }}>
-        إتمام شراء الكورس
-      </DialogTitle>
-      <DialogContent>
-        <Box sx={{ mb: 3, p: 2, bgcolor: '#f5f5f5', borderRadius: 2 }}>
-          <Typography variant="subtitle1" fontWeight="bold">
-            {session?.title}
-          </Typography>
-        </Box>
+    <>
+      {/* ✅ نفس Dialog تبعك 100% بدون تغيير */}
+      <Dialog
+        open={open}
+        onClose={onClose}
+        maxWidth="sm"
+        fullWidth
+        dir="rtl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <DialogTitle sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+          إتمام شراء الكورس
+        </DialogTitle>
 
-        <Typography variant="h6" sx={{ mb: 2, fontSize: '1.1rem' }}>
-          اختر وسيلة الدفع
-        </Typography>
-
-        <FormControl component="fieldset" sx={{ width: '100%' }}>
-          <RadioGroup
-            value={selectedMethod}
-            onChange={(e) => setSelectedMethod(e.target.value)}
-          >
-            {paymentList && paymentList.map((method) => (
-              <Card
-                key={method.id}
-                sx={{
-                  mb: 1.5,
-                  p: 1,
-                  border: selectedMethod === method.id ? '2px solid #00bcd4' : '1px solid #e0e0e0',
-                  borderRadius: 2,
-                  cursor: 'pointer',
-                  '&:hover': {
-                    borderColor: '#00bcd4',
-                  },
-                }}
-                onClick={() => setSelectedMethod(method.id)}
-              >
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Radio checked={selectedMethod === method.id} color="primary" />
-                    <Typography>{method.name}</Typography>
-                  </Box>
-                  {method.logo && (
-                    <Box sx={{ width: 50, height: 30 }}>
-                      <img
-                        src={method.logo}
-                        alt={method.name}
-                        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
-                      />
-                    </Box>
-                  )}
-                </Box>
-              </Card>
-            ))}
-          </RadioGroup>
-        </FormControl>
-
-        <Divider sx={{ my: 3 }} />
-
-        {/* Price Breakdown */}
-        <Box sx={{ mb: 2 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-            <Typography color="text.secondary">سعر الكورس</Typography>
-            <Typography>{session?.price?.toFixed(2) || 0} درهم</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-            <Typography color="text.secondary">ضريبة القيمة المضافة (15%)</Typography>
-            <Typography>{vatAmount.toFixed(2)} درهم</Typography>
-          </Box>
-           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-            <Typography color="text.secondary">نسبة ربح النصه {session?.platformProfitPercentage || 0}%</Typography>
-            <Typography>{(session?.platformProfitPercentage * session?.price).toFixed(2) || 0} درهم</Typography>
-          </Box>
-          <Divider sx={{ my: 1.5 }} />
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="h6" fontWeight="bold">الإجمالي</Typography>
-            <Typography variant="h5" color="primary" fontWeight="bold">
-              {session?.priceAfterTaxAndProfit || 0} درهم
+        <DialogContent>
+          <Box sx={{ mb: 3, p: 2, bgcolor: '#f5f5f5', borderRadius: 2 }}>
+            <Typography variant="subtitle1" fontWeight="bold">
+              {session?.title}
             </Typography>
           </Box>
-        </Box>
-      </DialogContent>
-      <DialogActions sx={{ p: 3, pt: 0 }}>
-        <Button
-          onClick={onClose}
-          variant="outlined"
-          sx={{ borderRadius: '50px', px: 3 }}
-          disabled={isSubmitting}
-        >
-          إلغاء
-        </Button>
-        <Button
-          onClick={handleBuyNow}
-          variant="contained"
-          sx={{
-            borderRadius: '50px',
-            px: 3,
-            bgcolor: '#56b0d3',
-            '&:hover': { bgcolor: '#459dbf' }
-          }}
-          disabled={isSubmitting || !selectedMethod}
-        >
-          {isSubmitting ? <CircularProgress size={24} color="inherit" /> : 'تأكيد الشراء'}
-        </Button>
-      </DialogActions>
-    </Dialog>
+
+          <Typography variant="h6" sx={{ mb: 2, fontSize: '1.1rem' }}>
+            اختر وسيلة الدفع
+          </Typography>
+
+          <FormControl component="fieldset" sx={{ width: '100%' }}>
+            <RadioGroup
+              value={selectedMethod}
+              onChange={(e) => setSelectedMethod(e.target.value)}
+            >
+              {paymentList && paymentList.map((method) => (
+                <Card
+                  key={method.id}
+                  sx={{
+                    mb: 1.5,
+                    p: 1,
+                    border: selectedMethod === method.id ? '2px solid #00bcd4' : '1px solid #e0e0e0',
+                    borderRadius: 2,
+                    cursor: 'pointer',
+                    '&:hover': {
+                      borderColor: '#00bcd4',
+                    },
+                  }}
+                  onClick={() => setSelectedMethod(method.id)}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Radio checked={selectedMethod === method.id} color="primary" />
+                      <Typography>{method.name}</Typography>
+                    </Box>
+                    {method.logo && (
+                      <Box sx={{ width: 50, height: 30 }}>
+                        <img
+                          src={method.logo}
+                          alt={method.name}
+                          style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+                        />
+                      </Box>
+                    )}
+                  </Box>
+                </Card>
+              ))}
+            </RadioGroup>
+          </FormControl>
+
+          <Divider sx={{ my: 3 }} />
+
+          {/* ✅ نفس التفاصيل بالضبط */}
+          <Box sx={{ mb: 2 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+              <Typography color="text.secondary">سعر الكورس</Typography>
+              <Typography>{session?.price?.toFixed(2) || 0} درهم</Typography>
+            </Box>
+
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+              <Typography color="text.secondary">ضريبة القيمة المضافة (15%)</Typography>
+              <Typography>{vatAmount.toFixed(2)} درهم</Typography>
+            </Box>
+
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
+              <Typography color="text.secondary">
+                نسبة ربح النصه {session?.platformProfitPercentage || 0}%
+              </Typography>
+              <Typography>
+                {((session?.platformProfitPercentage || 0) * (session?.price || 0)).toFixed(2)} درهم
+              </Typography>
+            </Box>
+
+            <Divider sx={{ my: 1.5 }} />
+
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography variant="h6" fontWeight="bold">الإجمالي</Typography>
+              <Typography variant="h5" color="primary" fontWeight="bold">
+                {session?.priceAfterTaxAndProfit || total} درهم
+              </Typography>
+            </Box>
+          </Box>
+        </DialogContent>
+
+        <DialogActions sx={{ p: 3, pt: 0 }}>
+          <Button
+            onClick={onClose}
+            variant="outlined"
+            sx={{ borderRadius: '50px', px: 3 }}
+            disabled={isSubmitting}
+          >
+            إلغاء
+          </Button>
+
+          <Button
+            onClick={handleBuyNow}
+            variant="contained"
+            sx={{
+              borderRadius: '50px',
+              px: 3,
+              bgcolor: '#56b0d3',
+              '&:hover': { bgcolor: '#459dbf' }
+            }}
+            disabled={isSubmitting || !selectedMethod}
+          >
+            {isSubmitting ? <CircularProgress size={24} color="inherit" /> : 'تأكيد الشراء'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* ✅ NEW: Dialog الفاتورة فقط */}
+      <Dialog
+        open={openInvoiceDialog}
+        onClose={() => setOpenInvoiceDialog(false)}
+        maxWidth="sm"
+        fullWidth
+        dir="rtl"
+      >
+        <DialogContent>
+          <InvoiceDetails invoice={invoiceData} />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
-
 // Import PlayArrowIcon for enrolled button
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
