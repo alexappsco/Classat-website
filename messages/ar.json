@@ -840,6 +840,20 @@
       "meter": "متر",
       "distance_from": "المسافة من",
       "distance_to": "المسافة إلى"
+    },
+    "TopTeachers":{
+      "searchPlaceholder": "إبحث عن معلم  ..",
+      "rateFrom": "النقييم من",
+      "rateTo": "النقييم إلى",
+      "teacherPrefix": "الاستاذ / ",
+      "allSubjects": "كل المواد",
+    "currencyPerHour": "ريال/ساعة",
+    "viewAvailability": "عرض المواعيد المتاحة",
+    "courseTypes": {
+      "OneToOne": "حصة فردية",
+      "LiveGroup": "مجموعة مباشرة",
+      "Recorded": "مسجل"
+    }
     }
   },
   "Label": {

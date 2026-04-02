@@ -1,60 +1,24 @@
-import { Container, Grid, Box, Button, Stack, Typography } from '@mui/material';
-
+import { Container, Grid, Box } from '@mui/material';
 import InstructorCard from './InstructorCard';
+import { text } from 'src/theme/palette';
+import { StudentTeacherEducationItem } from 'src/types/teachers';
 
-import { text, primary } from 'src/theme/palette';
-const INSTRUCTORS = [
-  {
-    image: '/assets/landing-page/top-instructors/instructor1.png',
-    name: 'أ. إبراهيم أحمد',
-    category: 'مدرس علوم',
-    courses: '15',
-    rating: 5,
-  },
-  {
-    image: '/assets/landing-page/top-instructors/instructor1.png',
-    name: 'أ. إبراهيم أحمد',
-    category: 'Web Development',
-    courses: '15',
-    rating: 5,
-  },
-  {
-    image: '/assets/landing-page/top-instructors/instructor1.png',
-    name: 'أ. إبراهيم أحمد',
-    category: 'UI UX Designer',
-    courses: '15',
-    rating: 5,
-  },
-  {
-    image: '/assets/landing-page/top-instructors/instructor1.png',
-    name: 'أ. إبراهيم أحمد',
-    category: 'مدرس رياضيات',
-    courses: '15',
-    rating: 5,
-  },
-];
-
-export default function InstructorsSection({ title }: { title?: string }) {
+export default function InstructorsSection({
+  teachers,
+}: {
+  teachers: StudentTeacherEducationItem[];
+}) {
   const primaryTextColor = text.primary;
+
   return (
-    // Set background to white (default Box behavior)
-    <Box sx={{ py: { xs: 4, md: 6 }, px: { xs: 2, md: 3 }, direction: 'rtl' }}>
+    <Box sx={{ py: { xs: 4, md: 6 }, px: { xs: 2, md: 3 }, mt: 12 }}>
       <Container>
-        <Grid item xs={12} sm={8} md={9}>
-          <Stack spacing={0.5} sx={{ mb: 15 }}>
-            <Typography
-              variant="h4"
-              sx={{ fontWeight: 700, color: primaryTextColor, textAlign: 'end' }}
-            >
-              {title}
-            </Typography>
-          </Stack>
-        </Grid>
-        {/* 2. Instructors Grid */}
         <Grid container rowGap={{ xs: 12, md: 6 }} spacing={{ xs: 2, md: 4 }} sx={{ mt: 5 }}>
-          {INSTRUCTORS.map((instructor, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
-              <InstructorCard {...instructor} />
+          {teachers?.map((teacher) => (
+            <Grid item xs={12} sm={6} md={3} key={teacher.teacherId}>
+              <InstructorCard
+                teacher={teacher}
+              />
             </Grid>
           ))}
         </Grid>

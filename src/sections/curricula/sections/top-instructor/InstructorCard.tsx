@@ -1,33 +1,35 @@
 import { Box, Card, Typography, Stack, Button, Chip, alpha } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { repeat } from 'lodash';
-import Image from 'src/components/image';
-import { primary, secondary, shadow, text } from 'src/theme/palette';
-// import StarIcon from '@mui/icons-material/Star'; // Placeholder for the star icon
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { primary, secondary, text } from 'src/theme/palette';
+import { StudentTeacherEducationItem } from 'src/types/teachers';
 
-type InstructorCardProps = (typeof INSTRUCTORS)[0];
+export enum CourseType {
+  ONE_TO_ONE = 'OneToOne',
+  LIVE_GROUP = 'LiveGroup',
+  RECORDED = 'Recorded',
+}
 
-const INSTRUCTORS = [
-  {
-    image: '/assets/instructors/instructor_1.jpg',
-    name: 'أ. إبراهيم أحمد',
-    category: 'مدرس علوم',
-    courses: '15',
-    rating: 5,
-  },
-];
 
 export default function InstructorCard({
-  image,
-  name,
-  category,
-  courses,
-  rating,
-}: InstructorCardProps) {
+ teacher
+
+}:{teacher: StudentTeacherEducationItem}) {
   const theme = useTheme();
+  const t = useTranslations('Pages.TopTeachers');
+  const router = useRouter();
+
   const primaryColor = primary.main;
   const secondaryColor = secondary.main;
   const primaryTextColor = text.primary;
+
+  const coursePrices = [
+    { type: CourseType.ONE_TO_ONE, value: teacher?.priceOneToOne },
+    { type: CourseType.LIVE_GROUP, value: teacher?.priceLiveGroup },
+    { type: CourseType.RECORDED, value: teacher?.priceRecorded },
+  ];
+
 
   return (
     <Card
@@ -39,11 +41,10 @@ export default function InstructorCard({
         display: 'flex',
         flexDirection: 'column',
         textAlign: 'center',
-
         overflow: 'visible',
       }}
     >
-      {/* 1. Image and Category Tag Area (Composite Background) */}
+      {/* Header */}
       <Box
         sx={{
           position: 'relative',
@@ -53,9 +54,8 @@ export default function InstructorCard({
           backgroundColor: primary.main,
         }}
       >
-        {/* Category Chip - Positioned Absolutely */}
         <Chip
-          label={category}
+          label={teacher?.subjectName}
           size="small"
           sx={{
             position: 'absolute',
@@ -69,11 +69,10 @@ export default function InstructorCard({
           }}
         />
 
-        {/* Instructor Image (PNG) - Positioned to slightly exit the card boundary */}
         <Box
           component="img"
-          src={image}
-          alt={name}
+          src={teacher?.profileImageUrl}
+          alt={teacher?.fullName}
           sx={{
             position: 'absolute',
             width: 200,
@@ -87,59 +86,50 @@ export default function InstructorCard({
         />
       </Box>
 
-      {/* 2. Content and Rating Area (Below the image, padded to clear the image overlap) */}
-      <Stack spacing={1.5} sx={{ p: 2, flexGrow: 1, alignItems: 'flex-end', pt: 4 }}>
-        {/* Instructor Name */}
-        <Typography variant="h6" sx={{ fontWeight: 600, color: primaryTextColor }}>
-          الاستاذ / {name}
-        </Typography>
-
-        {/* Rating and Course Count */}
-        <Stack
-          direction="row"
-          spacing={1}
-          alignItems="center"
-          justifyContent="space-between"
-          width={'100%'}
-        >
-          {/* Rating Stars (PNG Image) */}
-          <Stack direction="row">
-            {Array.from({ length: rating }).map((_, i) => (
-              <Box
-                key={i}
-                component="img"
-                // Local path for the star image
-                src="/assets/icons/rating/star.png"
-                alt="Star rating"
-                sx={{ width: 16, height: 16, objectFit: 'contain', mx: 0.2 }}
-              />
-            ))}
+      {/* Content */}
+      <Stack spacing={1.5} sx={{ p: 2, flexGrow: 1, alignItems: 'flex-end', pt: 2 }}>
+        {/* Name + Rating in same row */}
+        <Stack direction="row-reverse" justifyContent="space-between" width="100%">
+          <Stack direction="row" spacing={0.5}>
+            <Typography variant="body2" sx={{ fontWeight: 700, color: primaryTextColor }}>
+              {teacher?.averageRating?.toFixed(1)}
+            </Typography>
+            <Box
+              component="img"
+              src="/assets/icons/rating/star.png"
+              alt="Star"
+              sx={{ width: 16, height: 16 }}
+            />
           </Stack>
 
-          {/* Course Count */}
-          <Box display={'flex'} flexDirection={'row-reverse'} gap={'5px'}>
-            <Typography
-              variant="caption"
-              sx={{ color: '#54B0D7', fontWeight: '700' }}
-              fontSize={14}
-            >
-              {courses}
-            </Typography>
-            <Typography
-              variant="caption"
-              sx={{ color: theme.palette.text.secondary }}
-              fontSize={14}
-            >
-              ريال/ساعة
-            </Typography>
-          </Box>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: primaryTextColor }}>
+             {t('teacherPrefix')}{teacher?.fullName}
+          </Typography>
+        </Stack>
+
+        {/* Prices */}
+        <Stack width="100%" spacing={0.5}>
+          {coursePrices.map((item) => (
+            <Stack key={item.type} direction="row-reverse" justifyContent="space-between">
+              <Typography variant="caption" sx={{ color: '#54B0D7', fontWeight: 700 }}>
+                <Box component="span" sx={{ unicodeBidi: 'plaintext' }}>
+                  {item.value}
+                </Box>{' '}
+                {t('currencyPerHour')}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                {t(`courseTypes.${item.type}`)}
+              </Typography>
+            </Stack>
+          ))}
         </Stack>
       </Stack>
 
-      {/* 3. Profile Button */}
+      {/* Button */}
       <Button
         variant="outlined"
         size="medium"
+        onClick={()=> router.push(`/curricula/details-mathod/${teacher?.teacherId}?subjectId=${teacher?.educationApproachTypeStageGradeSubjectId}`)}
         sx={{
           py: 1.5,
           color: primaryTextColor,
@@ -153,7 +143,7 @@ export default function InstructorCard({
           m: 'auto',
         }}
       >
-        عرض المواعيد المتاحة
+        {t('viewAvailability')}
       </Button>
     </Card>
   );
