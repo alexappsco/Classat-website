@@ -11,12 +11,12 @@ export default function EducationCourseCard({ course }: { course: any }) {
   // دالة بسيطة لتنسيق التاريخ من الـ API
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB'); // 12/11/2025
+    return date.toLocaleDateString('en'); 
   };
 
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', hour12: true });
+    return date.toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: true });
   };
   
 

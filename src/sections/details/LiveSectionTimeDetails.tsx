@@ -9,6 +9,7 @@ import {
   Box, Card, Stack, Radio, Button, Dialog, Container,
   TextField, Typography, RadioGroup, IconButton, DialogTitle, DialogContent, DialogActions, InputAdornment, CircularProgress
 } from '@mui/material';
+import InvoiceDialog from '../invoice/InvoiceDialog';
 
 // ===== Helpers =====
 const getArabicDayName = (dayOfWeek: string): string => {
@@ -64,8 +65,8 @@ export default function LiveSectionTimeDetails({
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [teacherPackages, setTeacherPackages] = useState<any[]>([]);
-
-  // جلب الباقات المتاحة للطالب
+  const [invoiceId, setInvoiceId] = useState<string | null>(null);
+  const [openInvoiceDialog, setOpenInvoiceDialog] = useState(false);
   const fetchPackages = useCallback(async () => {
     try {
       const response = await getData<PackageSubscriptionsResponse>(endpoints.payment.packageSubscriptions(teacherId));
@@ -120,16 +121,31 @@ export default function LiveSectionTimeDetails({
             couponCode: coupon || null
           };
 
-      const response = await postData(endpoint, body);
+      // const response = await postData(endpoint, body);
+      const response: any = await postData(endpoint, body);
 
-      if (response.success || response.status === 204) {
-        enqueueSnackbar('تمت العملية بنجاح', { variant: 'success' });
-        setIsPaymentModalOpen(false);
-        setSelectedSessions([]);
-        fetchPackages();
-      } else {
-        enqueueSnackbar(response.error || 'فشلت العملية', { variant: 'error' });
-      }
+      // if (response.success || response.status === 204) {
+      //   enqueueSnackbar('تمت العملية بنجاح', { variant: 'success' });
+      //   setIsPaymentModalOpen(false);
+      //   setSelectedSessions([]);
+      //   fetchPackages();
+      // } else {
+      //   enqueueSnackbar(response.error || 'فشلت العملية', { variant: 'error' });
+      // }
+      if (response?.data?.invoiceId ) {
+  enqueueSnackbar('تمت العملية بنجاح', { variant: 'success' });
+
+  setIsPaymentModalOpen(false); 
+
+  setInvoiceId(response.data.invoiceId); 
+
+  setOpenInvoiceDialog(true); 
+
+  setSelectedSessions([]);
+  fetchPackages();
+} else {
+  enqueueSnackbar('فشلت العملية', { variant: 'error' });
+}
     } catch {
       enqueueSnackbar('حدث خطأ غير متوقع', { variant: 'error' });
     } finally {
@@ -188,11 +204,15 @@ export default function LiveSectionTimeDetails({
         packages={teacherPackages}
         isSubmitting={isSubmitting}
       />
+      <InvoiceDialog
+  open={openInvoiceDialog}
+  onClose={() => setOpenInvoiceDialog(false)}
+  invoiceId={invoiceId}
+/>
     </Container>
   );
 }
 
-// ===== Payment Dialog (المحاكاة للصورة المطلوبة) =====
 function PaymentDialog({ open, onClose, onConfirm, paymentList, packages, isSubmitting }: any) {
   const [method, setMethod] = useState({ id: '', isPackage: false });
   const [coupon, setCoupon] = useState('');
@@ -202,7 +222,6 @@ function PaymentDialog({ open, onClose, onConfirm, paymentList, packages, isSubm
       <DialogTitle sx={{ textAlign: 'center', fontWeight: 800 }}>اختر طريقة الدفع</DialogTitle>
 
       <DialogContent>
-        {/* طرق الدفع الإلكتروني */}
         <RadioGroup value={method.isPackage ? '' : method.id}>
           {paymentList?.map((item: any) => (
             <Card
@@ -223,7 +242,6 @@ function PaymentDialog({ open, onClose, onConfirm, paymentList, packages, isSubm
           ))}
         </RadioGroup>
 
-        {/* الدفع بالباقة (كما في الصورة) */}
         {packages.length > 0 && (
           <Box sx={{ mt: 2 }}>
             <Typography variant="subtitle1" fontWeight={800} sx={{ mb: 1.5 }}>أو دفع باستخدام الباقة</Typography>
@@ -247,7 +265,6 @@ function PaymentDialog({ open, onClose, onConfirm, paymentList, packages, isSubm
           </Box>
         )}
 
-        {/* كويون الخصم */}
         <Box sx={{ mt: 3 }}>
           <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1 }}>كوبون الخصم</Typography>
           <TextField

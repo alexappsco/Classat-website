@@ -1,4 +1,4 @@
-import { Teachers } from "next/font/google";
+import { get } from "lodash";
 
 export const endpoints = {
   home: {
@@ -146,6 +146,18 @@ wallet: {
 },
 StudentTeacherEducation: {
   get:(teacherId: string, educationApproachTypeStageGradeSubjectId: string) => `/students/teacher/${teacherId}/education/${educationApproachTypeStageGradeSubjectId}/about-teacher`
-}
+},
+invoice: {
+  get: "/students/invoices",
+  getDetails: (invoiceId: string) => `/students/invoices/${invoiceId}`,
+},
+liveSessionSubjectEnrollments:{
+  get: "/students/live-session-subject-enrollments",
+  details: (enrollmentId: string) => `/students/live-session-subject-enrollments/${enrollmentId}`,
+},
+liveCourseEnrollments: {
+  get: "/students/live-session-course-enrollments",
+  details: (enrollmentId: string) => `/students/live-session-course-enrollments/${enrollmentId}`, 
+},
 
 };
