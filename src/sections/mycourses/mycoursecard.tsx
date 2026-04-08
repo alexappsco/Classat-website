@@ -801,7 +801,7 @@ function PaymentModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [invoiceData, setInvoiceData] = useState<any>(null);
   const { enqueueSnackbar } = useSnackbar();
-
+console.log(course)
   const VAT_PERCENTAGE = 0.15;
   const subtotal = course?.price || 0;
   const vatAmount = subtotal * VAT_PERCENTAGE;

@@ -419,7 +419,7 @@ import { Icon } from '@iconify/react';
 import { useSnackbar } from 'notistack';
 import { useState, useEffect } from 'react';
 import { endpoints } from 'src/utils/endpoints';
-import { postData } from 'src/utils/crud-fetch-api';
+import { postData, getData } from 'src/utils/crud-fetch-api';
 import {
   Box,
   Card,
@@ -447,6 +447,8 @@ import {
   CircularProgress,
 } from '@mui/material';
 import InvoiceDetails from '../invoice/invoiceDetails';
+
+// ----------------------------------------------------------------------
 
 export default function EducationalLessons({
   lessonList,
@@ -523,13 +525,11 @@ function PaymentModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
-  // Calculate VAT and totals
-  const VAT_PERCENTAGE = 0.15; // 15%
+  const VAT_PERCENTAGE = 0.15;
   const subtotal = lesson.coursePrice || lesson.price || 0;
   const vatAmount = subtotal * VAT_PERCENTAGE;
   const total = subtotal + vatAmount;
 
-  // Set first payment method as default when modal opens
   useEffect(() => {
     if (paymentList && paymentList.length > 0 && !selectedMethod) {
       setSelectedMethod(paymentList[0].id);
@@ -544,17 +544,26 @@ function PaymentModal({
 
     setIsSubmitting(true);
     try {
-      const checkoutRes : any = await postData(endpoints.payment.post_single_item, {
+      const checkoutRes: any = await postData(endpoints.payment.post_single_item, {
         paymentMethodId: selectedMethod,
         itemType: 'EducationalLesson',
         educationalLessonId: lesson.courseId || lesson.lessonId,
         teacherId: teacherId,
       });
-        console.log('checkoutResssssssssssssss:', checkoutRes);
-      if (checkoutRes?.data?.invoiceId ) {
-        enqueueSnackbar('تم شراء الدرس بنجاح', { variant: 'success' });
-        onClose(); // سكّر مودال الدفع
-        onPaymentSuccess(checkoutRes.data); // أعطِ البيانات لـ LessonCard لعرض الفاتورة
+
+      if (checkoutRes.success && checkoutRes.data?.invoiceId) {
+        // جلب تفاصيل الفاتورة كاملة من السيرفر لضمان عمل أزرار الطباعة والتحميل
+        const invoiceRes = await getData(endpoints.invoice.getDetails(checkoutRes.data.invoiceId));
+
+        if (invoiceRes.success && invoiceRes.data) {
+          enqueueSnackbar('تم شراء الدرس بنجاح', { variant: 'success' });
+          onClose();
+          onPaymentSuccess(invoiceRes.data);
+        } else {
+          // في حال فشل جلب التفاصيل، نمرر البيانات الأساسية على الأقل
+          onPaymentSuccess(checkoutRes.data);
+          onClose();
+        }
       } else {
         enqueueSnackbar(checkoutRes.error || 'فشلت عملية الدفع', { variant: 'error' });
       }
@@ -593,9 +602,7 @@ function PaymentModal({
                     border: selectedMethod === method.id ? '2px solid #00bcd4' : '1px solid #e0e0e0',
                     borderRadius: 2,
                     cursor: 'pointer',
-                    '&:hover': {
-                      borderColor: '#00bcd4',
-                    },
+                    '&:hover': { borderColor: '#00bcd4' },
                   }}
                   onClick={() => setSelectedMethod(method.id)}
                 >
@@ -621,7 +628,6 @@ function PaymentModal({
 
         <Divider sx={{ my: 3 }} />
 
-        {/* Price Breakdown */}
         <Box sx={{ mb: 2 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
             <Typography color="text.secondary">سعر الدرس</Typography>
@@ -633,9 +639,7 @@ function PaymentModal({
           </Box>
           <Divider sx={{ my: 1.5 }} />
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="h6" fontWeight="bold">
-              الإجمالي
-            </Typography>
+            <Typography variant="h6" fontWeight="bold">الإجمالي</Typography>
             <Typography variant="h5" color="primary" fontWeight="bold">
               {total.toFixed(2)} درهم
             </Typography>
@@ -678,8 +682,8 @@ function LessonCard({
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
-  const [openInvoiceDialog, setOpenInvoiceDialog] = useState(false);
-  const [invoiceData, setInvoiceData] = useState<any | null>(null);
+  const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
+  const [purchasedInvoice, setPurchasedInvoice] = useState<any | null>(null);
 
   const handleAddToCart = async () => {
     setIsSubmitting(true);
@@ -687,27 +691,19 @@ function LessonCard({
     setIsSubmitting(false);
   };
 
-  const handleBuyNow = () => {
-    setIsPaymentModalOpen(true);
-  };
-
   const handlePaymentSuccess = (invoice: any) => {
-    setInvoiceData(invoice);
-    setOpenInvoiceDialog(true);
+    setPurchasedInvoice(invoice);
+    setIsInvoiceOpen(true);
   };
 
-  // Calculate VAT and total for display in the card
-  const VAT_PERCENTAGE = 0.15;
   const subtotal = lesson.coursePrice || lesson.price || 0;
-  const vatAmount = subtotal * VAT_PERCENTAGE;
-  const totalWithVat = subtotal + vatAmount;
+  const totalWithVat = subtotal + (subtotal * 0.15);
 
   return (
     <>
       <Card sx={{ mb: 3, borderRadius: 2, boxShadow: 3 }}>
         <CardContent>
           <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} gap={{ xs: 2, md: 3 }}>
-            {/* Lesson Info Section */}
             <Box sx={{ flex: 1, mr: { md: 3 } }}>
               <Typography variant="h5" fontWeight="bold" gutterBottom>
                 {lesson.courseTitle || lesson.title}
@@ -722,11 +718,11 @@ function LessonCard({
                     <List>
                       {section.secsions?.map((lessonItem: any) => (
                         <ListItem key={lessonItem.secsionId}>
-                          <Icon icon="material-symbols:play-circle-outline" />
+                          <Icon icon="material-symbols:play-circle-outline" style={{ marginLeft: '10px' }} />
                           <ListItemText
                             primary={lessonItem.secsionTitle}
                             secondary={
-                              <Button size="small" href={lessonItem.videoUrl} target="_blank">
+                              <Button size="small" href={lessonItem.videoUrl} target="_blank" sx={{ p: 0 }}>
                                 مشاهدة الفيديو
                               </Button>
                             }
@@ -739,7 +735,6 @@ function LessonCard({
               ))}
             </Box>
 
-            {/* Pricing Sidebar */}
             <Box
               sx={{
                 width: { xs: '100%', md: '350px' },
@@ -762,7 +757,7 @@ function LessonCard({
                 <Button
                   variant="contained"
                   fullWidth
-                  onClick={handleBuyNow}
+                  onClick={() => setIsPaymentModalOpen(true)}
                   sx={{
                     borderRadius: '50px',
                     backgroundColor: '#56b0d3',
@@ -780,7 +775,6 @@ function LessonCard({
                     color: '#2c3e50',
                     width: 45,
                     height: 45,
-                    p: 0,
                     '&:hover': {
                       backgroundColor: 'rgba(86, 176, 211, 0.04)',
                       borderColor: '#459dbf',
@@ -822,7 +816,6 @@ function LessonCard({
         </CardContent>
       </Card>
 
-      {/* Payment Modal */}
       <PaymentModal
         open={isPaymentModalOpen}
         onClose={() => setIsPaymentModalOpen(false)}
@@ -832,11 +825,18 @@ function LessonCard({
         onPaymentSuccess={handlePaymentSuccess}
       />
 
-      {/* Invoice Dialog */}
-      <Dialog open={openInvoiceDialog} onClose={() => setOpenInvoiceDialog(false)} maxWidth="sm" fullWidth dir="rtl">
-        <DialogContent>
-          <InvoiceDetails invoice={invoiceData} />
+      <Dialog open={isInvoiceOpen} onClose={() => setIsInvoiceOpen(false)} maxWidth="md" fullWidth dir="rtl">
+        <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          تفاصيل الفاتورة
+          <Button onClick={() => setIsInvoiceOpen(false)} sx={{ maxWidth: "sm", color: 'error.main' }}>
+            <Icon icon="mingcute:close-line" width="24" />
+          </Button>
+        </DialogTitle>
+        <DialogContent dividers>
+          {purchasedInvoice && <InvoiceDetails invoice={purchasedInvoice} />}
         </DialogContent>
+        <DialogActions>
+        </DialogActions>
       </Dialog>
     </>
   );

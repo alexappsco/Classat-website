@@ -149,6 +149,7 @@ interface Invoice {
   paymentMethod: string
   subTotal: number
   vatAmount: number
+  invoiceDocumentUrl?: string
   platformProfitPercentage: number
   discountAmount: number
   totalAmount: number
@@ -234,18 +235,22 @@ function InvoiceDetails({ invoice }: InvoiceDetailsProps) {
         </Stack>
       </Box>
 
-      <Button
-        fullWidth
-        variant="outlined"
-        sx={{
-          mt: 3,
-          color: "#2196f3",
-          borderColor: "#2196f3",
-          borderRadius: 2,
-        }}
-      >
-        تحميل الفاتورة
-      </Button>
+    <Button
+    fullWidth
+    variant="outlined"
+    sx={{
+      mt: 3,
+      color: "#2196f3",
+      borderColor: "#2196f3",
+      borderRadius: 2,
+    }}
+    onClick={() => {
+      if (!invoice.invoiceDocumentUrl) return
+      window.open(invoice.invoiceDocumentUrl, "_blank")
+    }}
+  >
+    تحميل الفاتورة
+  </Button>
     </Box>
   )
 }

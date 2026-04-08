@@ -67,7 +67,6 @@ export default function LiveSectionTimeDetails({
   const [teacherPackages, setTeacherPackages] = useState<any[]>([]);
   const [invoiceId, setInvoiceId] = useState<string | null>(null);
   const [openInvoiceDialog, setOpenInvoiceDialog] = useState(false);
-  // جلب الباقات المتاحة للطالب
   const fetchPackages = useCallback(async () => {
     try {
       const response = await getData<PackageSubscriptionsResponse>(endpoints.payment.packageSubscriptions(teacherId));
@@ -136,11 +135,11 @@ export default function LiveSectionTimeDetails({
       if (response?.data?.invoiceId ) {
   enqueueSnackbar('تمت العملية بنجاح', { variant: 'success' });
 
-  setIsPaymentModalOpen(false); // سكّر Dialog الدفع
+  setIsPaymentModalOpen(false); 
 
-  setInvoiceId(response.data.invoiceId); // خزّن ID الفاتورة
+  setInvoiceId(response.data.invoiceId); 
 
-  setOpenInvoiceDialog(true); // افتح Dialog الفاتورة
+  setOpenInvoiceDialog(true); 
 
   setSelectedSessions([]);
   fetchPackages();
@@ -214,7 +213,6 @@ export default function LiveSectionTimeDetails({
   );
 }
 
-// ===== Payment Dialog (المحاكاة للصورة المطلوبة) =====
 function PaymentDialog({ open, onClose, onConfirm, paymentList, packages, isSubmitting }: any) {
   const [method, setMethod] = useState({ id: '', isPackage: false });
   const [coupon, setCoupon] = useState('');
@@ -224,7 +222,6 @@ function PaymentDialog({ open, onClose, onConfirm, paymentList, packages, isSubm
       <DialogTitle sx={{ textAlign: 'center', fontWeight: 800 }}>اختر طريقة الدفع</DialogTitle>
 
       <DialogContent>
-        {/* طرق الدفع الإلكتروني */}
         <RadioGroup value={method.isPackage ? '' : method.id}>
           {paymentList?.map((item: any) => (
             <Card
@@ -245,7 +242,6 @@ function PaymentDialog({ open, onClose, onConfirm, paymentList, packages, isSubm
           ))}
         </RadioGroup>
 
-        {/* الدفع بالباقة (كما في الصورة) */}
         {packages.length > 0 && (
           <Box sx={{ mt: 2 }}>
             <Typography variant="subtitle1" fontWeight={800} sx={{ mb: 1.5 }}>أو دفع باستخدام الباقة</Typography>
@@ -269,7 +265,6 @@ function PaymentDialog({ open, onClose, onConfirm, paymentList, packages, isSubm
           </Box>
         )}
 
-        {/* كويون الخصم */}
         <Box sx={{ mt: 3 }}>
           <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1 }}>كوبون الخصم</Typography>
           <TextField

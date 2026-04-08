@@ -20,6 +20,7 @@ export interface Invoice {
   paidAt: string
   cancelledAt: string | null
   items: InvoiceItem[]
+  invoiceDocumentUrl?: string
 }
 
 export interface PageParams {

@@ -42,7 +42,6 @@ export default function MyLiveSesions({
     searchParams.get('Date') ? dayjs(searchParams.get('Date')) : null
   );
 
-  // ✅ تحديث الـ URL
   const handleFilterChange = (
     category: string,
     LiveSessionStatus: string,
@@ -63,7 +62,6 @@ export default function MyLiveSesions({
     }
 
     if (date) {
-      // 👇 مهم جدًا format صح
       params.set('Date', date.format('YYYY-MM-DD'));
     }
 
@@ -182,7 +180,6 @@ export default function MyLiveSesions({
         </Box>
       </Box>
 
-      {/* ✅ Live Sessions */}
       <LiveSessionsSection
         title={title}
         liveCourse={liveCourse}

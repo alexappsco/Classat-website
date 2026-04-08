@@ -486,7 +486,7 @@ function PackagePaymentModal({
         setInvoiceId(checkoutRes.data.invoiceId);
         setOpenSuccess(true);
         enqueueSnackbar('تم شراء الباقة بنجاح', { variant: 'success' });
-        onClose(); // اغلاق المودال بعد الدفع
+        onClose(); 
       } else {
         enqueueSnackbar(checkoutRes.error || 'فشلت عملية الدفع', { variant: 'error' });
       }
@@ -502,7 +502,7 @@ function PackagePaymentModal({
     <>
       <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth dir="rtl">
         <DialogTitle sx={{ textAlign: 'center', fontWeight: 'bold' }}>
-          إتمام شراء الباقة
+          إتمام شراء الباقةيريريريريرير
         </DialogTitle>
         <DialogContent>
           <Box sx={{ mb: 3, p: 2, bgcolor: '#f5f5f5', borderRadius: 2 }}>
