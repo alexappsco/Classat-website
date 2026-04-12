@@ -211,7 +211,7 @@ function CoursePaymentModal({
           }}
           disabled={isSubmitting || !selectedMethod}
         >
-          {isSubmitting ? <CircularProgress size={24} color="inherit" /> : 'تأكيد الشراء'}
+          {isSubmitting ? <CircularProgress size={24} color="inherit" /> : 'تأكيد يسرسيرسيريسرسير'}
         </Button>
       </DialogActions>
     </Dialog>

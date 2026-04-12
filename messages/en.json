@@ -128,7 +128,6 @@
     "AboutUs": "About Us",
     "myRecordedLessons": "My Recorded Lessons",
     "wallet": "Wallet"
-
   },
   "Global": {
     "title": "Classat",
@@ -847,6 +846,20 @@
       "meter": "Meter",
       "distance_from": "Distance From",
       "distance_to": "Distance To"
+    },
+    "TopTeachers": {
+      "searchPlaceholder": "Search for a teacher or subjec..",
+      "rateFrom": "Rating from",
+      "rateTo": "Rating to",
+      "teacherPrefix": "Teacher / ",
+      "allSubjects": "All Subjects",
+      "currencyPerHour": "SAR/hour",
+      "viewAvailability": "View Available Times",
+      "courseTypes": {
+        "OneToOne": "Individual Session",
+        "LiveGroup": "Live Group",
+        "Recorded": "Recorded"
+      }
     }
   },
   "Label": {

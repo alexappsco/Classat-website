@@ -9,6 +9,7 @@ import type {
 import { endpoints } from 'src/utils/endpoints';
 import Courses from 'src/sections/curricula/view';
 import { getData } from 'src/utils/crud-fetch-api';
+import { StudentTeacherEducationResponse } from 'src/types/teachers';
 export default async function Page() {
   const studentResponse = await getData<StudentProfile>(
     endpoints.student.get
@@ -34,13 +35,17 @@ export default async function Page() {
 
   const coursesResponse = await getData<any>(endpoints.EducationCourses.get);
   const courses = coursesResponse?.data || [] as unknown as any[];
-  // xxyyzz
   const subjects: SubjectItem[] = subjectsResponse?.items ?? [];
+
+    const teacherUrl = `${endpoints.student.getStudentTopTeachers}?MaxResultCount=5&SkipCount=0`;
+    const teachersResponse = await getData<StudentTeacherEducationResponse>(teacherUrl);
+    const teachers = (teachersResponse?.data as StudentTeacherEducationResponse)?.items ?? [];
   return (
     <Courses
       educationGrade={educationGrade}
       subjects={subjects}
       courses={courses.items || []}
+      teachers={teachers}
     />
   );
 }
