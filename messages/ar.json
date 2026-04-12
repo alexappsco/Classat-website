@@ -120,7 +120,8 @@
     "logout": "تسجيل الخروج",
     "CancellationPolicy": "سياسة الالغاء",
     "AboutUs": "من نحن",
-    "myRecordedLessons": "دروسك المسجلة"
+    "myRecordedLessons": "دروسك المسجلة",
+    "wallet": "المحفظة"
   },
   "Global": {
     "title": "ثمار كلاسات",
@@ -839,6 +840,20 @@
       "meter": "متر",
       "distance_from": "المسافة من",
       "distance_to": "المسافة إلى"
+    },
+    "TopTeachers":{
+      "searchPlaceholder": "إبحث عن معلم  ..",
+      "rateFrom": "النقييم من",
+      "rateTo": "النقييم إلى",
+      "teacherPrefix": "الاستاذ / ",
+      "allSubjects": "كل المواد",
+    "currencyPerHour": "ريال/ساعة",
+    "viewAvailability": "عرض المواعيد المتاحة",
+    "courseTypes": {
+      "OneToOne": "حصة فردية",
+      "LiveGroup": "مجموعة مباشرة",
+      "Recorded": "مسجل"
+    }
     }
   },
   "Label": {
@@ -957,5 +972,35 @@
     "reset_password": "يرجى إدخال كلمة المرور الجديدة أدناه.",
     "mas_sign_in": "انضم إلينا وابدأ رحلتك التعليمية  نعدك بتجربة آمنة وممتعة",
     "Already_have_account": "هل لديك حساب بالفعل؟"
+  },
+  "wallet": {
+    "title": "المحفظة",
+    "balance": "الرصيد الحالي",
+    "transactions": "المعاملات الأخيرة",
+    "dirham": "درهم"
+  },
+  "next_lessons": {
+    "title": "الدروس القادمة",
+    "no_lessons": "لا توجد دروس مجددة",
+    "error_with_id":"في مشكلة في ID",
+    "lesson_canceled_successfully":"تم إلغاء الحجز بنجاح",
+    "cancel_lesson":" إلغاء الحجز",
+    "lesson_canceled":"تم إلغاء الحجز",
+    "lesson_completed":"اكتمل",
+    "confirm_cancel":"تأكيد الإلغاء",
+    "are_you_sure":"هل أنت متأكد من أنك تريد إلغاء هذا الحجز؟",
+    "canceling":"جاري الإلغاء...",
+    "back":"رجوع",
+    "completed":"المكتمل",
+    "canceled":"الملغى",
+    "upcoming":"القادم",
+    "all":"الكل",
+    "no_data":"لا يوجد بيانات"
+
+  },
+  "packages": {
+    "title": "الباقات",
+    "no_packages": "لا توجد باقات متاحة"
   }
+
 }

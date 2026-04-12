@@ -126,8 +126,8 @@
     "setting": "setting",
     "CancellationPolicy": "Cancellation Policy",
     "AboutUs": "About Us",
-    "myRecordedLessons": "My Recorded Lessons"
-
+    "myRecordedLessons": "My Recorded Lessons",
+    "wallet": "Wallet"
   },
   "Global": {
     "title": "Classat",
@@ -846,6 +846,20 @@
       "meter": "Meter",
       "distance_from": "Distance From",
       "distance_to": "Distance To"
+    },
+    "TopTeachers": {
+      "searchPlaceholder": "Search for a teacher or subjec..",
+      "rateFrom": "Rating from",
+      "rateTo": "Rating to",
+      "teacherPrefix": "Teacher / ",
+      "allSubjects": "All Subjects",
+      "currencyPerHour": "SAR/hour",
+      "viewAvailability": "View Available Times",
+      "courseTypes": {
+        "OneToOne": "Individual Session",
+        "LiveGroup": "Live Group",
+        "Recorded": "Recorded"
+      }
     }
   },
   "Label": {
@@ -958,5 +972,30 @@
     "reset_password": "Please enter your new password below.",
     "mas_sign_in": "Join us and start your learning journey — we promise safe and fun uses!",
     "Already_have_account": "Already have an account?"
+  },
+  "wallet": {
+    "title": "Wallet",
+    "balance": "Current Balance",
+    "transactions": "Recent Transactions",
+    "dirham": "Dirham"
+  },
+  "next_lessons": {
+    "title": "Next Lessons",
+    "no_lessons": "No lessons available",
+    "error_with_id":"There is an issue with the ID",
+    "lesson_canceled_successfully":"Lesson canceled successfully",
+    "cancel_lesson":" Cancel Lesson",
+    "lesson_canceled":"Lesson canceled",
+    "lesson_completed":"Completed",
+    "confirm_cancel":"Confirm Cancel",
+    "are_you_sure":"Are you sure you want to cancel this lesson?",
+    "canceling":"Canceling...",
+    "back":"Back",
+    "completed":"Completed",
+    "canceled":"Canceled",
+    "upcoming":"Upcoming",
+    "all":"All",
+    "no_data":"No data available"
+
   }
 }

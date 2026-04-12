@@ -7,6 +7,7 @@ import LessonsSection, {
 
 import { endpoints } from 'src/utils/endpoints';
 import { getData } from 'src/utils/crud-fetch-api';
+import LessonsSectionMain from '../nextlessons/lessonsSectionMain';
 
 /* =========================
    Types
@@ -29,7 +30,7 @@ interface SessionItem {
 function formatDate(dateString: string) {
   const date = new Date(dateString);
 
-  return date.toLocaleDateString('en-GB', {
+  return date.toLocaleDateString('en', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -96,5 +97,5 @@ export default function NextLessonsPreview() {
 
   if (loading) return null;
 
-  return<div style={{marginTop:-150}}> <LessonsSection cards={cards} /> </div>;
+  return<div style={{marginTop:-150}}> <LessonsSectionMain cards={cards} /> </div>;
 }

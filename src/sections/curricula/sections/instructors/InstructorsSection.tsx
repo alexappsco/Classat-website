@@ -63,7 +63,6 @@ export default function InstructorsSection({
                   teacherId={teacher.teacherId}
                   onBookNow={handleBookNow}
                 />
-                يييي
               </Grid>
             ))}
           </Grid>

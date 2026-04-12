@@ -21,6 +21,7 @@ import EducationCourseCard from './education-course-card/education-course-card';
 import { paths } from 'src/routes/paths';
 import PackageCard from './myPackages/myPackagesCard';
 import { IPackageSubscription } from 'src/types/package';
+import { StudentTeacherEducationItem } from 'src/types/teachers';
 
 type EducationGrade = { id: string; name: string };
 
@@ -35,14 +36,15 @@ type CoursesProps = {
   educationGrade?: EducationGrade;
   subjects: SubjectItem[];
   courses: any[];
+  teachers:StudentTeacherEducationItem[]
 };
 
-export default function Courses({ educationGrade, subjects, courses }: CoursesProps) {
+export default function Courses({ educationGrade, subjects, courses, teachers }: CoursesProps) {
 
   const t = useTranslations();
   const settings = useSettingsContext();
   const router = useRouter();
-
+const [enrollments, setEnrollments] = React.useState<any[]>([]);
   // ===== State =====
   const [recordedLessons, setRecordedLessons] = useState<StudentLesson[]>([]);
   const [loadingLessons, setLoadingLessons] = useState(true);
@@ -52,32 +54,35 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
   const [paymentList, setPaymentList] = React.useState<any[]>([]);
 
 
-  const refreshData = async () => {
+ const refreshData = async () => {
     try {
-      // Refresh lessons
+      // جلب الحصص المباشرة
       const lessonsRes = await getData<any>(`${endpoints.liveSubjects.get}?MaxResultCount=4`);
       if (lessonsRes?.success && Array.isArray(lessonsRes?.data?.items)) {
         setLiveCourses(lessonsRes.data.items);
-      } else {
-        setLiveCourses([]);
       }
+
+      // --- التعديل الجوهري: جلب قائمة التسجيلات ---
+      const enrollmentsRes = await getData<any>(endpoints.liveSessionSubjectEnrollments.get);
+      if (enrollmentsRes?.success && Array.isArray(enrollmentsRes?.data?.items)) {
+        setEnrollments(enrollmentsRes.data.items);
+      }
+
+      // جلب الباقات والمدفوعات
       const myPackages = await getData<any>(`${endpoints.packageSubscription.get}?MaxResultCount=4`);
       if (myPackages?.success && Array.isArray(myPackages?.data?.items)) {
         setMyPackages(myPackages.data.items);
-      } else {
-        setMyPackages([]);
       }
 
       const paymentResponse = await getData<any>(endpoints.payment.get);
       if (paymentResponse?.success && Array.isArray(paymentResponse?.data?.items)) {
         setPaymentList(paymentResponse.data.items);
-      } else {
-        setPaymentList([]);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
+
   React.useEffect(() => {
     refreshData();
   }, []);
@@ -114,11 +119,11 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              الدروس القادمة
+              {t('next_lessons.title')}
             </Typography>
 
             <Button color="info" sx={{ lineHeight: 1 }} onClick={() => router.push(paths.controlPanel.Curricula.nextlisson)}>
-              الكل
+              {t('Label.all')}
               <LeftIcon />
             </Button>
           </Box>
@@ -204,10 +209,11 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   width: '100%',
+                  mb: 2,
                 }}
               >
                 <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                  {t('Nav.myRecordedLessons')}
+                  {t('packages.title')}
                 </Typography>
                 <Button
                   color="info"
@@ -270,20 +276,15 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
                 </Button>
               </Box>
               {liveCourses && liveCourses.length > 0 ? (
-                <Grid
-                  item
-                  xs={12} // Full width on mobile
-                  sm={12} // Full width on small screens
-                  md={12}
-                  lg={12} // Four cards per row on desktop
-                >
-                  <LiveSessionCard
-                    lessonList={liveCourses}
-                    teacher_id={liveCourses[0]?.teacherId || ''}
-                    paymentList={paymentList}
-                    key={liveCourses[0]?.id}
-                  />
-                </Grid>
+              <Grid item xs={12} sm={12} md={12} lg={12}>
+                <LiveSessionCard
+                  lessonList={liveCourses}
+                  teacher_id={liveCourses[0]?.teacherId || ''}
+                  paymentList={paymentList}
+                  enrollments={enrollments} 
+                  key={liveCourses[0]?.id}
+                />
+              </Grid>
               ) : (
                 <Grid item xs={12}>
                   <Box sx={{ p: 3, textAlign: 'center' }}>
@@ -323,7 +324,7 @@ export default function Courses({ educationGrade, subjects, courses }: CoursesPr
                 <LeftIcon />
               </Button>
             </Box>
-            <InstructorsSection />
+            <InstructorsSection teachers={teachers} />
 
             {/* Recorded Lessons */}
             {/* <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>

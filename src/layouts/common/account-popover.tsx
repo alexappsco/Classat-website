@@ -107,6 +107,11 @@ export default function AccountPopover() {
             linkTo: paths.controlPanel.mainCurricula,
             icon: '/favicon/das/laptop.svg',
           },
+            {
+            label: t('Nav.wallet'),
+            linkTo: paths.controlPanel.wallet.wallet,
+            icon: '/favicon/das/laptop.svg',
+          },
           {
             label: t('Nav.myRecordedLessons'),
             linkTo: paths.controlPanel.Curricula.mycourses,

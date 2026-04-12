@@ -1,3 +1,4 @@
+import { get } from "lodash";
 
 export const endpoints = {
   home: {
@@ -43,7 +44,7 @@ export const endpoints = {
       if (teacherName) url += `?TeacherName=${teacherName}`;
       return url;
     },
-
+    getStudentTopTeachers:`/students/subject/teachers/search`,
   },
   packages: {
     get: (id: string) => `/students/teacher/${id}/packages`,
@@ -140,6 +141,23 @@ packageSubscription: {
   get: "/students/package-subscriptions",
   getmyCourses: "/students/package-subscriptions/my-courses"
 },
-
+wallet: {
+  get: "/students/wallet",
+},
+StudentTeacherEducation: {
+  get:(teacherId: string, educationApproachTypeStageGradeSubjectId: string) => `/students/teacher/${teacherId}/education/${educationApproachTypeStageGradeSubjectId}/about-teacher`
+},
+invoice: {
+  get: "/students/invoices",
+  getDetails: (invoiceId: string) => `/students/invoices/${invoiceId}`,
+},
+liveSessionSubjectEnrollments:{
+  get: "/students/live-session-subject-enrollments",
+  details: (enrollmentId: string) => `/students/live-session-subject-enrollments/${enrollmentId}`,
+},
+liveCourseEnrollments: {
+  get: "/students/live-session-course-enrollments",
+  details: (enrollmentId: string) => `/students/live-session-course-enrollments/${enrollmentId}`, 
+},
 
 };
