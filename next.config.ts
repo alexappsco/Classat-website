@@ -5,7 +5,7 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
-  // output: 'standalone', // Disabled for Windows to avoid EPERM symlink errors
+  output: 'standalone',
   experimental: {
     serverActions: {
       bodySizeLimit: '10mb',
