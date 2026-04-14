@@ -997,5 +997,10 @@
     "all":"All",
     "no_data":"No data available"
 
+  },
+    "packages": {
+    "title": "Packages",
+    "no_packages": "No packages available"
   }
+
 }

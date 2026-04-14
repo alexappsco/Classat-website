@@ -57,24 +57,24 @@ const [enrollments, setEnrollments] = React.useState<any[]>([]);
  const refreshData = async () => {
     try {
       // جلب الحصص المباشرة
-      const lessonsRes = await getData<any>(`${endpoints.liveSubjects.get}?MaxResultCount=4`);
+      const lessonsRes = await getData<any>(`${endpoints.liveSubjects.get}?MaxResultCount=3`);
       if (lessonsRes?.success && Array.isArray(lessonsRes?.data?.items)) {
         setLiveCourses(lessonsRes.data.items);
       }
 
       // --- التعديل الجوهري: جلب قائمة التسجيلات ---
-      const enrollmentsRes = await getData<any>(endpoints.liveSessionSubjectEnrollments.get);
+      const enrollmentsRes = await getData<any>(`${endpoints.liveSessionSubjectEnrollments.get}?MaxResultCount=3`);
       if (enrollmentsRes?.success && Array.isArray(enrollmentsRes?.data?.items)) {
         setEnrollments(enrollmentsRes.data.items);
       }
 
       // جلب الباقات والمدفوعات
-      const myPackages = await getData<any>(`${endpoints.packageSubscription.get}?MaxResultCount=4`);
+      const myPackages = await getData<any>(`${endpoints.packageSubscription.get}?MaxResultCount=3`);
       if (myPackages?.success && Array.isArray(myPackages?.data?.items)) {
         setMyPackages(myPackages.data.items);
       }
 
-      const paymentResponse = await getData<any>(endpoints.payment.get);
+      const paymentResponse = await getData<any>(`${endpoints.payment.get}?MaxResultCount=3`);
       if (paymentResponse?.success && Array.isArray(paymentResponse?.data?.items)) {
         setPaymentList(paymentResponse.data.items);
       }

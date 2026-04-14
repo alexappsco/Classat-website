@@ -146,12 +146,12 @@ export default function Footer() {
                 iconPlaceholder={<Phone />}
               />
               <ContactItem
-                text="info@classat.com"
-                link="mailto:info@classat.com"
+                text="www.concord-business-center.com"
+                link="https://www.concord-business-center.com"
                 iconPlaceholder={<Mail />} // Mail icon placeholder
               />
               <ContactItem
-                text="الإمارات"
+                text="كونكورد مطابق للسجل التجاري"
                 link="#"
                 iconPlaceholder={<Location />} // Location icon placeholder
               />
@@ -223,7 +223,7 @@ export default function Footer() {
             sm={4}
             md={3}
             lg={4}
-          // sx={{ textAlign: { xs: 'right', sm: 'left', md: 'right' } }}
+            // sx={{ textAlign: { xs: 'right', sm: 'left', md: 'right' } }}
           >
             <FooterHeader title="حمّل تطبيقنا الآن وتعلّم في أي مكان!" />
             <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 2 }}>
