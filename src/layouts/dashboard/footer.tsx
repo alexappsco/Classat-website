@@ -188,7 +188,7 @@ export default function Footer() {
               <ContactItem
                 text={
                   <>
-                    كونكورد لخدمات رجال الاعمال - CONCORD BUSINESS CENTER
+                    CONCORD BUSINESS CENTER
                     <br />
                     <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
                       رخصة رقم : 117610
