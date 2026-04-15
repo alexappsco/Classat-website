@@ -12,6 +12,7 @@ import LinkedIn from '../../../public/assets/icons/footer/linkedIn.svg';
 import Instagram from '../../../public/assets/icons/footer/instagrame.svg';
 import AppStore from '../../../public/assets/images/footer/appstore.svg';
 import GooglePlay from '../../../public/assets/images/footer/googleplay.svg';
+import Image from 'src/components/image';
 /**
  * Footer component with four main columns and a copyright section.
  * The layout is fully responsive and based on the provided design.
@@ -145,15 +146,61 @@ export default function Footer() {
                 link="tel:+971567328923"
                 iconPlaceholder={<Phone />}
               />
+
+              <Stack direction="row" alignItems="center" spacing={1} sx={{ my: 1 }}>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: blueAccent,
+                    fontSize: 18,
+                    backgroundColor: lightMainColor,
+                    padding: '0 5px',
+                    borderRadius: '5px',
+                  }}
+                >
+                  <Mail />
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ color: primaryTextColor, fontSize: theme.typography.pxToRem(14) }}
+                >
+                  <Link
+                    // href="mailto:info@concord-business-center.com"
+                    color="inherit"
+                    underline="none"
+                  >
+                    info@concord-business-center.com
+                  </Link>
+                  <br />
+                  <Link
+                    href="https://www.concord-business-center.com"
+                    color="inherit"
+                    underline="hover"
+                    sx={{
+                      color: primaryTextColor,
+                      fontSize: theme.typography.pxToRem(14),
+                    }}
+                  >
+                    www.concord-business-center.com
+                  </Link>
+                </Typography>
+              </Stack>
               <ContactItem
-                text="www.concord-business-center.com"
-                link="https://www.concord-business-center.com"
-                iconPlaceholder={<Mail />} // Mail icon placeholder
-              />
-              <ContactItem
-                text="كونكورد مطابق للسجل التجاري"
+                text={
+                  <>
+                    كونكورد لخدمات رجال الاعمال - CONCORD BUSINESS CENTER
+                    <br />
+                    <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
+                      رخصة رقم : 117610
+                    </Typography>
+                    {/* <br /> */}
+                    <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
+                      License NO.: 117610
+                    </Typography>
+                  </>
+                }
                 link="#"
-                iconPlaceholder={<Location />} // Location icon placeholder
+                iconPlaceholder={<Location />}
               />
             </Stack>
 
@@ -225,26 +272,48 @@ export default function Footer() {
             lg={4}
             // sx={{ textAlign: { xs: 'right', sm: 'left', md: 'right' } }}
           >
-            <FooterHeader title="حمّل تطبيقنا الآن وتعلّم في أي مكان!" />
-            <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 2 }}>
-              استمتع بتجربة تعليمية متكاملة على هاتفك المحمول. احضر الحصص، تابع تقدمك، وتفاعل مع
-              المدرسين أينما كنت.
-            </Typography>
+            <Box>
+              <FooterHeader title="حمّل تطبيقنا الآن وتعلّم في أي مكان!" />
+              <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 2 }}>
+                استمتع بتجربة تعليمية متكاملة على هاتفك المحمول. احضر الحصص، تابع تقدمك، وتفاعل مع
+                المدرسين أينما كنت.
+              </Typography>
 
-            {/* App Store Buttons */}
-            <Stack
-              direction="row"
-              spacing={1}
-              justifyContent={{ xs: 'center', sm: 'flex-end', md: 'flex-start' }}
-            >
-              <Box sx={{ width: 120, cursor: 'pointer', height: 'auto' }}>
-                <GooglePlay />
-              </Box>
+              {/* App Store Buttons */}
+              <Stack
+                direction="row"
+                spacing={1}
+                justifyContent={{ xs: 'center', sm: 'flex-end', md: 'flex-start' }}
+              >
+                <Box sx={{ width: 120, cursor: 'pointer', height: 'auto' }}>
+                  <GooglePlay />
+                </Box>
 
-              <Box sx={{ width: 120, cursor: 'pointer', height: 'auto' }}>
-                <AppStore />
-              </Box>
-            </Stack>
+                <Box sx={{ width: 120, cursor: 'pointer', height: 'auto' }}>
+                  <AppStore />
+                </Box>
+              </Stack>
+            </Box>
+            <Box mt={2}>
+              <FooterHeader title="طرق الدفع" />
+              <Stack
+                direction="row"
+                spacing={1}
+                justifyContent={{ xs: 'center', sm: 'flex-end', md: 'flex-start' }}
+              >
+                <Box sx={{ width: 120, cursor: 'pointer', height: 'auto' }}>
+                  <Image src="/payment/VISA-logo.png" alt="Visa" width={70} height={40} />{' '}
+                </Box>
+                <Box sx={{ width: 120, cursor: 'pointer', height: 'auto' }}>
+                  <Image
+                    src="/payment/Mastercard-credit-card-Logo.png"
+                    alt="Visa"
+                    width={70}
+                    height={40}
+                  />
+                </Box>
+              </Stack>
+            </Box>
           </Grid>
         </Grid>
 
