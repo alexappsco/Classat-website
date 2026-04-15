@@ -2,10 +2,11 @@ import { NextConfig } from 'next';
 const createNextIntlPlugin = require('next-intl/plugin');
 
 const withNextIntl = createNextIntlPlugin();
+const isWindows = process.platform === 'win32';
 
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
-  output: 'standalone',
+  output: isWindows ? undefined : 'standalone',
   experimental: {
     serverActions: {
       bodySizeLimit: '10mb',
