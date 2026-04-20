@@ -26,13 +26,15 @@ type ApiResponse<T> = {
 };
 
 export default async function Page() {
+  let enrollments: any[] = [];
+
   const response = await getData<ApiResponse<CourseCategoriesResponse>>(
     endpoints.courseCategory.get
   );
 
   const getCoursesEnrolled = await getData<{ totalCount: number; items: CoursesEnrolled[] }>(
-   endpoints.CourseEnroll.get
- );
+    endpoints.CourseEnroll.get
+  );
   if (!getCoursesEnrolled.success || 'error' in getCoursesEnrolled) {
   }
   const CoursesEnrolled = getCoursesEnrolled.success && getCoursesEnrolled.data ? getCoursesEnrolled.data.items : [];
@@ -50,11 +52,11 @@ export default async function Page() {
   const categories =
     (response?.data as CourseCategoriesResponse)?.items ?? [];
 
-      let paymentList: any[] = [];
-        const paymentResponse = await getData<any>(
-          endpoints.payment.get,  // What is this endpoint?
-        );
-        paymentList = paymentResponse?.data?.items || [];
+  let paymentList: any[] = [];
+  const paymentResponse = await getData<any>(
+    endpoints.payment.get,  // What is this endpoint?
+  );
+  paymentList = paymentResponse?.data?.items || [];
 
-  return <Courses categories={categories} getAllCourses={courses} getCoursesEnrolled={CoursesEnrolled}  />;
+  return <Courses categories={categories} getAllCourses={courses} getCoursesEnrolled={CoursesEnrolled} />;
 }

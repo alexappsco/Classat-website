@@ -25,12 +25,17 @@ import {
 } from '@mui/material';
 import { useSnackbar } from 'notistack';
 
-import {  useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { ILiveCourse } from 'src/types/liveCourse';
+import SessionDialog from 'src/sections/curricula/live-sessions/SessionDialog';
+import { endpoints } from 'src/utils/endpoints';
+import { getData } from 'src/utils/crud-fetch-api';
 
 interface LiveSessionCardProps {
   lessonList: ILiveCourse[];
+  enrollments?: any[];
+
 }
 
 // Define the props type for the PaymentModal component
@@ -38,12 +43,29 @@ interface LiveSessionCardProps {
 interface LiveSessionCardPropsItem {
   liveCourse: ILiveCourse;
 
+  enrollments: any;
+  refreshEnrollments: () => Promise<void>;
+
+
 }
 
-export default function LiveSessionCard({ lessonList }: LiveSessionCardProps) {
+export default function LiveSessionCard({ lessonList, enrollments }: LiveSessionCardProps) {
   const { enqueueSnackbar } = useSnackbar();
+  const [localEnrollments, setLocalEnrollments] = useState<any[]>(enrollments || []);
 
-
+  useEffect(() => {
+    setLocalEnrollments(enrollments || []);
+  }, [enrollments]);
+  const refreshEnrollments = useCallback(async () => {
+    try {
+      const res = await getData<any>(endpoints.liveCourseEnrollments.get);
+      if (res?.success) {
+        setLocalEnrollments(res.data.items || []);
+      }
+    } catch (error) {
+      console.error("Failed to refresh enrollments:", error);
+    }
+  }, []);
 
   if (!lessonList || lessonList.length === 0) {
     return (
@@ -63,7 +85,8 @@ export default function LiveSessionCard({ lessonList }: LiveSessionCardProps) {
             <Grid item xs={12} sm={6} md={6} lg={3} key={lesson.id}>
               <LiveSessionCards
                 liveCourse={lesson}
-                // onAddToCart={onAddToCart}
+                enrollments={localEnrollments}
+                refreshEnrollments={refreshEnrollments}              // onAddToCart={onAddToCart}
               />
             </Grid>
           ))}
@@ -78,8 +101,9 @@ export default function LiveSessionCard({ lessonList }: LiveSessionCardProps) {
 
 
 
-function LiveSessionCards({ liveCourse}: LiveSessionCardPropsItem) {
+function LiveSessionCards({ liveCourse, enrollments, refreshEnrollments }: LiveSessionCardPropsItem) {
   const t = useTranslations();
+  const { enqueueSnackbar } = useSnackbar();
 
   const theme = useTheme();
   const redColor = '#B30505';
@@ -87,6 +111,15 @@ function LiveSessionCards({ liveCourse}: LiveSessionCardPropsItem) {
   const orangeColor = warning.main;
   const orangeBg = '#FFF6E4';
   const [course, setCourse] = useState(liveCourse);
+  const [isEnrolledLocal, setIsEnrolledLocal] = useState(false);
+
+  const [isSessionDialogOpen, setIsSessionDialogOpen] = useState(false);
+  useEffect(() => {
+    const isActuallyEnrolled = enrollments?.some((en: any) => en.liveSessionCourseId === liveCourse.id);
+    setIsEnrolledLocal(isActuallyEnrolled || liveCourse.isEnrolled);
+  }, [enrollments, liveCourse.id, liveCourse.isEnrolled]);
+  const currentEnrollment = enrollments?.find((en: any) => en.liveSessionCourseId === liveCourse.id) || liveCourse;
+
 
   const parseStart = () => {
     if (!course.date || !course.time) return null;
@@ -158,7 +191,7 @@ function LiveSessionCards({ liveCourse}: LiveSessionCardPropsItem) {
             <Chip
               // label="مباشر"
               label={liveCourse.status}
-              
+
               size="small"
               sx={{
                 position: 'absolute',
@@ -188,7 +221,7 @@ function LiveSessionCards({ liveCourse}: LiveSessionCardPropsItem) {
               width: 'fit-content',
             }}
           >
-          {course.courseCategory}
+            {course.courseCategory}
           </Typography>
 
           {/* Session Title */}
@@ -264,27 +297,41 @@ function LiveSessionCards({ liveCourse}: LiveSessionCardPropsItem) {
 
         {/* 3. Join Button */}
 
-          <Link href="/ar/courses/instructor/">
-            <Button
-              variant="contained"
-              size="medium"
-              sx={{
-                backgroundColor: primary.main,
-                color: 'white',
-                width: '90%',
-                m: 'auto',
-                borderTopLeftRadius: theme.spacing(4),
-                borderTopRightRadius: theme.spacing(4),
-                borderBottomLeftRadius: theme.spacing(4),
-                borderBottomRightRadius: theme.spacing(4),
-              }}
-            >
-              انضم الآن
-            </Button>
+        {/* <Link href="/ar/courses/instructor/"> */}
+        <Button
+          variant="contained"
+          size="medium"
+          sx={{
+            backgroundColor: primary.main,
+            color: 'white',
+            width: '90%',
+            m: 'auto',
+            borderTopLeftRadius: theme.spacing(4),
+            borderTopRightRadius: theme.spacing(4),
+            borderBottomLeftRadius: theme.spacing(4),
+            borderBottomRightRadius: theme.spacing(4),
+          }}
+          onClick={() => {
+            if (currentEnrollment?.id || liveCourse.id) {
+              setIsSessionDialogOpen(true);
+            } else {
+              enqueueSnackbar("جاري مزامنة بيانات الاشتراك...", { variant: 'info' });
+              refreshEnrollments();
+            }
+          }}
 
-          </Link>
+        >
+          انضم الآن
+        </Button>
+
+        {/* </Link> */}
       </Card>
-``
+      <SessionDialog
+        open={isSessionDialogOpen}
+        onClose={() => setIsSessionDialogOpen(false)}
+        enrollmentId={currentEnrollment?.id || liveCourse.id || ""}
+        type="course"
+      />
     </>
   );
 }

@@ -267,10 +267,10 @@
 //   // 2. تنسيق التاريخ والوقت
 //   const formatDateTime = () => {
 //     if (!sessionData?.date || !sessionData?.time) return { date: "", time: "" };
-    
+
 //     // دمج التاريخ والوقت
 //     const dateObj = new Date(`${sessionData.date.split('T')[0]}T${sessionData.time}`);
-    
+
 //     return {
 //       date: dateObj.toLocaleDateString('ar-EG', { day: 'numeric', month: 'long', year: 'numeric' }),
 //       time: dateObj.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit', hour12: true })
@@ -440,7 +440,7 @@ interface SessionDialogProps {
   open: boolean;
   onClose: () => void;
   enrollmentId: string;
-  type: 'subject' | 'course'; 
+  type: 'subject' | 'course';
 }
 
 export default function SessionDialog({ open, onClose, enrollmentId, type }: SessionDialogProps) {
@@ -540,7 +540,8 @@ export default function SessionDialog({ open, onClose, enrollmentId, type }: Ses
             fullWidth
             variant="contained"
             onClick={() => {
-              const url = sessionData.zoomStartUrl || sessionData.meetingUrl || sessionData.joinUrl;
+              // const url = sessionData.zoomStartUrl || sessionData.meetingUrl || sessionData.joinUrl;
+              const url = `/curricula/meeting/${sessionData.videoSessionId}`
               if (url) window.open(url, '_blank');
               else alert("رابط البث غير متوفر حالياً.");
             }}

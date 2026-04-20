@@ -30,6 +30,7 @@ import { useSnackbar } from 'notistack';
 
 import { useState } from 'react';
 import { ILiveSubject } from 'src/types/liveSubject';
+import SessionDialog from 'src/sections/curricula/live-sessions/SessionDialog';
 import { endpoints } from 'src/utils/endpoints';
 import { postData } from 'src/utils/crud-fetch-api';
 
@@ -98,6 +99,7 @@ function LiveSessionCards({ liveCourse, bookingType, enrollmentId }: LiveSession
   const orangeColor = warning.main;
   const orangeBg = '#FFF6E4';
   const [course, setCourse] = useState(liveCourse);
+  const [isSessionDialogOpen, setIsSessionDialogOpen] = useState(false);
 
   const parseStart = () => {
     if (!course.date || !course.time) return null;
@@ -324,6 +326,7 @@ function LiveSessionCards({ liveCourse, bookingType, enrollmentId }: LiveSession
             <Button
               variant="contained"
               size="medium"
+              onClick={() => setIsSessionDialogOpen(true)}
               sx={{
                 backgroundColor: primary.main,
                 color: 'white',
@@ -370,6 +373,12 @@ function LiveSessionCards({ liveCourse, bookingType, enrollmentId }: LiveSession
         </DialogActions>
       </Dialog>
       ``
+      <SessionDialog
+        open={isSessionDialogOpen}
+        onClose={() => setIsSessionDialogOpen(false)}
+        enrollmentId={enrollmentId || ""}
+        type="subject"
+      />
     </>
   );
 }

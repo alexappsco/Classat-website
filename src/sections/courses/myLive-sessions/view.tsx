@@ -17,12 +17,16 @@ type LiveSesionsProps = {
   liveCourse?: any[];
   title?: string;
   categories?: any[];
+  enrollments?: any[];
+
 };
 
 export default function MyLiveSesions({
   title = 'بثوث مباشرة الان',
   liveCourse,
   categories,
+  enrollments = [],
+
 }: LiveSesionsProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -72,8 +76,8 @@ export default function MyLiveSesions({
     <>
       <Box sx={{ position: 'relative' }}>
         {/* <TimerCard /> */}
-                <Hero />
-        
+        <Hero />
+
         <Box
           sx={{
             position: 'absolute',
@@ -183,6 +187,7 @@ export default function MyLiveSesions({
       <LiveSessionsSection
         title={title}
         liveCourse={liveCourse}
+        enrollments={liveCourse}
       />
     </>
   );

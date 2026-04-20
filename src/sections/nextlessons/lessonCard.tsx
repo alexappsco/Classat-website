@@ -20,6 +20,7 @@ import { endpoints } from "src/utils/endpoints";
 import { postData } from "src/utils/crud-fetch-api";
 import { useSnackbar } from "notistack";
 import { useTranslations } from "next-intl";
+import LessonDialog from "./LessonDialog";
 
 interface Props {
   img: string;
@@ -86,9 +87,29 @@ export default function LessonCard({
     }
   };
 
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
+  const handleOpenDetails = () => {
+    if (status === "Scheduled" || status === "1") {
+      setIsDetailsOpen(true);
+    }
+  };
+
   return (
     <>
-      <Card sx={{ m: 1, p: 2, borderRadius: 2, height: "95%" }}>
+      <Card 
+        onClick={handleOpenDetails}
+        sx={{ 
+          m: 1, 
+          p: 2, 
+          borderRadius: 2, 
+          height: "95%", 
+          cursor: (status === "Scheduled" || status === "1") ? "pointer" : "default",
+          '&:hover': {
+            boxShadow: (status === "Scheduled" || status === "1") ? 4 : 1
+          }
+        }}
+      >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Avatar src={img} sx={{ width: 32, height: 32 }} />
           <Typography fontWeight={600}>{name}</Typography>
@@ -110,24 +131,33 @@ export default function LessonCard({
             <Typography fontSize={12}>{time}</Typography>
           </Box>
         </Box>
-        {status === "Scheduled" && (
+        {(status === "Scheduled" || status === "1") && (
           <Button
             variant="outlined"
             color="error"
-            onClick={() => setOpenCancel(true)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpenCancel(true);
+            }}
             sx={{ mt: 2 }}
           >
             {t('cancel_lesson')}
           </Button>
         )}
-        {status === "Cancelled" && (
+        {(status === "Cancelled" || status === "3") && (
           <Typography fontSize={12} sx={{ color: "error.main", p: 1, borderRadius: 1, width: "fit-content",mt:1 }}>{t('lesson_canceled')}</Typography>
         )}
-        {status === "Completed" && (
+        {(status === "Completed" || status === "2") && (
           <Typography fontSize={12} sx={{ color: "success.main", p: 1, borderRadius: 1, width: "fit-content",mt:1 }}>{t('lesson_completed')}</Typography>
         )}
 
       </Card>
+
+      <LessonDialog 
+        open={isDetailsOpen}
+        onClose={() => setIsDetailsOpen(false)}
+        educationSessionId={enrollmentId}
+      />
 
       <Dialog open={openCancel} onClose={() => setOpenCancel(false)}>
         <DialogTitle>{t('confirm_cancel')}</DialogTitle>

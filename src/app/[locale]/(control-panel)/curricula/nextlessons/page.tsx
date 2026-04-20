@@ -49,15 +49,32 @@ function formatTime(time: string) {
   });
 }
 
+interface Props {
+  searchParams: Promise<Record<'page' | 'status', string | undefined>>;
+}
+
 /* =========================
    Page
-========================= */
+ ========================= */
 
-async function page() {
-  const res: any = await getData(
-    endpoints.studentEducationSession.get
-  );
+async function page({ searchParams }: Props) {
+  const { page: currentPageStr, status } = await searchParams;
 
+  const pageNum = Number(currentPageStr) || 1;
+  const pageSize = 12;
+  const skipCount = (pageNum - 1) * pageSize;
+
+  const urlParams = new URLSearchParams({
+    SkipCount: String(skipCount),
+    MaxResultCount: String(pageSize),
+  });
+
+  if (status && status !== "All") {
+    urlParams.append("Status", status);
+  }
+
+  const endpoint = `${endpoints.studentEducationSession.get}?${urlParams.toString()}`;
+  const res: any = await getData(endpoint);
 
   const sessions: SessionItem[] =
     res?.data?.items ||
@@ -65,6 +82,7 @@ async function page() {
     res?.result?.items ||
     [];
 
+  const totalCount = res?.data?.totalCount || res?.totalCount || 0;
 
   const cards: IStudentCard[] = sessions.map((session) => ({
     id: session.sessionId,
@@ -79,7 +97,15 @@ async function page() {
   }));
 
 
-  return <LessonsSection cards={cards}  />;
+  return (
+    <LessonsSection 
+      cards={cards} 
+      totalCount={totalCount} 
+      currentPage={pageNum} 
+      pageSize={pageSize}
+      currentStatus={status || "All"}
+    />
+  );
 }
 
 export default page;

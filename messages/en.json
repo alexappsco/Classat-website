@@ -981,26 +981,26 @@
   },
   "next_lessons": {
     "title": "Next Lessons",
+    "details_title": "Lesson Details",
     "no_lessons": "No lessons available",
-    "error_with_id":"There is an issue with the ID",
-    "lesson_canceled_successfully":"Lesson canceled successfully",
-    "cancel_lesson":" Cancel Lesson",
-    "lesson_canceled":"Lesson canceled",
-    "lesson_completed":"Completed",
-    "confirm_cancel":"Confirm Cancel",
-    "are_you_sure":"Are you sure you want to cancel this lesson?",
-    "canceling":"Canceling...",
-    "back":"Back",
-    "completed":"Completed",
-    "canceled":"Canceled",
-    "upcoming":"Upcoming",
-    "all":"All",
-    "no_data":"No data available"
-
+    "error_with_id": "There is an issue with the ID",
+    "lesson_canceled_successfully": "Lesson canceled successfully",
+    "cancel_lesson": " Cancel Lesson",
+    "lesson_canceled": "Lesson canceled",
+    "lesson_completed": "Completed",
+    "confirm_cancel": "Confirm Cancel",
+    "are_you_sure": "Are you sure you want to cancel this lesson?",
+    "canceling": "Canceling...",
+    "back": "Back",
+    "completed": "Completed",
+    "canceled": "Canceled",
+    "upcoming": "Upcoming",
+    "all": "All",
+    "no_data": "No data available",
+    "join_now": "Join Now"
   },
-    "packages": {
+  "packages": {
     "title": "Packages",
     "no_packages": "No packages available"
   }
-
 }

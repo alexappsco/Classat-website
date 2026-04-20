@@ -19,9 +19,11 @@ type Props = {
   // subjectId: string;
   title: string;
   liveCourse?: ILiveCourse[];
+  enrollments?: any[];
+
 
 };
-export default function LiveSessionsSection({ title, liveCourse }: Props) {
+export default function LiveSessionsSection({ title, liveCourse, enrollments }: Props) {
   const primaryTextColor = text.primary;
   const paragraphTextColor = text.paragraph;
   const mainColor = primary.main;
@@ -55,10 +57,11 @@ export default function LiveSessionsSection({ title, liveCourse }: Props) {
               md={12}
               lg={12} // Four cards per row on desktop
             >
-              <LiveSessionCard 
-                lessonList={liveCourse} 
+              <LiveSessionCard
+                lessonList={liveCourse}
                 // teacher_id={liveCourse[0]?.teacherId || ''} 
-                key={liveCourse[0]?.id} 
+                key={liveCourse[0]?.id}
+                enrollments={enrollments}
               />
             </Grid>
           ) : (
