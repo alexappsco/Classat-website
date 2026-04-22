@@ -87,7 +87,7 @@ const SideBarTabView: React.FC<SideBarTabViewProps> = ({
         {sideBarMode === 'PARTICIPANTS' ? (
           <ParticipantPanel panelHeight={panelHeight} />
         ) : sideBarMode === 'CHAT' ? (
-          <ChatPanel panelHeight={panelHeight} />
+          <ChatPanel panelHeight={panelHeight - 150} />
         ) : null}
       </Paper>
     </Box>
@@ -111,7 +111,7 @@ export function SidebarContainer({
   const paddedHeight = height - panelPadding * 3.5;
 
   const panelHeaderHeight = isMobile ? 40 : isTab ? 44 : isLGDesktop ? 48 : isXLDesktop ? 52 : 0;
-  const panelHeaderPadding = isMobile ? 6 : isTab ? 8 : isLGDesktop ? 10 : isXLDesktop ? 12 : 0;
+  const panelHeaderPadding = isMobile ? 6 : isTab ? 8 : isLGDesktop ? 10 : isXLDesktop ? 3 : 0;
 
   const handleClose = () => {
     setSideBarMode(null);

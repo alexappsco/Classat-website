@@ -1,10 +1,11 @@
-import { Constants, useMeeting, usePubSub, useMediaDevice } from '@videosdk.live/react-sdk';
+import { Constants, useMeeting, usePubSub, useMediaDevice, useWhiteboard } from '@videosdk.live/react-sdk';
 import React, { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ClipboardIcon,
   CheckIcon,
   ChevronDownIcon,
   EllipsisHorizontalIcon,
+  PencilSquareIcon,
 } from '@heroicons/react/24/outline';
 import recordingBlink from 'src/static/animations/recording-blink.json';
 import useIsRecording from 'src/hooks/useIsRecording';
@@ -39,6 +40,8 @@ import {
   Tooltip,
   Badge,
 } from '@mui/material';
+import WhiteboardIcon from '../../icons/Bottombar/WhiteboardIcon';
+
 import CloseIcon from '@mui/icons-material/Close';
 
 // ==================== TYPES ====================
@@ -79,6 +82,11 @@ interface ChatBTNProps {
 }
 
 interface ParticipantsBTNProps {
+  isMobile: boolean;
+  isTab: boolean;
+}
+
+interface WhiteboardBTNProps {
   isMobile: boolean;
   isTab: boolean;
 }
@@ -458,7 +466,8 @@ const WebCamBTN = () => {
 
 // ==================== BOTTOM BAR MAIN ====================
 export function BottomBar({ bottomBarHeight, setIsMeetingLeft }: BottomBarProps) {
-  const { sideBarMode, setSideBarMode } = useMeetingAppContext();
+  const { sideBarMode, setSideBarMode, whiteboardOpen, setWhiteboardOpen, setWhiteboardUrl } =
+    useMeetingAppContext();
   const [fabOpen, setFabOpen] = useState(false);
   const isMobile = useIsMobile();
   const isTab = useIsTab();
@@ -549,6 +558,9 @@ export function BottomBar({ bottomBarHeight, setIsMeetingLeft }: BottomBarProps)
   const ScreenShareBTN = ({ isMobile, isTab }: ScreenShareBTNProps) => {
     const { localScreenShareOn, toggleScreenShare, presenterId } = useMeeting();
     const isDisabled = presenterId ? (localScreenShareOn ? false : true) : isMobile;
+
+    // Whiteboard Button
+
 
     return isMobile || isTab ? (
       <MobileIconButton
@@ -649,7 +661,90 @@ export function BottomBar({ bottomBarHeight, setIsMeetingLeft }: BottomBarProps)
     );
   };
 
+  // const WhiteboardBTN = ({ isMobile, isTab }: WhiteboardBTNProps) => {
+  //   const { canDraw } = useMeetingAppContext();
+  //   const { startWhiteboard, stopWhiteboard, whiteboardUrl: sdkWhiteboardUrl } = useWhiteboard();
+
+  //   const isStarted = !!sdkWhiteboardUrl;
+
+  //   const handleToggle = () => {
+  //     if (isStarted) {
+  //       stopWhiteboard();
+  //     } else {
+  //       startWhiteboard();
+  //     }
+  //   };
+
+  //   if (!canDraw) return null;
+
+  //   return isMobile || isTab ? (
+  //     <MobileIconButton
+  //       id="whiteboard-btn"
+  //       tooltipTitle={isStarted ? 'Stop Whiteboard' : 'Start Whiteboard'}
+  //       buttonText={isStarted ? 'Stop Whiteboard' : 'Start Whiteboard'}
+  //       isFocused={isStarted}
+  //       Icon={PencilSquareIcon}
+  //       onClick={handleToggle}
+  //     />
+  //   ) : (
+  //     <OutlinedButton
+  //       Icon={PencilSquareIcon}
+  //       onClick={handleToggle}
+  //       isFocused={isStarted}
+  //       tooltip={isStarted ? 'Stop Whiteboard' : 'Start Whiteboard'}
+  //     />
+  //   );
+  // };
   // Meeting ID Copy Button
+
+  const { publish: publishWhiteboardState, messages: whiteboardMessages } = usePubSub('WHITEBOARD_STATE');
+  const { startWhiteboard, stopWhiteboard, whiteboardUrl } = useWhiteboard();
+  const WhiteboardBTN = ({ isMobile, isTab }: WhiteboardBTNProps) => {
+    const isFocused = sideBarMode === sideBarModes.WHITEBOARD;
+
+
+    return isMobile || isTab ? (
+      <MobileIconButton
+        tooltipTitle="Whiteboard"
+        isFocused={isFocused}
+        buttonText="Whiteboard"
+        Icon={WhiteboardIcon}
+
+        onClick={() => {
+          if (!whiteboardOpen) {
+            // Start locally, then broadcast URL when available
+            startWhiteboard();
+            setWhiteboardOpen(true);
+            publishWhiteboardState(JSON.stringify({ open: true }), { persist: true });
+          } else {
+            stopWhiteboard();
+            setWhiteboardOpen(false);
+            setWhiteboardUrl(null);
+            publishWhiteboardState(JSON.stringify({ open: false, url: whiteboardUrl }), { persist: true });
+          }
+        }}
+      />
+    ) : (
+      <OutlinedButton
+        Icon={WhiteboardIcon}
+        onClick={() => {
+          if (!whiteboardOpen) {
+            startWhiteboard();
+            setWhiteboardOpen(true);
+            publishWhiteboardState(JSON.stringify({ open: true }), { persist: true });
+          } else {
+            stopWhiteboard();
+            setWhiteboardOpen(false);
+            setWhiteboardUrl(null);
+            publishWhiteboardState(JSON.stringify({ open: false, url: null }), { persist: true });
+          }
+        }}
+        isFocused={isFocused}
+        tooltip="Whiteboard"
+      />
+    );
+  };
+
   const MeetingIdCopyBTN = () => {
     const { meetingId } = useMeeting();
     const [isCopied, setIsCopied] = useState(false);
@@ -707,6 +802,7 @@ export function BottomBar({ bottomBarHeight, setIsMeetingLeft }: BottomBarProps)
       RECORDING: 'RECORDING',
       PIP: 'PIP',
       MEETING_ID_COPY: 'MEETING_ID_COPY',
+      WHITEBOARD: 'WHITEBOARD',
     }),
     []
   );
@@ -714,6 +810,7 @@ export function BottomBar({ bottomBarHeight, setIsMeetingLeft }: BottomBarProps)
   const otherFeatures = [
     { icon: BottomBarButtonTypes.RAISE_HAND },
     { icon: BottomBarButtonTypes.PIP },
+    { icon: BottomBarButtonTypes.WHITEBOARD },
     { icon: BottomBarButtonTypes.SCREEN_SHARE },
     { icon: BottomBarButtonTypes.CHAT },
     { icon: BottomBarButtonTypes.PARTICIPANTS },
@@ -755,6 +852,9 @@ export function BottomBar({ bottomBarHeight, setIsMeetingLeft }: BottomBarProps)
                     {icon === BottomBarButtonTypes.RAISE_HAND && (
                       <RaiseHandBTN isMobile={isMobile} isTab={isTab} />
                     )}
+                    {/* {icon === BottomBarButtonTypes.WHITEBOARD && (
+                      <WhiteboardBTN isMobile={isMobile} isTab={isTab} />
+                    )} */}
                     {icon === BottomBarButtonTypes.SCREEN_SHARE && (
                       <ScreenShareBTN isMobile={isMobile} isTab={isTab} />
                     )}
@@ -781,14 +881,15 @@ export function BottomBar({ bottomBarHeight, setIsMeetingLeft }: BottomBarProps)
   // Desktop View
   return (
     <Box sx={{ display: { xs: 'none', md: 'flex' }, px: { lg: 2, xl: 6 }, pb: 2 }}>
-      <MeetingIdCopyBTN />
+      {/* <MeetingIdCopyBTN /> */}
 
       <Box sx={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <RecordingBTN />
+        {/* <RecordingBTN /> */}
         <RaiseHandBTN isMobile={isMobile} isTab={isTab} />
         <MicBTN />
         <WebCamBTN />
         <ScreenShareBTN isMobile={isMobile} isTab={isTab} />
+        {/* <WhiteboardBTN isMobile={isMobile} isTab={isTab} /> */}
         <PipBTN isMobile={isMobile} isTab={isTab} />
         <LeaveBTN />
       </Box>

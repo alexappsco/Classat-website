@@ -20,11 +20,15 @@ export interface VideoStats {
 export interface SideBarModes {
   PARTICIPANTS: string;
   CHAT: string;
+  WHITEBOARD: string;
+
 }
 
 export const sideBarModes: SideBarModes = {
   PARTICIPANTS: "PARTICIPANTS",
   CHAT: "CHAT",
+  WHITEBOARD: "WHITEBOARD",
+
 };
 
 /**
@@ -51,18 +55,18 @@ export function getQualityScore(stats: VideoStats): number {
   const packetLossPercent = stats.packetsLost / stats.totalPackets || 0;
   const jitter = stats.jitter;
   const rtt = stats.rtt;
-  
+
   let score = 100;
-  
+
   // Packet loss penalty (max 50 points)
   score -= packetLossPercent * 50 > 50 ? 50 : packetLossPercent * 50;
-  
+
   // Jitter penalty (max 25 points)
   score -= ((jitter / 30) * 25 > 25 ? 25 : (jitter / 30) * 25) || 0;
-  
+
   // RTT penalty (max 25 points)
   score -= ((rtt / 300) * 25 > 25 ? 25 : (rtt / 300) * 25) || 0;
-  
+
   // Return score on a 0-10 scale
   return score / 10;
 }
@@ -101,7 +105,7 @@ export const trimSnackBarText = (text: string = ""): string => {
  */
 export const nameTructed = (name: string, truncatedLength: number): string => {
   if (!name) return "";
-  
+
   if (name.length > truncatedLength) {
     if (truncatedLength === 15) {
       return `${name.substr(0, 12)}...`;
