@@ -507,6 +507,7 @@ import { toast } from 'react-toastify';
 import { useMeetingAppContext } from '../MeetingAppContextDef';
 import { sideBarModes } from 'src/utils/common';
 import { Box, Paper } from '@mui/material';
+import { useSnackbar } from 'notistack';
 
 interface ParticipantMicStreamProps {
   participantId: string;
@@ -569,12 +570,15 @@ export function MeetingContainer({
     setChatMessages
   } = useMeetingAppContext();
 
+  const { enqueueSnackbar } = useSnackbar();
+
   const [participantsData, setParticipantsData] = useState<string[]>([]);
   const [localParticipantAllowedJoin, setLocalParticipantAllowedJoin] = useState<boolean | null>(
     null
   );
   const [meetingErrorVisible, setMeetingErrorVisible] = useState(false);
   const [meetingError, setMeetingError] = useState<MeetingError>({ code: 0, message: '' });
+  const [entryRequest, setEntryRequest] = useState<{ participantId: string; name: string } | null>(null);
 
   const bottomBarHeight = 60;
   const [containerHeight, setContainerHeight] = useState(0);
@@ -661,20 +665,25 @@ export function MeetingContainer({
     participant && participant.setQuality('high');
   };
 
-  const onEntryResponded = ({
-    participantId,
-    decision,
-  }: {
-    participantId: string;
-    decision: string;
-  }) => {
+  const onEntryRequested = (participantIdOrData: any, nameStr?: any) => {
+    const participantId = typeof participantIdOrData === 'object' ? participantIdOrData.participantId : participantIdOrData;
+    const name = typeof participantIdOrData === 'object' ? participantIdOrData.name : nameStr;
+    console.log('[meeting-debug] onEntryRequested', { participantId, name });
+    setEntryRequest({ participantId, name });
+  };
+
+  const onEntryResponded = (participantIdOrData: any, decisionStr?: any) => {
+    const participantId = typeof participantIdOrData === 'object' ? participantIdOrData.participantId : participantIdOrData;
+    const decision = typeof participantIdOrData === 'object' ? participantIdOrData.decision : decisionStr;
+
     if (mMeetingRef.current?.localParticipant?.id === participantId) {
       if (decision === 'allowed') {
         setLocalParticipantAllowedJoin(true);
       } else {
         setLocalParticipantAllowedJoin(false);
+        enqueueSnackbar('تم رفض طلب دخولك للمقابلة.', { variant: 'error' });
         setTimeout(() => {
-          handleMeetingLeft();
+          onMeetingLeave();
         }, 3000);
       }
     }
@@ -731,6 +740,7 @@ export function MeetingContainer({
 
   const mMeeting = useMeeting({
     onParticipantJoined,
+    onEntryRequested,
     onEntryResponded,
     onMeetingJoined,
     onMeetingStateChanged: ({ state }: { state: string }) => {
@@ -1102,6 +1112,28 @@ export function MeetingContainer({
           onSuccess={() => setMeetingErrorVisible(false)}
           title={`Error Code: ${meetingError.code}`}
           subTitle={meetingError.message}
+        />
+
+        <ConfirmBox
+          open={!!entryRequest}
+          successText="ALLOW"
+          rejectText="DENY"
+          onSuccess={() => {
+            if (entryRequest) {
+              const respond = (mMeeting as any).respondEntry || mMeetingRef.current?.respondEntry;
+              if (respond) respond(entryRequest.participantId, 'allowed');
+              setEntryRequest(null);
+            }
+          }}
+          onReject={() => {
+            if (entryRequest) {
+              const respond = (mMeeting as any).respondEntry || mMeetingRef.current?.respondEntry;
+              if (respond) respond(entryRequest.participantId, 'denied');
+              setEntryRequest(null);
+            }
+          }}
+          title="Join Request"
+          subTitle={`${entryRequest?.name || 'Someone'} is requesting to join the meeting.`}
         />
       </Box>
     </Box>

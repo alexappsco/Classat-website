@@ -194,6 +194,10 @@ export interface ChatMessage {
   senderName: string;
   message: string;
   timestamp: string | number;
+  type?: 'text' | 'file' | 'image';
+  url?: string;
+  fileName?: string;
+  fileSize?: number;
 }
 
 interface UseRaisedHandParticipantsReturn {
