@@ -202,6 +202,8 @@ export interface ChatMessage {
 
 interface UseRaisedHandParticipantsReturn {
   participantRaisedHand: (participantId: string) => void;
+  participantLoweredHand: (participantId: string) => void;
+
 }
 
 interface MeetingAppContextType {
@@ -292,34 +294,39 @@ export const MeetingAppProvider: React.FC<MeetingAppProviderProps> = ({ children
 
       setRaisedHandsParticipants(currentRaisedHands);
     };
-
+    const participantLoweredHand = (participantId: string): void => {
+      const currentRaisedHands = raisedHandsParticipantsRef.current.filter(
+        ({ participantId: pID }) => pID !== participantId
+      );
+      setRaisedHandsParticipants(currentRaisedHands);
+    };
     // Update ref when state changes
     useEffect(() => {
       raisedHandsParticipantsRef.current = raisedHandsParticipants;
     }, [raisedHandsParticipants]);
 
     // Remove old raised hands after 15 seconds
-    const handleRemoveOld = (): void => {
-      const currentRaisedHands = [...raisedHandsParticipantsRef.current];
-      const now = new Date().getTime();
+    // const handleRemoveOld = (): void => {
+    //   const currentRaisedHands = [...raisedHandsParticipantsRef.current];
+    //   const now = new Date().getTime();
 
-      const persisted = currentRaisedHands.filter(({ raisedHandOn }) => {
-        return raisedHandOn + 15000 > now;
-      });
+    //   const persisted = currentRaisedHands.filter(({ raisedHandOn }) => {
+    //     return raisedHandOn + 15000 > now;
+    //   });
 
-      if (currentRaisedHands.length !== persisted.length) {
-        setRaisedHandsParticipants(persisted);
-      }
-    };
+    //   if (currentRaisedHands.length !== persisted.length) {
+    //     setRaisedHandsParticipants(persisted);
+    //   }
+    // };
 
-    useEffect(() => {
-      const interval = setInterval(handleRemoveOld, 1000);
-      return () => {
-        clearInterval(interval);
-      };
-    }, []);
+    // useEffect(() => {
+    //   const interval = setInterval(handleRemoveOld, 1000);
+    //   return () => {
+    //     clearInterval(interval);
+    //   };
+    // }, []);
 
-    return { participantRaisedHand };
+    return { participantRaisedHand, participantLoweredHand };
   };
 
   const contextValue: MeetingAppContextType = {

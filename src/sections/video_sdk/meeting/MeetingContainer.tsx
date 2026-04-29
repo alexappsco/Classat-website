@@ -556,6 +556,13 @@ export function MeetingContainer({
   participantId,
   videoSessionId,
 }: MeetingContainerProps) {
+  const playAudioSafely = (url: string) => {
+    const audio = new Audio(url);
+    audio.play().catch((err) => {
+      if (err?.name === 'AbortError') return;
+      console.log('notification audio play failed', err);
+    });
+  };
   const {
     setSelectedMic,
     setSelectedWebcam,
@@ -567,7 +574,9 @@ export function MeetingContainer({
     setWhiteboardOpen,
     setWhiteboardUrl,
     setUnreadChatCount,
-    setChatMessages
+    setChatMessages,
+    setSideBarMode,
+
   } = useMeetingAppContext();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -600,14 +609,14 @@ export function MeetingContainer({
   const isXLDesktop = useMediaQuery({ minWidth: 1440 });
 
   const defaultSideBarContainerWidth = isXLDesktop
-    ? 350
+    ? 400
     : isLGDesktop
-      ? 300
+      ? 360
       : isTab
-        ? 250
+        ? 320
         : isMobile
-          ? 200
-          : 150;
+          ? 250
+          : 200;
 
   const sideBarContainerWidth =
     sideBarMode === sideBarModes.WHITEBOARD && containerWidth > 0 && !(isMobile || isTab)
@@ -631,7 +640,7 @@ export function MeetingContainer({
     return () => window.removeEventListener('resize', handleResize);
   }, [containerRef]);
 
-  const { participantRaisedHand } = useRaisedHandParticipants();
+  const { participantRaisedHand, participantLoweredHand } = useRaisedHandParticipants();
 
   const handleMeetingLeft = () => {
     setIsMeetingLeft(true);
@@ -670,6 +679,7 @@ export function MeetingContainer({
     const name = typeof participantIdOrData === 'object' ? participantIdOrData.name : nameStr;
     console.log('[meeting-debug] onEntryRequested', { participantId, name });
     setEntryRequest({ participantId, name });
+
   };
 
   const onEntryResponded = (participantIdOrData: any, decisionStr?: any) => {
@@ -812,12 +822,12 @@ export function MeetingContainer({
   const { whiteboardUrl: sdkWhiteboardUrl } = useWhiteboard();
 
   // Fallback: if SDK exposes the whiteboardUrl on guests, sync it into shared state
-  useEffect(() => {
-    if (!sdkWhiteboardUrl) return;
-    if (whiteboardUrl === sdkWhiteboardUrl) return;
-    setWhiteboardUrl(sdkWhiteboardUrl);
-    if (!whiteboardOpen) setWhiteboardOpen(true);
-  }, [sdkWhiteboardUrl, whiteboardOpen, whiteboardUrl, setWhiteboardOpen, setWhiteboardUrl]);
+  // useEffect(() => {
+  //   if (!sdkWhiteboardUrl) return;
+  //   if (whiteboardUrl === sdkWhiteboardUrl) return;
+  //   setWhiteboardUrl(sdkWhiteboardUrl);
+  //   if (!whiteboardOpen) setWhiteboardOpen(true);
+  // }, [sdkWhiteboardUrl, whiteboardOpen, whiteboardUrl, setWhiteboardOpen, setWhiteboardUrl]);
 
   // Share whiteboard OPEN/CLOSE state with everyone in the meeting
   usePubSub('WHITEBOARD_STATE', {
@@ -854,12 +864,37 @@ export function MeetingContainer({
   }, []);
 
   usePubSub('RAISE_HAND', {
-    onMessageReceived: (data: { senderId: string; senderName: string }) => {
+    onMessageReceived: (data: { senderId: string; senderName: string; message: string }) => {
       const localParticipantId = mMeeting?.localParticipant?.id;
-      const { senderId, senderName } = data;
+      const { senderId, senderName, message } = data;
       const isLocal = senderId === localParticipantId;
+      let action: 'raise' | 'lower' = 'raise';
 
-      new Audio(`https://static.videosdk.live/prebuilt/notification.mp3`).play();
+      try {
+        const parsed = JSON.parse(message || '{}') as { action?: 'raise' | 'lower' };
+        if (parsed.action === 'lower') action = 'lower';
+      } catch {
+        action = 'raise';
+      }
+
+      if (action === 'lower') {
+        participantLoweredHand(senderId);
+        if (!isLocal) {
+          toast(`${nameTructed(senderName, 15)} lowered hand`, {
+            position: 'bottom-left',
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeButton: false,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          });
+        }
+        return;
+      }
+
+      playAudioSafely(`https://static.videosdk.live/prebuilt/notification.mp3`);
 
       toast(`${isLocal ? 'You' : nameTructed(senderName, 15)} raised hand 🖐🏼`, {
         position: 'bottom-left',
@@ -998,7 +1033,7 @@ export function MeetingContainer({
                           overflow: 'hidden',
                         }}
                       >
-                        {whiteboardUrl ? (
+                        {sdkWhiteboardUrl ? (
                           <Box
                             sx={{
                               width: '100%',
@@ -1007,7 +1042,7 @@ export function MeetingContainer({
                             }}
                           >
                             <iframe
-                              src={whiteboardUrl}
+                              src={sdkWhiteboardUrl}
                               style={{ width: '100%', height: '90%', border: 0, display: 'block' }}
                               allow="clipboard-read; clipboard-write; fullscreen"
                             />

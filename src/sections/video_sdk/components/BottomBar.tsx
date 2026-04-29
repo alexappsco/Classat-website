@@ -414,7 +414,7 @@ export function BottomBar({ bottomBarHeight, setIsMeetingLeft }: BottomBarProps)
         buttonText="Raise Hand"
       />
     ) : (
-      <OutlinedButton onClick={raiseHand} tooltip="Raise Hand" Icon={Icon} />
+      <OutlinedButton onClick={raiseHand} tooltip="Raise Hand" />
     );
   };
 

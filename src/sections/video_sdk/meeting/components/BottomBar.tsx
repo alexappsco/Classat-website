@@ -475,9 +475,15 @@ export function BottomBar({ bottomBarHeight, setIsMeetingLeft }: BottomBarProps)
   // Raise Hand Button
   const RaiseHandBTN = ({ isMobile, isTab }: RaiseHandBTNProps) => {
     const { publish } = usePubSub('RAISE_HAND');
+    const { raisedHandsParticipants } = useMeetingAppContext();
+    const localParticipantId = useMeeting().localParticipant?.id;
+    const isRaised = raisedHandsParticipants.some((item) => item.participantId === localParticipantId);
     const raiseHand = () => {
       try {
-        publish('Raise Hand', { persist: false });
+        publish(
+          JSON.stringify({ action: isRaised ? 'lower' : 'raise' }),
+          { persist: false }
+        );
       } catch (e) {
         console.log('Error in pubsub', e);
       }
@@ -486,13 +492,18 @@ export function BottomBar({ bottomBarHeight, setIsMeetingLeft }: BottomBarProps)
     return isMobile || isTab ? (
       <MobileIconButton
         id="RaiseHandBTN"
-        tooltipTitle="Raise hand"
+        tooltipTitle={isRaised ? 'Lower hand' : 'Raise hand'}
         Icon={RaiseHandIcon}
         onClick={raiseHand}
-        buttonText="Raise Hand"
-      />
+        buttonText={isRaised ? 'Lower Hand' : 'Raise Hand'}
+        isFocused={isRaised} />
     ) : (
-      <OutlinedButton onClick={raiseHand} tooltip="Raise Hand" Icon={RaiseHandIcon} />
+      <OutlinedButton
+        onClick={raiseHand}
+        tooltip={isRaised ? 'Lower Hand' : 'Raise Hand'}
+        Icon={RaiseHandIcon}
+        isFocused={isRaised}
+      />
     );
   };
 
