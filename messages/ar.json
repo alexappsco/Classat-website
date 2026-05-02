@@ -11,7 +11,6 @@
     "Payment": {
       "title": "الدفع |  كلاسات"
     },
-
     "Orders": {
       "title": "الطلبات"
     },
@@ -51,7 +50,6 @@
     "Offers": {
       "title": "العروض |  كلاسات"
     },
-
     "Clients": {
       "title": "العملاء |  كلاسات"
     },
@@ -166,7 +164,7 @@
     "Label": {
       "name_ar": "الاسم بالعربية",
       "name_en": "الاسم بالإنجليزية",
-      "phone_Parent":"رقم ولي الأمر",
+      "phone_Parent": "رقم ولي الأمر",
       "description_ar": "الوصف بالعربية",
       "description_en": "الوصف بالإنجليزية",
       "min_selection": "الحد الأدنى للاختيار",
@@ -841,19 +839,19 @@
       "distance_from": "المسافة من",
       "distance_to": "المسافة إلى"
     },
-    "TopTeachers":{
+    "TopTeachers": {
       "searchPlaceholder": "إبحث عن معلم  ..",
       "rateFrom": "النقييم من",
       "rateTo": "النقييم إلى",
       "teacherPrefix": "الاستاذ / ",
       "allSubjects": "كل المواد",
-    "currencyPerHour": "ريال/ساعة",
-    "viewAvailability": "عرض المواعيد المتاحة",
-    "courseTypes": {
-      "OneToOne": "حصة فردية",
-      "LiveGroup": "مجموعة مباشرة",
-      "Recorded": "مسجل"
-    }
+      "currencyPerHour": "ريال/ساعة",
+      "viewAvailability": "عرض المواعيد المتاحة",
+      "courseTypes": {
+        "OneToOne": "حصة فردية",
+        "LiveGroup": "مجموعة مباشرة",
+        "Recorded": "مسجل"
+      }
     }
   },
   "Label": {
@@ -981,26 +979,26 @@
   },
   "next_lessons": {
     "title": "الدروس القادمة",
+    "details_title": "تفاصيل الحصة",
     "no_lessons": "لا توجد دروس مجددة",
-    "error_with_id":"في مشكلة في ID",
-    "lesson_canceled_successfully":"تم إلغاء الحجز بنجاح",
-    "cancel_lesson":" إلغاء الحجز",
-    "lesson_canceled":"تم إلغاء الحجز",
-    "lesson_completed":"اكتمل",
-    "confirm_cancel":"تأكيد الإلغاء",
-    "are_you_sure":"هل أنت متأكد من أنك تريد إلغاء هذا الحجز؟",
-    "canceling":"جاري الإلغاء...",
-    "back":"رجوع",
-    "completed":"المكتمل",
-    "canceled":"الملغى",
-    "upcoming":"القادم",
-    "all":"الكل",
-    "no_data":"لا يوجد بيانات"
-
+    "error_with_id": "في مشكلة في ID",
+    "lesson_canceled_successfully": "تم إلغاء الحجز بنجاح",
+    "cancel_lesson": " إلغاء الحجز",
+    "lesson_canceled": "تم إلغاء الحجز",
+    "lesson_completed": "اكتمل",
+    "confirm_cancel": "تأكيد الإلغاء",
+    "are_you_sure": "هل أنت متأكد من أنك تريد إلغاء هذا الحجز؟",
+    "canceling": "جاري الإلغاء...",
+    "back": "رجوع",
+    "completed": "المكتمل",
+    "canceled": "الملغى",
+    "upcoming": "القادم",
+    "all": "الكل",
+    "no_data": "لا يوجد بيانات",
+    "join_now": "انضم الآن"
   },
   "packages": {
     "title": "الباقات",
     "no_packages": "لا توجد باقات متاحة"
   }
-
 }

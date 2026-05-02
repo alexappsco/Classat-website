@@ -3,14 +3,14 @@
 
 "use client";
 
-import { useState } from "react";
-import { Container, Grid, Typography, Box, Button } from "@mui/material";
+import { Container, Grid, Typography, Box, Button, Pagination } from "@mui/material";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import LessonCard from "./lessonCard";
 
 /* =========================
    Types
-========================= */
+ ========================= */
 
 export interface IStudentCard {
   status: string;
@@ -29,11 +29,15 @@ export interface IStudentCard {
 
 interface IProps {
   cards: IStudentCard[];
+  totalCount: number;
+  currentPage: number;
+  pageSize: number;
+  currentStatus: string;
 }
 
 /* =========================
    Status Mapping (لو API بيرجع أرقام)
-========================= */
+ ========================= */
 
 const statusMap: Record<string, "Scheduled" | "Cancelled" | "Completed"> = {
   "1": "Scheduled",
@@ -43,58 +47,69 @@ const statusMap: Record<string, "Scheduled" | "Cancelled" | "Completed"> = {
 
 /* =========================
    Component
-========================= */
+ ========================= */
 
-const LessonsSection = ({ cards }: IProps) => {
-    const t = useTranslations('next_lessons');
+const LessonsSection = ({ cards, totalCount, currentPage, pageSize, currentStatus }: IProps) => {
+  const t = useTranslations('next_lessons');
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  const [filter, setFilter] = useState<
-    "All" | "Scheduled" | "Cancelled" | "Completed"
-  >("All");
+  const handleFilterChange = (status: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (status === "All") {
+      params.delete("status");
+    } else {
+      params.set("status", status);
+    }
+    params.set("page", "1"); // Reset to page 1 on filter change
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
-  // تحويل status لو جاي رقم
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", String(value));
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
+  // تحويل status لو جاي رقم للعرض فقط في الكروت
   const normalizedCards = cards.map((card) => ({
     ...card,
     status: statusMap[card.status] || card.status,
   }));
 
-  // فلترة
-  const filteredCards = normalizedCards.filter((card) => {
-    if (filter === "All") return true;
-    return card.status === filter;
-  });
-
   return (
     <Container sx={{ mt: 20, mb: 8 }}>
-         <Typography variant="h4" sx={{ mb: 4,  }}>
-          {t('title')}
-     </Typography>
+      <Typography variant="h4" sx={{ mb: 4 }}>
+        {t('title')}
+      </Typography>
+
       {/* أزرار الفلترة */}
       <Box sx={{ display: "flex", gap: 1, mb: 3, flexWrap: "wrap" }}>
         <Button
-          variant={filter === "All" ? "contained" : "outlined"}
-          onClick={() => setFilter("All")}
+          variant={currentStatus === "All" ? "contained" : "outlined"}
+          onClick={() => handleFilterChange("All")}
         >
           {t('all')}
         </Button>
 
         <Button
-          variant={filter === "Scheduled" ? "contained" : "outlined"}
-          onClick={() => setFilter("Scheduled")}
+          variant={currentStatus === "0" ? "contained" : "outlined"}
+          onClick={() => handleFilterChange("0")}
         >
           {t('upcoming')}
         </Button>
 
         <Button
-          variant={filter === "Cancelled" ? "contained" : "outlined"}
-          onClick={() => setFilter("Cancelled")}
+          variant={currentStatus === "1" ? "contained" : "outlined"}
+          onClick={() => handleFilterChange("1")}
         >
           {t('canceled')}
         </Button>
 
         <Button
-          variant={filter === "Completed" ? "contained" : "outlined"}
-          onClick={() => setFilter("Completed")}
+          variant={currentStatus === "2" ? "contained" : "outlined"}
+          onClick={() => handleFilterChange("2")}
         >
           {t('completed')}
         </Button>
@@ -102,8 +117,8 @@ const LessonsSection = ({ cards }: IProps) => {
 
       {/* الكروت */}
       <Grid container spacing={{ xs: 2, md: 3 }}>
-        {filteredCards.length > 0 ? (
-          filteredCards.map((card, index) => (
+        {normalizedCards.length > 0 ? (
+          normalizedCards.map((card, index) => (
             <Grid
               item
               key={card.id || `${card.name}-${index}`}
@@ -129,6 +144,19 @@ const LessonsSection = ({ cards }: IProps) => {
           </Typography>
         )}
       </Grid>
+
+      {/* البجينيشن */}
+      {totalCount > pageSize && (
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 6 }}>
+          <Pagination
+            count={Math.ceil(totalCount / pageSize)}
+            page={currentPage}
+            onChange={handlePageChange}
+            color="primary"
+            size="large"
+          />
+        </Box>
+      )}
     </Container>
   );
 };

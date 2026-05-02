@@ -44,7 +44,7 @@ export const endpoints = {
       if (teacherName) url += `?TeacherName=${teacherName}`;
       return url;
     },
-    getStudentTopTeachers:`/students/subject/teachers/search`,
+    getStudentTopTeachers: `/students/subject/teachers/search`,
   },
   packages: {
     get: (id: string) => `/students/teacher/${id}/packages`,
@@ -87,7 +87,8 @@ export const endpoints = {
   },
 
   studentEducationSession: {
-    get: "/students/education-sessions"
+    get: "/students/education-sessions",
+    details: (id: string) => `/students/education-sessions/${id}`,
   },
   Lives: {
     get: "/students/lives"
@@ -118,46 +119,52 @@ export const endpoints = {
     post: "/shared/contact-request/messages"
   },
   get: '/shared/course-categories',
-  getCourses:`/students/teacher/courses`,
-  getCourse:(courseId: string) =>`/students/teacher/course/${courseId}`,
+  getCourses: `/students/teacher/courses`,
+  getCourse: (courseId: string) => `/students/teacher/course/${courseId}`,
 
-payment:{
-  get: '/shared/payment-methods',
-  post_all_payment: '/students/cart/checkout',
-  post_single_item: '/students/cart/checkout/direct-booking',
-  packageSubscriptions: (teacherId: string) => `/students/package-subscriptions?TeacherId=${teacherId}`,
-  bookSessions: (packageSubscriptionId: string) => `/students/package-subscriptions/${packageSubscriptionId}/book-sessions`,
-},
-cancelorder: '/students/booking/cancel',
-EducationCourses:{
-  get: "/students/education-lessons",
-  getCourseByCourseId: (courseId: string) => `/students/education-lessons/${courseId}`,
-  getsessions: (lessonId: string) => `/students/education-lessons/${lessonId}/sections`,
-  getSessionId: (sectionId: string) => `/students/education-lessons/sections/${sectionId}/sessions`,
+  payment: {
+    get: '/shared/payment-methods',
+    post_all_payment: '/students/cart/checkout',
+    post_single_item: '/students/cart/checkout/direct-booking',
+    packageSubscriptions: (teacherId: string) => `/students/package-subscriptions?TeacherId=${teacherId}`,
+    bookSessions: (packageSubscriptionId: string) => `/students/package-subscriptions/${packageSubscriptionId}/book-sessions`,
+  },
+  cancelorder: '/students/booking/cancel',
+  EducationCourses: {
+    get: "/students/education-lessons",
+    getCourseByCourseId: (courseId: string) => `/students/education-lessons/${courseId}`,
+    getsessions: (lessonId: string) => `/students/education-lessons/${lessonId}/sections`,
+    getSessionId: (sectionId: string) => `/students/education-lessons/sections/${sectionId}/sessions`,
 
-  markWatched: (sessionId: string) => `/students/education-lessons/sessions/${sessionId}/mark-watched`,
-},
-packageSubscription: {
-  get: "/students/package-subscriptions",
-  getmyCourses: "/students/package-subscriptions/my-courses"
-},
-wallet: {
-  get: "/students/wallet",
-},
-StudentTeacherEducation: {
-  get:(teacherId: string, educationApproachTypeStageGradeSubjectId: string) => `/students/teacher/${teacherId}/education/${educationApproachTypeStageGradeSubjectId}/about-teacher`
-},
-invoice: {
-  get: "/students/invoices",
-  getDetails: (invoiceId: string) => `/students/invoices/${invoiceId}`,
-},
-liveSessionSubjectEnrollments:{
-  get: "/students/live-session-subject-enrollments",
-  details: (enrollmentId: string) => `/students/live-session-subject-enrollments/${enrollmentId}`,
-},
-liveCourseEnrollments: {
-  get: "/students/live-session-course-enrollments",
-  details: (enrollmentId: string) => `/students/live-session-course-enrollments/${enrollmentId}`, 
-},
+    markWatched: (sessionId: string) => `/students/education-lessons/sessions/${sessionId}/mark-watched`,
+  },
+  packageSubscription: {
+    get: "/students/package-subscriptions",
+    getmyCourses: "/students/package-subscriptions/my-courses"
+  },
+  wallet: {
+    get: "/students/wallet",
+  },
+  StudentTeacherEducation: {
+    get: (teacherId: string, educationApproachTypeStageGradeSubjectId: string) => `/students/teacher/${teacherId}/education/${educationApproachTypeStageGradeSubjectId}/about-teacher`
+  },
+  invoice: {
+    get: "/students/invoices",
+    getDetails: (invoiceId: string) => `/students/invoices/${invoiceId}`,
+  },
+  liveSessionSubjectEnrollments: {
+    get: "/students/live-session-subject-enrollments",
+    details: (enrollmentId: string) => `/students/live-session-subject-enrollments/${enrollmentId}`,
+  },
+  liveCourseEnrollments: {
+    get: "/students/live-session-course-enrollments",
+    details: (enrollmentId: string) => `/students/live-session-course-enrollments/${enrollmentId}`,
+  },
+  sdk: {
+    create: (videoSessionId: string) => `/students/video-sessions/${videoSessionId}/start`,
+    join: (videoSessionId: string) => `/students/video-sessions/${videoSessionId}/join`,
+    leave: (videoSessionId: string) => `/students/video-sessions/${videoSessionId}/leave`,
+    end: (videoSessionId: string) => `/students/video-sessions/${videoSessionId}/end`,
+  }
 
 };

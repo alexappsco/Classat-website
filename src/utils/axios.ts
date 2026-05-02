@@ -171,15 +171,15 @@ export const endpoints = {
     // verifyOtp: '/shared/auth/verify-otp',
 
   },
-  country:{
+  country: {
     get: '/shared/location/countries',
   },
   EducationApproach:
   {
-    type:'/shared/education/approaches',
-    typeMap:'/shared/education/mappings/approach-type',
-    typeStage:'/shared/education/mappings/approach-type-stages',
-    typeStageGrade:'/shared/education/mappings/approach-type-stage-grades',
+    type: '/shared/education/approaches',
+    typeMap: '/shared/education/mappings/approach-type',
+    typeStage: '/shared/education/mappings/approach-type-stages',
+    typeStageGrade: '/shared/education/mappings/approach-type-stage-grades',
 
   },
   profile: {
@@ -188,8 +188,16 @@ export const endpoints = {
   },
   post_payment: '/shared/payment-methods',
   get_payment: '/shared/payment-methods',
-  liveCourse:{
-  get: "/students/live-session-courses"
-},
+  liveCourse: {
+    get: "/students/live-session-courses"
+  },
+  sdk: {
+    create: (videoSessionId: string) => `/students/video-sessions/${videoSessionId}/start`,
+    join: (videoSessionId: string) => `/students/video-sessions/${videoSessionId}/join`,
+    leave: (videoSessionId: string) => `/students/video-sessions/${videoSessionId}/leave`,
+    end: (videoSessionId: string) => `/students/video-sessions/${videoSessionId}/end`,
+    chat: '/shared/file-upload',
+
+  }
 
 };

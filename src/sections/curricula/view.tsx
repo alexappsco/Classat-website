@@ -36,7 +36,7 @@ type CoursesProps = {
   educationGrade?: EducationGrade;
   subjects: SubjectItem[];
   courses: any[];
-  teachers:StudentTeacherEducationItem[]
+  teachers: StudentTeacherEducationItem[]
 };
 
 export default function Courses({ educationGrade, subjects, courses, teachers }: CoursesProps) {
@@ -44,7 +44,7 @@ export default function Courses({ educationGrade, subjects, courses, teachers }:
   const t = useTranslations();
   const settings = useSettingsContext();
   const router = useRouter();
-const [enrollments, setEnrollments] = React.useState<any[]>([]);
+  const [enrollments, setEnrollments] = React.useState<any[]>([]);
   // ===== State =====
   const [recordedLessons, setRecordedLessons] = useState<StudentLesson[]>([]);
   const [loadingLessons, setLoadingLessons] = useState(true);
@@ -54,7 +54,7 @@ const [enrollments, setEnrollments] = React.useState<any[]>([]);
   const [paymentList, setPaymentList] = React.useState<any[]>([]);
 
 
- const refreshData = async () => {
+  const refreshData = async () => {
     try {
       // جلب الحصص المباشرة
       const lessonsRes = await getData<any>(`${endpoints.liveSubjects.get}?MaxResultCount=3`);
@@ -128,10 +128,10 @@ const [enrollments, setEnrollments] = React.useState<any[]>([]);
             </Button>
           </Box>
 
-        <Container>
+          <Container>
 
-          <NextLessonsPreview />
-        </Container>
+            <NextLessonsPreview />
+          </Container>
         </Box>
 
         {/* <LiveSessionsSection /> */}
@@ -143,7 +143,7 @@ const [enrollments, setEnrollments] = React.useState<any[]>([]);
             mx: { md: '0', xs: '0', lg: '2%', xl: '8%' },
           }}
         > */}
-          {/* <Box
+        {/* <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -152,182 +152,182 @@ const [enrollments, setEnrollments] = React.useState<any[]>([]);
               mb: 4,
             }}
           > */}
-          <Container>
-            <Grid container spacing={4} justifyContent={'center'} p={4}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                }}
+        <Container>
+          <Grid container spacing={4} justifyContent={'center'} p={4}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+              }}
+            >
+              <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                {t('Nav.myRecordedLessons')}
+              </Typography>
+              <Button
+                color="info"
+                sx={{ lineHeight: 1 }}
+                onClick={() => router.push(paths.controlPanel.Curricula.mycourses)}
               >
-                <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                  {t('Nav.myRecordedLessons')}
-                </Typography>
-                <Button
-                  color="info"
-                  sx={{ lineHeight: 1 }}
-                  onClick={() => router.push(paths.controlPanel.Curricula.mycourses)}
-                >
-                  {t('Label.all')}
-                  <LeftIcon />
-                </Button>
-              </Box>
-              {courses && courses.length > 0 ? (
-                // Use a container here to hold the items
-                <Grid container spacing={2}>
-                  {courses.slice(0, 4).map((course: any) => (
-                    <Grid
-                      item
-                      key={course.id || course.teacherId}
-                      xs={12} // Stacked on mobile
-                      sm={6} // 2 per row on small tablets
-                      md={4} // 3 per row on medium screens
-                      lg={3} // 4 per row on desktop (matches your goal)
-                    >
-                      <EducationCourseCard course={course} />
-                    </Grid>
-                  ))}
-                </Grid>
-              ) : (
-                <Grid item xs={12}>
-                  <Box sx={{ p: 3, textAlign: 'center' }}>
-                    <Typography variant="h6" color="text.secondary">
-                      لا توجد جلسات مباشرة متاحة
-                    </Typography>
-                  </Box>
-                </Grid>
-              )}
-            </Grid>
-          </Container>
-          <Container>
-            <Grid container spacing={4} justifyContent={'center'} p={4}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                  mb: 2,
-                }}
-              >
-                <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                  {t('packages.title')}
-                </Typography>
-                <Button
-                  color="info"
-                  sx={{ lineHeight: 1 }}
-                  onClick={() => router.push(paths.controlPanel.Curricula.myPackages)}
-                >
-                  {t('Label.all')}
-                  <LeftIcon />
-                </Button>
-              </Box>
-              {myPackages && myPackages.length > 0 ? (
-                // Use a container here to hold the items
-                <Grid container spacing={2}>
+                {t('Label.all')}
+                <LeftIcon />
+              </Button>
+            </Box>
+            {courses && courses.length > 0 ? (
+              // Use a container here to hold the items
+              <Grid container spacing={2}>
+                {courses.slice(0, 4).map((course: any) => (
                   <Grid
                     item
+                    key={course.id || course.teacherId}
                     xs={12} // Stacked on mobile
-                    sm={12} // Full width on small screens
-                    md={12}
-                    lg={12} // 4 per row on d  esktop (matches your goal)
+                    sm={6} // 2 per row on small tablets
+                    md={4} // 3 per row on medium screens
+                    lg={3} // 4 per row on desktop (matches your goal)
                   >
-                    <PackageCard lessonList={myPackages} key={myPackages[0]?.subscriptionId} />
+                    <EducationCourseCard course={course} />
                   </Grid>
-                </Grid>
-              ) : (
-                <Grid item xs={12}>
-                  <Box sx={{ p: 3, textAlign: 'center' }}>
-                    <Typography variant="h6" color="text.secondary">
-                      لا توجد جلسات مباشرة متاحة
-                    </Typography>
-                  </Box>
-                </Grid>
-              )}
-            </Grid>
-          </Container>
-          {/* ===== Live Sessions ===== */}
-          {/* <LiveSessionsSection /> */}
-          <Container>
-            <Grid container spacing={4} justifyContent={'center'} p={4}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  width: '100%',
-                }}
-              >
-                <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                  {t('Label.live_broadcast')}
-                </Typography>
-
-                <Button
-                  color="info"
-                  sx={{ lineHeight: 1 }}
-                  // onClick={() => router.push('/curricula/live')}
-                  onClick={() => router.push(paths.controlPanel.Curricula.live)}
-                >
-                  {t('Label.all')}
-
-                  <LeftIcon />
-                </Button>
-              </Box>
-              {liveCourses && liveCourses.length > 0 ? (
-              <Grid item xs={12} sm={12} md={12} lg={12}>
-                <LiveSessionCard
-                  lessonList={liveCourses}
-                  teacher_id={liveCourses[0]?.teacherId || ''}
-                  paymentList={paymentList}
-                  enrollments={enrollments} 
-                  key={liveCourses[0]?.id}
-                />
+                ))}
               </Grid>
-              ) : (
-                <Grid item xs={12}>
-                  <Box sx={{ p: 3, textAlign: 'center' }}>
-                    <Typography variant="h6" color="text.secondary">
-                      لا توجد جلسات مباشرة متاحة
-                    </Typography>
-                  </Box>
-                </Grid>
-              )}
-            </Grid>
-            {/* </Box> */}
-          </Container>
-
-          {/*
-
-        {/* ===== Top Teachers + Recorded Lessons ===== */}
-          <Box
-            sx={{
-              py: { xs: 4, md: 6 },
-              px: { xs: 4, md: 6 },
-              direction: 'ltr',
-              mx: { md: '0', xs: '0', lg: '2%', xl: '8%' },
-            }}
-          >
-            {/* Top Teachers */}
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            ) : (
+              <Grid item xs={12}>
+                <Box sx={{ p: 3, textAlign: 'center' }}>
+                  <Typography variant="h6" color="text.secondary">
+                    لا توجد جلسات مباشرة متاحة
+                  </Typography>
+                </Box>
+              </Grid>
+            )}
+          </Grid>
+        </Container>
+        <Container>
+          <Grid container spacing={4} justifyContent={'center'} p={4}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+                mb: 2,
+              }}
+            >
               <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                المعلمين الأعلى تقييمًا
+                {t('packages.title')}
+              </Typography>
+              <Button
+                color="info"
+                sx={{ lineHeight: 1 }}
+                onClick={() => router.push(paths.controlPanel.Curricula.myPackages)}
+              >
+                {t('Label.all')}
+                <LeftIcon />
+              </Button>
+            </Box>
+            {myPackages && myPackages.length > 0 ? (
+              // Use a container here to hold the items
+              <Grid container spacing={2}>
+                <Grid
+                  item
+                  xs={12} // Stacked on mobile
+                  sm={12} // Full width on small screens
+                  md={12}
+                  lg={12} // 4 per row on d  esktop (matches your goal)
+                >
+                  <PackageCard lessonList={myPackages} key={myPackages[0]?.subscriptionId} />
+                </Grid>
+              </Grid>
+            ) : (
+              <Grid item xs={12}>
+                <Box sx={{ p: 3, textAlign: 'center' }}>
+                  <Typography variant="h6" color="text.secondary">
+                    لا توجد جلسات مباشرة متاحة
+                  </Typography>
+                </Box>
+              </Grid>
+            )}
+          </Grid>
+        </Container>
+        {/* ===== Live Sessions ===== */}
+        {/* <LiveSessionsSection /> */}
+        <Container>
+          <Grid container spacing={4} justifyContent={'center'} p={4}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+              }}
+            >
+              <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                {t('Label.live_broadcast')}
               </Typography>
 
               <Button
                 color="info"
                 sx={{ lineHeight: 1 }}
-                onClick={() => router.push('/curricula/topTeacher')}
+                // onClick={() => router.push('/curricula/live')}
+                onClick={() => router.push(paths.controlPanel.Curricula.live)}
               >
-                الكل
+                {t('Label.all')}
+
                 <LeftIcon />
               </Button>
             </Box>
-            <InstructorsSection teachers={teachers} />
+            {liveCourses && liveCourses.length > 0 ? (
+              <Grid item xs={12} sm={12} md={12} lg={12}>
+                <LiveSessionCard
+                  lessonList={liveCourses}
+                  teacher_id={liveCourses[0]?.teacherId || ''}
+                  paymentList={paymentList}
+                  enrollments={enrollments}
+                  key={liveCourses[0]?.id}
+                />
+              </Grid>
+            ) : (
+              <Grid item xs={12}>
+                <Box sx={{ p: 3, textAlign: 'center' }}>
+                  <Typography variant="h6" color="text.secondary">
+                    لا توجد جلسات مباشرة متاحة
+                  </Typography>
+                </Box>
+              </Grid>
+            )}
+          </Grid>
+          {/* </Box> */}
+        </Container>
 
-            {/* Recorded Lessons */}
-            {/* <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        {/*
+
+        {/* ===== Top Teachers + Recorded Lessons ===== */}
+        <Box
+          sx={{
+            py: { xs: 4, md: 6 },
+            px: { xs: 4, md: 6 },
+            direction: 'ltr',
+            mx: { md: '0', xs: '0', lg: '2%', xl: '8%' },
+          }}
+        >
+          {/* Top Teachers */}
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+              المعلمين الأعلى تقييمًا
+            </Typography>
+
+            <Button
+              color="info"
+              sx={{ lineHeight: 1 }}
+              onClick={() => router.push('/curricula/topTeacher')}
+            >
+              الكل
+              <LeftIcon />
+            </Button>
+          </Box>
+          <InstructorsSection teachers={teachers} />
+
+          {/* Recorded Lessons */}
+          {/* <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Typography variant="h4" sx={{ fontWeight: 700 }}>
                 الدروس المسجلة
               </Typography>
@@ -341,13 +341,13 @@ const [enrollments, setEnrollments] = React.useState<any[]>([]);
                 <LeftIcon />
               </Button>
             </Box> */}
-            {/* {loadingLessons ? (
+          {/* {loadingLessons ? (
               <Typography>جاري تحميل الدروس...</Typography>
             ) : (
               <RecoarLessonsSection lessons={recordedLessons} limit={4} />
             )} */}
-          </Box>
         </Box>
+      </Box>
       {/* </Box> */}
     </>
   );

@@ -79,7 +79,14 @@ async function apiRequest<TResponse, TBody = undefined>(
       };
     }
 
-    const responseData = await response.json();
+    const textResponse = await response.text();
+    let responseData: any;
+    try {
+      responseData = textResponse ? JSON.parse(textResponse) : {};
+    } catch (e) {
+      // Fallback to raw text if it's not valid JSON (e.g. direct string URL)
+      responseData = textResponse;
+    }
 
     // Response check after parsing so i can get the error message
     if (!response.ok) {
