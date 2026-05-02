@@ -196,6 +196,8 @@ export const endpoints = {
     join: (videoSessionId: string) => `/students/video-sessions/${videoSessionId}/join`,
     leave: (videoSessionId: string) => `/students/video-sessions/${videoSessionId}/leave`,
     end: (videoSessionId: string) => `/students/video-sessions/${videoSessionId}/end`,
+    chat: '/shared/file-upload',
+
   }
 
 };

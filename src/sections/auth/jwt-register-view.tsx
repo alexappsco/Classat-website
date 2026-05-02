@@ -1,4 +1,4 @@
- 
+
 'use client';
 
 import * as Yup from 'yup';
@@ -198,7 +198,7 @@ export default function JwtRegisterDialog({ open, onClose }: any) {
   useEffect(() => {
     const fetchCountries = async () => {
       try {
-        const res = await getData<any>(endpoints.country.get);
+        const res = await getData<any>(`${endpoints.country.get}?MaxResultCount=1000`);
 
 
         // نحاول نطلع Array من أي شكل شائع للـ API
