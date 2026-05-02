@@ -172,7 +172,7 @@ export const endpoints = {
 
   },
   country: {
-    get: '/shared/location/countries',
+    get: '/shared/location/countries?MaxResultCount=1000',
   },
   EducationApproach:
   {
