@@ -1,6 +1,6 @@
 import globals from 'globals';
 import reactPlugin from 'eslint-plugin-react';
-import nextPlugin from '@next/eslint-plugin-next';
+import nextPlugin from '@next/eslint-plugin-next/dist/index.js';
 import hooksPlugin from 'eslint-plugin-react-hooks';
 import tseslint, { parser } from 'typescript-eslint';
 import perfectionist from 'eslint-plugin-perfectionist';

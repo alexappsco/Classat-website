@@ -35,15 +35,10 @@ import {
   IconButton,
   Box,
   Paper,
-  Popover,
   Menu,
   MenuItem,
-  ListItemIcon,
-  ListItemText,
-  Tooltip,
-  Badge,
+
 } from "@mui/material";
-import { createPopper } from "@popperjs/core";
 import { useMeetingAppContext } from "../MeetingAppContextDef";
 import useMediaStream from "src/hooks/useMediaStream";
 
