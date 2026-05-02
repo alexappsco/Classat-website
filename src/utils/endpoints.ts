@@ -68,7 +68,7 @@ export const endpoints = {
 
   },
   country: {
-    get: '/shared/location/countries',
+    get: '/shared/location/countries?MaxResultCount=1000',
   },
   approaches: {
     get: "/shared/education/approaches"
